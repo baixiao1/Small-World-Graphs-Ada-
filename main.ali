@@ -1,0 +1,117 @@
+V "GNAT Lib v2016"
+M P W=b
+A -gnatA
+A -fprofile-arcs
+A -g
+A -ftest-coverage
+A -mtune=generic
+A -march=pentium4
+P SS ZX
+
+RN
+RV NO_ENUMERATION_MAPS
+RV NO_IO
+RV NO_SECONDARY_STACK
+RV NO_DEFAULT_INITIALIZATION
+RV NO_IMPLEMENTATION_PRAGMAS
+RV SPARK_05
+
+U main%b		main.adb		33153f17 NE OO SU IL
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W graph%s		graph.adb		graph.ali
+W io%s			io.adb			io.ali
+W system.img_bool%s	s-imgboo.adb		s-imgboo.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+D ada.ads		20160516092928 3ffc8e18 ada%s
+D a-contai.ads		20160516092926 61e5e089 ada.containers%s
+D a-cforse.ads		20170611031458 e4484e32 ada.containers.formal_ordered_sets%s
+D a-conhel.ads		20160516092928 20298884 ada.containers.helpers%s
+D a-crbltr.ads		20160516092930 c3e90a86 ada.containers.red_black_trees%s
+D a-except.ads		20160516092928 291912d5 ada.exceptions%s
+D a-finali.ads		20160516092930 bf4f806b ada.finalization%s
+D a-ioexce.ads		20160516092926 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20160516092928 119b8fb3 ada.streams%s
+D a-tags.ads		20160516092932 01f5e3ef ada.tags%s
+D a-textio.ads		20160516092932 386df5d4 ada.text_io%s
+D a-unccon.ads		20160516092930 f9eb8f06 ada.unchecked_conversion%s
+D graph.ads		20170611055828 39b370f5 graph%s
+D interfac.ads		20160516092928 5ab55268 interfaces%s
+D i-cstrea.ads		20160516092926 e53d8b8e interfaces.c_streams%s
+D io.ads		20170611060544 bf5bcfd7 io%s
+D main.adb		20170611051742 8d9075e1 main%b
+D system.ads		20160516092930 2da59038 system%s
+D s-atocou.ads		20160516092932 b45c2d8d system.atomic_counters%s
+D s-crtl.ads		20160516092926 0ebbdb71 system.crtl%s
+D s-exctab.ads		20160516092930 54135002 system.exception_table%s
+D s-ficobl.ads		20160516092932 078245e4 system.file_control_block%s
+D s-finmas.ads		20160516092930 7811a767 system.finalization_masters%s
+D s-finroo.ads		20160516092930 4ff27390 system.finalization_root%s
+D s-imgboo.ads		20160516092926 f5d971eb system.img_bool%s
+D s-parame.ads		20160516092932 7e2a0d7f system.parameters%s
+D s-secsta.ads		20160516092930 86a2856d system.secondary_stack%s
+D s-soflin.ads		20160516092928 14e1eb6c system.soft_links%s
+D s-stache.ads		20160516092932 a37c21ec system.stack_checking%s
+D s-stalib.ads		20160516092930 09bd3940 system.standard_library%s
+D s-stoele.ads		20160516092932 2dc34a04 system.storage_elements%s
+D s-stopoo.ads		20160516092928 b16154c2 system.storage_pools%s
+D s-stposu.ads		20160516092926 97a6219c system.storage_pools.subpools%s
+D s-stratt.ads		20160516092926 aedef97e system.stream_attributes%s
+D s-traent.ads		20160516092928 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160516092930 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20160516092930 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 19e8 17|1r6 1r23
+X 3 a-cforse.ads
+78R9*Set<5|67R12[372[13|21]]>
+X 5 a-crbltr.ads
+67R12*Tree_Type
+X 11 a-textio.ads
+49K13*Text_IO 471e16 17|1w10 1r27
+263U14*Put_Line 17|10s4
+X 13 graph.ads
+4K9*graph 61e10 17|3w6 3r17
+7I9*Node<short_short_integer> 17|13r32 14r32 15r32 16r32 17r32 18r32 21r35
+. 21r49 22r35 22r49 23r35 23r49 24r35 24r49 25r35 25r49 26r35 26r49 27r35
+. 27r49 28r35 28r49 29r35 29r49 30r35 30r49 31r35 31r49 32r35 32r49 33r35
+. 33r49 40r34 42r34 44r34 46r34 48r34 50r34 55r38 55r56
+28R9*mygraph 31e14 17|7r16
+33U14*addnode 17|13s4 14s4 15s4 16s4 17s4 18s4
+33r22 g{28R9} 17|13r12 14r12 15r12 16r12 17r12 18r12
+33i41 n{7I9} 17|13r27 14r27 15r27 16r27 17r27 18r27
+38U14*addedge 17|21s4 22s4 23s4 24s4 25s4 26s4 27s4 28s4 29s4 30s4 31s4 32s4
+. 33s4
+38r22 g{28R9} 17|21r12 22r12 23r12 24r12 25r12 26r12 27r12 28r12 29r12 30r12
+. 31r12 32r12 33r12
+38i41 from{7I9} 17|21r27 22r27 23r27 24r27 25r27 26r27 27r27 28r27 29r27
+. 30r27 31r27 32r27 33r27
+38i56 to{7I9} 17|21r44 22r44 23r44 24r44 25r44 26r44 27r44 28r44 29r44 30r44
+. 31r44 32r44 33r44
+43V13*findnext{3|78R9[21]} 17|40s20 42s20 44s20 46s20 48s20 50s20
+43i22 n{7I9} 17|40r29 42r29 44r29 46r29 48r29 50r29
+43r33 g{28R9} 17|40r42 42r42 44r42 46r42 48r42 50r42
+51V13*distance{integer} 17|55s19
+51i22 source{7I9} 17|55r28
+51i38 target{7I9} 17|55r46
+51r54 g{28R9} 17|55r64
+55V13*diameter{integer} 17|59s19
+58V13*small{boolean} 17|63s15
+58i19 x{integer} 17|63r21
+58r34 g{28R9} 17|63r28
+X 16 io.ads
+3K9*io 10e7 17|2w6 2r14 12r4 36r4 39r4 40r4 41r4 42r4 43r4 44r4 45r4 46r4
+. 47r4 48r4 49r4 50r4 54r4 55r4 58r4 59r4 62r4 63r4
+4U14*myprint 17|12s7 39s7 41s7 43s7 45s7 47s7 49s7 54s7 58s7 62s7 63s7
+5U14*myprintnodes 17|40s7 42s7 44s7 46s7 48s7 50s7
+7U14*myprintgraph 17|36s7
+7r27 g{13|28R9} 17|36r20
+9U14*printnumber 17|55s7 59s7
+X 17 main.adb
+5U11*main 5b11 64l5 64t9
+7r4 testgraph{13|28R9} 13m17 13r17 14m17 14r17 15m17 15r17 16m17 16r17 17m17
+. 17r17 18m17 18r17 21m17 21r17 22m17 22r17 23m17 23r17 24m17 24r17 25m17
+. 25r17 26m17 26r17 27m17 27r17 28m17 28r17 29m17 29r17 30m17 30r17 31m17
+. 31r17 32m17 32r17 33m17 33r17 36r25 40r47 42r47 44r47 46r47 48r47 50r47
+. 55r69 59r28 63r33
+

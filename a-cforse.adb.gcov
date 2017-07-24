@@ -1,0 +1,1546 @@
+        -:    0:Source:E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adainclude/a-cforse.adb
+        -:    0:Programs:5
+        -:    1:------------------------------------------------------------------------------
+        -:    2:--                                                                          --
+        -:    3:--                         GNAT LIBRARY COMPONENTS                          --
+        -:    4:--                                                                          --
+        -:    5:--   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ S E T S    --
+        -:    6:--                                                                          --
+        -:    7:--                                 B o d y                                  --
+        -:    8:--                                                                          --
+        -:    9:--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
+        -:   10:--                                                                          --
+        -:   11:-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+        -:   12:-- terms of the  GNU General Public License as published  by the Free Soft- --
+        -:   13:-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+        -:   14:-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+        -:   15:-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+        -:   16:-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+        -:   17:--                                                                          --
+        -:   18:--                                                                          --
+        -:   19:--                                                                          --
+        -:   20:--                                                                          --
+        -:   21:--                                                                          --
+        -:   22:-- You should have received a copy of the GNU General Public License and    --
+        -:   23:-- a copy of the GCC Runtime Library Exception along with this program;     --
+        -:   24:-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+        -:   25:-- <http://www.gnu.org/licenses/>.                                          --
+        -:   26:------------------------------------------------------------------------------
+        -:   27:
+        -:   28:with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
+        -:   29:pragma Elaborate_All
+        -:   30:  (Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations);
+        -:   31:
+        -:   32:with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
+        -:   33:pragma Elaborate_All (Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys);
+        -:   34:
+        -:   35:with Ada.Containers.Red_Black_Trees.Generic_Bounded_Set_Operations;
+        -:   36:pragma Elaborate_All
+        -:   37:  (Ada.Containers.Red_Black_Trees.Generic_Bounded_Set_Operations);
+        -:   38:
+        -:   39:with System; use type System.Address;
+        -:   40:
+        -:   41:package body Ada.Containers.Formal_Ordered_Sets with
+        -:   42:  SPARK_Mode => Off
+        -:   43:is
+        -:   44:
+        -:   45:   ------------------------------
+        -:   46:   -- Access to Fields of Node --
+        -:   47:   ------------------------------
+        -:   48:
+        -:   49:   --  These subprograms provide functional notation for access to fields
+        -:   50:   --  of a node, and procedural notation for modifiying these fields.
+        -:   51:
+        -:   52:   function Color (Node : Node_Type) return Red_Black_Trees.Color_Type;
+        -:   53:   pragma Inline (Color);
+        -:   54:
+        -:   55:   function Left_Son (Node : Node_Type) return Count_Type;
+        -:   56:   pragma Inline (Left_Son);
+        -:   57:
+        -:   58:   function Parent (Node : Node_Type) return Count_Type;
+        -:   59:   pragma Inline (Parent);
+        -:   60:
+        -:   61:   function Right_Son (Node : Node_Type) return Count_Type;
+        -:   62:   pragma Inline (Right_Son);
+        -:   63:
+        -:   64:   procedure Set_Color
+        -:   65:     (Node  : in out Node_Type;
+        -:   66:      Color : Red_Black_Trees.Color_Type);
+        -:   67:   pragma Inline (Set_Color);
+        -:   68:
+        -:   69:   procedure Set_Left (Node : in out Node_Type; Left : Count_Type);
+        -:   70:   pragma Inline (Set_Left);
+        -:   71:
+        -:   72:   procedure Set_Right (Node : in out Node_Type; Right : Count_Type);
+        -:   73:   pragma Inline (Set_Right);
+        -:   74:
+        -:   75:   procedure Set_Parent (Node : in out Node_Type; Parent : Count_Type);
+        -:   76:   pragma Inline (Set_Parent);
+        -:   77:
+        -:   78:   -----------------------
+        -:   79:   -- Local Subprograms --
+        -:   80:   -----------------------
+        -:   81:
+        -:   82:   --  Comments needed???
+        -:   83:
+        -:   84:   generic
+        -:   85:      with procedure Set_Element (Node : in out Node_Type);
+        -:   86:   procedure Generic_Allocate
+        -:   87:     (Tree : in out Tree_Types.Tree_Type'Class;
+        -:   88:      Node : out Count_Type);
+        -:   89:
+        -:   90:   procedure Free (Tree : in out Set; X : Count_Type);
+        -:   91:
+        -:   92:   procedure Insert_Sans_Hint
+        -:   93:     (Container : in out Set;
+        -:   94:      New_Item  : Element_Type;
+        -:   95:      Node      : out Count_Type;
+        -:   96:      Inserted  : out Boolean);
+        -:   97:
+        -:   98:   procedure Insert_With_Hint
+        -:   99:     (Dst_Set  : in out Set;
+        -:  100:      Dst_Hint : Count_Type;
+        -:  101:      Src_Node : Node_Type;
+        -:  102:      Dst_Node : out Count_Type);
+        -:  103:
+        -:  104:   function Is_Greater_Element_Node
+        -:  105:     (Left  : Element_Type;
+        -:  106:      Right : Node_Type) return Boolean;
+        -:  107:   pragma Inline (Is_Greater_Element_Node);
+        -:  108:
+        -:  109:   function Is_Less_Element_Node
+        -:  110:     (Left  : Element_Type;
+        -:  111:      Right : Node_Type) return Boolean;
+        -:  112:   pragma Inline (Is_Less_Element_Node);
+        -:  113:
+        -:  114:   function Is_Less_Node_Node (L, R : Node_Type) return Boolean;
+        -:  115:   pragma Inline (Is_Less_Node_Node);
+        -:  116:
+        -:  117:   procedure Replace_Element
+        -:  118:     (Tree : in out Set;
+        -:  119:      Node : Count_Type;
+        -:  120:      Item : Element_Type);
+        -:  121:
+        -:  122:   --------------------------
+        -:  123:   -- Local Instantiations --
+        -:  124:   --------------------------
+        -:  125:
+        -:  126:   package Tree_Operations is
+        -:  127:     new Red_Black_Trees.Generic_Bounded_Operations
+        -:  128:       (Tree_Types,
+        -:  129:        Left  => Left_Son,
+        -:  130:        Right => Right_Son);
+        -:  131:
+        -:  132:   use Tree_Operations;
+        -:  133:
+        -:  134:   package Element_Keys is
+        -:  135:     new Red_Black_Trees.Generic_Bounded_Keys
+        -:  136:       (Tree_Operations     => Tree_Operations,
+        -:  137:        Key_Type            => Element_Type,
+        -:  138:        Is_Less_Key_Node    => Is_Less_Element_Node,
+        -:  139:        Is_Greater_Key_Node => Is_Greater_Element_Node);
+        -:  140:
+        -:  141:   package Set_Ops is
+        -:  142:     new Red_Black_Trees.Generic_Bounded_Set_Operations
+        -:  143:       (Tree_Operations  => Tree_Operations,
+        -:  144:        Set_Type         => Set,
+        -:  145:        Assign           => Assign,
+        -:  146:        Insert_With_Hint => Insert_With_Hint,
+        -:  147:        Is_Less          => Is_Less_Node_Node);
+        -:  148:
+        -:  149:   ---------
+        -:  150:   -- "=" --
+        -:  151:   ---------
+        -:  152:
+    #####:  153:   function "=" (Left, Right : Set) return Boolean is
+        -:  154:      Lst   : Count_Type;
+        -:  155:      Node  : Count_Type;
+        -:  156:      ENode : Count_Type;
+        -:  157:
+        -:  158:   begin
+    #####:  159:      if Length (Left) /= Length (Right) then
+    #####:  160:         return False;
+        -:  161:      end if;
+        -:  162:
+    #####:  163:      if Is_Empty (Left) then
+    #####:  164:         return True;
+        -:  165:      end if;
+        -:  166:
+    #####:  167:      Lst := Next (Left, Last (Left).Node);
+        -:  168:
+    #####:  169:      Node := First (Left).Node;
+    #####:  170:      while Node /= Lst loop
+    #####:  171:         ENode := Find (Right, Left.Nodes (Node).Element).Node;
+    #####:  172:         if ENode = 0
+    #####:  173:           or else Left.Nodes (Node).Element /= Right.Nodes (ENode).Element
+        -:  174:         then
+    #####:  175:            return False;
+        -:  176:         end if;
+        -:  177:
+    #####:  178:         Node := Next (Left, Node);
+    #####:  179:      end loop;
+        -:  180:
+    #####:  181:      return True;
+    #####:  182:   end "=";
+        -:  183:
+        -:  184:   ------------
+        -:  185:   -- Assign --
+        -:  186:   ------------
+        -:  187:
+    #####:  188:   procedure Assign (Target : in out Set; Source : Set) is
+        -:  189:      procedure Append_Element (Source_Node : Count_Type);
+        -:  190:
+        -:  191:      procedure Append_Elements is
+        -:  192:        new Tree_Operations.Generic_Iteration (Append_Element);
+        -:  193:
+        -:  194:      --------------------
+        -:  195:      -- Append_Element --
+        -:  196:      --------------------
+        -:  197:
+    #####:  198:      procedure Append_Element (Source_Node : Count_Type) is
+    #####:  199:         SN : Node_Type renames Source.Nodes (Source_Node);
+        -:  200:
+        -:  201:         procedure Set_Element (Node : in out Node_Type);
+        -:  202:         pragma Inline (Set_Element);
+        -:  203:
+        -:  204:         function New_Node return Count_Type;
+        -:  205:         pragma Inline (New_Node);
+        -:  206:
+        -:  207:         procedure Insert_Post is
+        -:  208:           new Element_Keys.Generic_Insert_Post (New_Node);
+        -:  209:
+        -:  210:         procedure Unconditional_Insert_Sans_Hint is
+        -:  211:           new Element_Keys.Generic_Unconditional_Insert (Insert_Post);
+        -:  212:
+        -:  213:         procedure Unconditional_Insert_Avec_Hint is
+        -:  214:           new Element_Keys.Generic_Unconditional_Insert_With_Hint
+        -:  215:                 (Insert_Post,
+        -:  216:                  Unconditional_Insert_Sans_Hint);
+        -:  217:
+        -:  218:         procedure Allocate is new Generic_Allocate (Set_Element);
+        -:  219:
+        -:  220:         --------------
+        -:  221:         -- New_Node --
+        -:  222:         --------------
+        -:  223:
+    #####:  224:         function New_Node return Count_Type is
+        -:  225:            Result : Count_Type;
+        -:  226:         begin
+    #####:  227:            Allocate (Target, Result);
+    #####:  228:            return Result;
+        -:  229:         end New_Node;
+        -:  230:
+        -:  231:         -----------------
+        -:  232:         -- Set_Element --
+        -:  233:         -----------------
+        -:  234:
+    #####:  235:         procedure Set_Element (Node : in out Node_Type) is
+        -:  236:         begin
+    #####:  237:            Node.Element := SN.Element;
+    #####:  238:         end Set_Element;
+        -:  239:
+        -:  240:         --  Local variables
+        -:  241:
+        -:  242:         Target_Node : Count_Type;
+        -:  243:
+        -:  244:      --  Start of processing for Append_Element
+        -:  245:
+        -:  246:      begin
+    #####:  247:         Unconditional_Insert_Avec_Hint
+        -:  248:           (Tree  => Target,
+        -:  249:            Hint  => 0,
+        -:  250:            Key   => SN.Element,
+        -:  251:            Node  => Target_Node);
+    #####:  252:      end Append_Element;
+        -:  253:
+        -:  254:      --  Start of processing for Assign
+        -:  255:
+        -:  256:   begin
+    #####:  257:      if Target'Address = Source'Address then
+    #####:  258:         return;
+        -:  259:      end if;
+        -:  260:
+    #####:  261:      if Target.Capacity < Source.Length then
+    #####:  262:         raise Constraint_Error
+        -:  263:           with "Target capacity is less than Source length";
+        -:  264:      end if;
+        -:  265:
+    #####:  266:      Tree_Operations.Clear_Tree (Target);
+    #####:  267:      Append_Elements (Source);
+        -:  268:   end Assign;
+        -:  269:
+        -:  270:   -------------
+        -:  271:   -- Ceiling --
+        -:  272:   -------------
+        -:  273:
+    #####:  274:   function Ceiling (Container : Set; Item : Element_Type) return Cursor is
+    #####:  275:      Node : constant Count_Type := Element_Keys.Ceiling (Container, Item);
+        -:  276:
+        -:  277:   begin
+    #####:  278:      if Node = 0 then
+    #####:  279:         return No_Element;
+        -:  280:      end if;
+        -:  281:
+    #####:  282:      return (Node => Node);
+        -:  283:   end Ceiling;
+        -:  284:
+        -:  285:   -----------
+        -:  286:   -- Clear --
+        -:  287:   -----------
+        -:  288:
+    #####:  289:   procedure Clear (Container : in out Set) is
+        -:  290:   begin
+    #####:  291:      Tree_Operations.Clear_Tree (Container);
+    #####:  292:   end Clear;
+        -:  293:
+        -:  294:   -----------
+        -:  295:   -- Color --
+        -:  296:   -----------
+        -:  297:
+      482:  298:   function Color (Node : Node_Type) return Red_Black_Trees.Color_Type is
+        -:  299:   begin
+      482:  300:      return Node.Color;
+        -:  301:   end Color;
+        -:  302:
+        -:  303:   --------------
+        -:  304:   -- Contains --
+        -:  305:   --------------
+        -:  306:
+      210:  307:   function Contains
+        -:  308:     (Container : Set;
+        -:  309:      Item      : Element_Type) return Boolean
+        -:  310:   is
+        -:  311:   begin
+      420:  312:      return Find (Container, Item) /= No_Element;
+      210:  313:   end Contains;
+        -:  314:
+        -:  315:   ----------
+        -:  316:   -- Copy --
+        -:  317:   ----------
+        -:  318:
+    #####:  319:   function Copy (Source : Set; Capacity : Count_Type := 0) return Set is
+        -:  320:      Node   : Count_Type;
+        -:  321:      N      : Count_Type;
+    #####:  322:      Target : Set (Count_Type'Max (Source.Capacity, Capacity));
+        -:  323:
+        -:  324:   begin
+    #####:  325:      if 0 < Capacity and then Capacity < Source.Capacity then
+    #####:  326:         raise Capacity_Error;
+        -:  327:      end if;
+        -:  328:
+    #####:  329:      if Length (Source) > 0 then
+    #####:  330:         Target.Length := Source.Length;
+    #####:  331:         Target.Root   := Source.Root;
+    #####:  332:         Target.First  := Source.First;
+    #####:  333:         Target.Last   := Source.Last;
+    #####:  334:         Target.Free   := Source.Free;
+        -:  335:
+    #####:  336:         Node := 1;
+    #####:  337:         while Node <= Source.Capacity loop
+    #####:  338:            Target.Nodes (Node).Element :=
+        -:  339:              Source.Nodes (Node).Element;
+    #####:  340:            Target.Nodes (Node).Parent :=
+        -:  341:              Source.Nodes (Node).Parent;
+    #####:  342:            Target.Nodes (Node).Left :=
+        -:  343:              Source.Nodes (Node).Left;
+    #####:  344:            Target.Nodes (Node).Right :=
+        -:  345:              Source.Nodes (Node).Right;
+    #####:  346:            Target.Nodes (Node).Color :=
+        -:  347:              Source.Nodes (Node).Color;
+    #####:  348:            Target.Nodes (Node).Has_Element :=
+        -:  349:              Source.Nodes (Node).Has_Element;
+    #####:  350:            Node := Node + 1;
+    #####:  351:         end loop;
+        -:  352:
+    #####:  353:         while Node <= Target.Capacity loop
+    #####:  354:            N := Node;
+    #####:  355:            Formal_Ordered_Sets.Free (Tree => Target, X => N);
+    #####:  356:            Node := Node + 1;
+    #####:  357:         end loop;
+        -:  358:      end if;
+        -:  359:
+    #####:  360:      return Target;
+        -:  361:   end Copy;
+        -:  362:
+        -:  363:   ---------------------
+        -:  364:   -- Current_To_Last --
+        -:  365:   ---------------------
+        -:  366:
+        -:  367:   function Current_To_Last (Container : Set; Current : Cursor) return Set is
+        -:  368:      Curs : Cursor := First (Container);
+        -:  369:      C    : Set (Container.Capacity) := Copy (Container, Container.Capacity);
+        -:  370:      Node : Count_Type;
+        -:  371:
+        -:  372:   begin
+        -:  373:      if Curs = No_Element then
+        -:  374:         Clear (C);
+        -:  375:         return C;
+        -:  376:      end if;
+        -:  377:
+        -:  378:      if Current /= No_Element and not Has_Element (Container, Current) then
+        -:  379:         raise Constraint_Error;
+        -:  380:      end if;
+        -:  381:
+        -:  382:      while Curs.Node /= Current.Node loop
+        -:  383:         Node := Curs.Node;
+        -:  384:         Delete (C, Curs);
+        -:  385:         Curs := Next (Container, (Node => Node));
+        -:  386:      end loop;
+        -:  387:
+        -:  388:      return C;
+        -:  389:   end Current_To_Last;
+        -:  390:
+        -:  391:   ------------
+        -:  392:   -- Delete --
+        -:  393:   ------------
+        -:  394:
+    #####:  395:   procedure Delete (Container : in out Set; Position : in out Cursor) is
+        -:  396:   begin
+    #####:  397:      if not Has_Element (Container, Position) then
+    #####:  398:         raise Constraint_Error with "Position cursor has no element";
+        -:  399:      end if;
+        -:  400:
+        -:  401:      pragma Assert (Vet (Container, Position.Node),
+        -:  402:                     "bad cursor in Delete");
+        -:  403:
+    #####:  404:      Tree_Operations.Delete_Node_Sans_Free (Container,
+        -:  405:                                             Position.Node);
+    #####:  406:      Formal_Ordered_Sets.Free (Container, Position.Node);
+    #####:  407:      Position := No_Element;
+    #####:  408:   end Delete;
+        -:  409:
+    #####:  410:   procedure Delete (Container : in out Set; Item : Element_Type) is
+    #####:  411:      X : constant Count_Type := Element_Keys.Find (Container, Item);
+        -:  412:
+        -:  413:   begin
+    #####:  414:      if X = 0 then
+    #####:  415:         raise Constraint_Error with "attempt to delete element not in set";
+        -:  416:      end if;
+        -:  417:
+    #####:  418:      Tree_Operations.Delete_Node_Sans_Free (Container, X);
+    #####:  419:      Formal_Ordered_Sets.Free (Container, X);
+    #####:  420:   end Delete;
+        -:  421:
+        -:  422:   ------------------
+        -:  423:   -- Delete_First --
+        -:  424:   ------------------
+        -:  425:
+    #####:  426:   procedure Delete_First (Container : in out Set) is
+    #####:  427:      X    : constant Count_Type := Container.First;
+        -:  428:   begin
+    #####:  429:      if X /= 0 then
+    #####:  430:         Tree_Operations.Delete_Node_Sans_Free (Container, X);
+    #####:  431:         Formal_Ordered_Sets.Free (Container, X);
+        -:  432:      end if;
+    #####:  433:   end Delete_First;
+        -:  434:
+        -:  435:   -----------------
+        -:  436:   -- Delete_Last --
+        -:  437:   -----------------
+        -:  438:
+    #####:  439:   procedure Delete_Last (Container : in out Set) is
+    #####:  440:      X    : constant Count_Type := Container.Last;
+        -:  441:   begin
+    #####:  442:      if X /= 0 then
+    #####:  443:         Tree_Operations.Delete_Node_Sans_Free (Container, X);
+    #####:  444:         Formal_Ordered_Sets.Free (Container, X);
+        -:  445:      end if;
+    #####:  446:   end Delete_Last;
+        -:  447:
+        -:  448:   ----------------
+        -:  449:   -- Difference --
+        -:  450:   ----------------
+        -:  451:
+    #####:  452:   procedure Difference (Target : in out Set; Source : Set) is
+        -:  453:   begin
+    #####:  454:      Set_Ops.Set_Difference (Target, Source);
+    #####:  455:   end Difference;
+        -:  456:
+    #####:  457:   function Difference (Left, Right : Set) return Set is
+        -:  458:   begin
+    #####:  459:      if Left'Address = Right'Address then
+    #####:  460:         return Empty_Set;
+        -:  461:      end if;
+        -:  462:
+    #####:  463:      if Length (Left) = 0 then
+    #####:  464:         return Empty_Set;
+        -:  465:      end if;
+        -:  466:
+    #####:  467:      if Length (Right) = 0 then
+    #####:  468:         return Left.Copy;
+        -:  469:      end if;
+        -:  470:
+    #####:  471:      return S : Set (Length (Left)) do
+    #####:  472:            Assign (S, Set_Ops.Set_Difference (Left, Right));
+        -:  473:      end return;
+        -:  474:   end Difference;
+        -:  475:
+        -:  476:   -------------
+        -:  477:   -- Element --
+        -:  478:   -------------
+        -:  479:
+     2588:  480:   function Element (Container : Set; Position : Cursor) return Element_Type is
+        -:  481:   begin
+     2588:  482:      if not Has_Element (Container, Position) then
+    #####:  483:         raise Constraint_Error with "Position cursor has no element";
+        -:  484:      end if;
+        -:  485:
+        -:  486:      pragma Assert (Vet (Container, Position.Node),
+        -:  487:                     "bad cursor in Element");
+        -:  488:
+     2588:  489:      return Container.Nodes (Position.Node).Element;
+        -:  490:   end Element;
+        -:  491:
+        -:  492:   -------------------------
+        -:  493:   -- Equivalent_Elements --
+        -:  494:   -------------------------
+        -:  495:
+    #####:  496:   function Equivalent_Elements (Left, Right : Element_Type) return Boolean is
+        -:  497:   begin
+    #####:  498:      if Left < Right
+    #####:  499:        or else Right < Left
+        -:  500:      then
+    #####:  501:         return False;
+        -:  502:      else
+    #####:  503:         return True;
+        -:  504:      end if;
+        -:  505:   end Equivalent_Elements;
+        -:  506:
+        -:  507:   ---------------------
+        -:  508:   -- Equivalent_Sets --
+        -:  509:   ---------------------
+        -:  510:
+    #####:  511:   function Equivalent_Sets (Left, Right : Set) return Boolean is
+        -:  512:      function Is_Equivalent_Node_Node
+        -:  513:        (L, R : Node_Type) return Boolean;
+        -:  514:      pragma Inline (Is_Equivalent_Node_Node);
+        -:  515:
+        -:  516:      function Is_Equivalent is
+        -:  517:        new Tree_Operations.Generic_Equal (Is_Equivalent_Node_Node);
+        -:  518:
+        -:  519:      -----------------------------
+        -:  520:      -- Is_Equivalent_Node_Node --
+        -:  521:      -----------------------------
+        -:  522:
+    #####:  523:      function Is_Equivalent_Node_Node (L, R : Node_Type) return Boolean is
+        -:  524:      begin
+    #####:  525:         if L.Element < R.Element then
+    #####:  526:            return False;
+    #####:  527:         elsif R.Element < L.Element then
+    #####:  528:            return False;
+        -:  529:         else
+    #####:  530:            return True;
+        -:  531:         end if;
+        -:  532:      end Is_Equivalent_Node_Node;
+        -:  533:
+        -:  534:   --  Start of processing for Equivalent_Sets
+        -:  535:
+        -:  536:   begin
+    #####:  537:      return Is_Equivalent (Left, Right);
+        -:  538:   end Equivalent_Sets;
+        -:  539:
+        -:  540:   -------------
+        -:  541:   -- Exclude --
+        -:  542:   -------------
+        -:  543:
+    #####:  544:   procedure Exclude (Container : in out Set; Item : Element_Type) is
+    #####:  545:      X : constant Count_Type := Element_Keys.Find (Container, Item);
+        -:  546:   begin
+    #####:  547:      if X /= 0 then
+    #####:  548:         Tree_Operations.Delete_Node_Sans_Free (Container, X);
+    #####:  549:         Formal_Ordered_Sets.Free (Container, X);
+        -:  550:      end if;
+    #####:  551:   end Exclude;
+        -:  552:
+        -:  553:   ----------
+        -:  554:   -- Find --
+        -:  555:   ----------
+        -:  556:
+      210:  557:   function Find (Container : Set; Item : Element_Type) return Cursor is
+      210:  558:      Node : constant Count_Type := Element_Keys.Find (Container, Item);
+        -:  559:
+        -:  560:   begin
+      210:  561:      if Node = 0 then
+       24:  562:         return No_Element;
+        -:  563:      end if;
+        -:  564:
+      186:  565:      return (Node => Node);
+        -:  566:   end Find;
+        -:  567:
+        -:  568:   -----------
+        -:  569:   -- First --
+        -:  570:   -----------
+        -:  571:
+      118:  572:   function First (Container : Set) return Cursor is
+        -:  573:   begin
+      118:  574:      if Length (Container) = 0 then
+    #####:  575:         return No_Element;
+        -:  576:      end if;
+        -:  577:
+      118:  578:      return (Node => Container.First);
+        -:  579:   end First;
+        -:  580:
+        -:  581:   -------------------
+        -:  582:   -- First_Element --
+        -:  583:   -------------------
+        -:  584:
+    #####:  585:   function First_Element (Container : Set) return Element_Type is
+    #####:  586:      Fst : constant Count_Type := First (Container).Node;
+        -:  587:   begin
+    #####:  588:      if Fst = 0 then
+    #####:  589:         raise Constraint_Error with "set is empty";
+        -:  590:      end if;
+        -:  591:
+        -:  592:      declare
+    #####:  593:         N : Tree_Types.Nodes_Type renames Container.Nodes;
+        -:  594:      begin
+    #####:  595:         return N (Fst).Element;
+        -:  596:      end;
+    #####:  597:   end First_Element;
+        -:  598:
+        -:  599:   -----------------------
+        -:  600:   -- First_To_Previous --
+        -:  601:   -----------------------
+        -:  602:
+        -:  603:   function First_To_Previous
+        -:  604:     (Container : Set;
+        -:  605:      Current   : Cursor) return Set
+        -:  606:   is
+        -:  607:      Curs : Cursor := Current;
+        -:  608:      C    : Set (Container.Capacity) := Copy (Container, Container.Capacity);
+        -:  609:      Node : Count_Type;
+        -:  610:
+        -:  611:   begin
+        -:  612:      if Curs = No_Element then
+        -:  613:         return C;
+        -:  614:
+        -:  615:      elsif not Has_Element (Container, Curs) then
+        -:  616:         raise Constraint_Error;
+        -:  617:
+        -:  618:      else
+        -:  619:         while Curs.Node /= 0 loop
+        -:  620:            Node := Curs.Node;
+        -:  621:            Delete (C, Curs);
+        -:  622:            Curs := Next (Container, (Node => Node));
+        -:  623:         end loop;
+        -:  624:
+        -:  625:         return C;
+        -:  626:      end if;
+        -:  627:   end First_To_Previous;
+        -:  628:
+        -:  629:   -----------
+        -:  630:   -- Floor --
+        -:  631:   -----------
+        -:  632:
+    #####:  633:   function Floor (Container : Set; Item : Element_Type) return Cursor is
+        -:  634:   begin
+        -:  635:      declare
+    #####:  636:         Node : constant Count_Type := Element_Keys.Floor (Container, Item);
+        -:  637:
+        -:  638:      begin
+    #####:  639:         if Node = 0 then
+    #####:  640:            return No_Element;
+        -:  641:         end if;
+        -:  642:
+    #####:  643:         return (Node => Node);
+        -:  644:      end;
+        -:  645:   end Floor;
+        -:  646:
+        -:  647:   ----------
+        -:  648:   -- Free --
+        -:  649:   ----------
+        -:  650:
+    #####:  651:   procedure Free (Tree : in out Set; X : Count_Type) is
+        -:  652:   begin
+    #####:  653:      Tree.Nodes (X).Has_Element := False;
+    #####:  654:      Tree_Operations.Free (Tree, X);
+    #####:  655:   end Free;
+        -:  656:
+        -:  657:   ----------------------
+        -:  658:   -- Generic_Allocate --
+        -:  659:   ----------------------
+        -:  660:
+      380:  661:   procedure Generic_Allocate
+        -:  662:     (Tree : in out Tree_Types.Tree_Type'Class;
+        -:  663:      Node : out Count_Type)
+        -:  664:   is
+        -:  665:      procedure Allocate is
+        -:  666:        new Tree_Operations.Generic_Allocate (Set_Element);
+        -:  667:   begin
+      380:  668:      Allocate (Tree, Node);
+      380:  669:      Tree.Nodes (Node).Has_Element := True;
+      380:  670:   end Generic_Allocate;
+        -:  671:
+        -:  672:   ------------------
+        -:  673:   -- Generic_Keys --
+        -:  674:   ------------------
+        -:  675:
+        -:  676:   package body Generic_Keys with SPARK_Mode => Off is
+        -:  677:
+        -:  678:      -----------------------
+        -:  679:      -- Local Subprograms --
+        -:  680:      -----------------------
+        -:  681:
+        -:  682:      function Is_Greater_Key_Node
+        -:  683:        (Left  : Key_Type;
+        -:  684:         Right : Node_Type) return Boolean;
+        -:  685:      pragma Inline (Is_Greater_Key_Node);
+        -:  686:
+        -:  687:      function Is_Less_Key_Node
+        -:  688:        (Left  : Key_Type;
+        -:  689:         Right : Node_Type) return Boolean;
+        -:  690:      pragma Inline (Is_Less_Key_Node);
+        -:  691:
+        -:  692:      --------------------------
+        -:  693:      -- Local Instantiations --
+        -:  694:      --------------------------
+        -:  695:
+        -:  696:      package Key_Keys is
+        -:  697:        new Red_Black_Trees.Generic_Bounded_Keys
+        -:  698:          (Tree_Operations     => Tree_Operations,
+        -:  699:           Key_Type            => Key_Type,
+        -:  700:           Is_Less_Key_Node    => Is_Less_Key_Node,
+        -:  701:           Is_Greater_Key_Node => Is_Greater_Key_Node);
+        -:  702:
+        -:  703:      -------------
+        -:  704:      -- Ceiling --
+        -:  705:      -------------
+        -:  706:
+        -:  707:      function Ceiling (Container : Set; Key : Key_Type) return Cursor is
+        -:  708:         Node : constant Count_Type := Key_Keys.Ceiling (Container, Key);
+        -:  709:
+        -:  710:      begin
+        -:  711:         if Node = 0 then
+        -:  712:            return No_Element;
+        -:  713:         end if;
+        -:  714:
+        -:  715:         return (Node => Node);
+        -:  716:      end Ceiling;
+        -:  717:
+        -:  718:      --------------
+        -:  719:      -- Contains --
+        -:  720:      --------------
+        -:  721:
+        -:  722:      function Contains (Container : Set; Key : Key_Type) return Boolean is
+        -:  723:      begin
+        -:  724:         return Find (Container, Key) /= No_Element;
+        -:  725:      end Contains;
+        -:  726:
+        -:  727:      ------------
+        -:  728:      -- Delete --
+        -:  729:      ------------
+        -:  730:
+        -:  731:      procedure Delete (Container : in out Set; Key : Key_Type) is
+        -:  732:         X : constant Count_Type := Key_Keys.Find (Container, Key);
+        -:  733:
+        -:  734:      begin
+        -:  735:         if X = 0 then
+        -:  736:            raise Constraint_Error with "attempt to delete key not in set";
+        -:  737:         end if;
+        -:  738:
+        -:  739:         Delete_Node_Sans_Free (Container, X);
+        -:  740:         Formal_Ordered_Sets.Free (Container, X);
+        -:  741:      end Delete;
+        -:  742:
+        -:  743:      -------------
+        -:  744:      -- Element --
+        -:  745:      -------------
+        -:  746:
+        -:  747:      function Element (Container : Set; Key : Key_Type) return Element_Type is
+        -:  748:         Node : constant Count_Type := Key_Keys.Find (Container, Key);
+        -:  749:
+        -:  750:      begin
+        -:  751:         if Node = 0 then
+        -:  752:            raise Constraint_Error with "key not in set";
+        -:  753:         end if;
+        -:  754:
+        -:  755:         declare
+        -:  756:            N : Tree_Types.Nodes_Type renames Container.Nodes;
+        -:  757:         begin
+        -:  758:            return N (Node).Element;
+        -:  759:         end;
+        -:  760:      end Element;
+        -:  761:
+        -:  762:      ---------------------
+        -:  763:      -- Equivalent_Keys --
+        -:  764:      ---------------------
+        -:  765:
+        -:  766:      function Equivalent_Keys (Left, Right : Key_Type) return Boolean is
+        -:  767:      begin
+        -:  768:         if Left < Right
+        -:  769:           or else Right < Left
+        -:  770:         then
+        -:  771:            return False;
+        -:  772:         else
+        -:  773:            return True;
+        -:  774:         end if;
+        -:  775:      end Equivalent_Keys;
+        -:  776:
+        -:  777:      -------------
+        -:  778:      -- Exclude --
+        -:  779:      -------------
+        -:  780:
+        -:  781:      procedure Exclude (Container : in out Set; Key : Key_Type) is
+        -:  782:         X : constant Count_Type := Key_Keys.Find (Container, Key);
+        -:  783:      begin
+        -:  784:         if X /= 0 then
+        -:  785:            Delete_Node_Sans_Free (Container, X);
+        -:  786:            Formal_Ordered_Sets.Free (Container, X);
+        -:  787:         end if;
+        -:  788:      end Exclude;
+        -:  789:
+        -:  790:      ----------
+        -:  791:      -- Find --
+        -:  792:      ----------
+        -:  793:
+        -:  794:      function Find (Container : Set; Key : Key_Type) return Cursor is
+        -:  795:         Node : constant Count_Type := Key_Keys.Find (Container, Key);
+        -:  796:      begin
+        -:  797:         return (if Node = 0 then No_Element else (Node => Node));
+        -:  798:      end Find;
+        -:  799:
+        -:  800:      -----------
+        -:  801:      -- Floor --
+        -:  802:      -----------
+        -:  803:
+        -:  804:      function Floor (Container : Set; Key : Key_Type) return Cursor is
+        -:  805:         Node : constant Count_Type := Key_Keys.Floor (Container, Key);
+        -:  806:      begin
+        -:  807:         return (if Node = 0 then No_Element else (Node => Node));
+        -:  808:      end Floor;
+        -:  809:
+        -:  810:      -------------------------
+        -:  811:      -- Is_Greater_Key_Node --
+        -:  812:      -------------------------
+        -:  813:
+        -:  814:      function Is_Greater_Key_Node
+        -:  815:        (Left  : Key_Type;
+        -:  816:         Right : Node_Type) return Boolean
+        -:  817:      is
+        -:  818:      begin
+        -:  819:         return Key (Right.Element) < Left;
+        -:  820:      end Is_Greater_Key_Node;
+        -:  821:
+        -:  822:      ----------------------
+        -:  823:      -- Is_Less_Key_Node --
+        -:  824:      ----------------------
+        -:  825:
+        -:  826:      function Is_Less_Key_Node
+        -:  827:        (Left  : Key_Type;
+        -:  828:         Right : Node_Type) return Boolean
+        -:  829:      is
+        -:  830:      begin
+        -:  831:         return Left < Key (Right.Element);
+        -:  832:      end Is_Less_Key_Node;
+        -:  833:
+        -:  834:      ---------
+        -:  835:      -- Key --
+        -:  836:      ---------
+        -:  837:
+        -:  838:      function Key (Container : Set; Position : Cursor) return Key_Type is
+        -:  839:      begin
+        -:  840:         if not Has_Element (Container, Position) then
+        -:  841:            raise Constraint_Error with
+        -:  842:              "Position cursor has no element";
+        -:  843:         end if;
+        -:  844:
+        -:  845:         pragma Assert (Vet (Container, Position.Node),
+        -:  846:                        "bad cursor in Key");
+        -:  847:
+        -:  848:         declare
+        -:  849:            N : Tree_Types.Nodes_Type renames Container.Nodes;
+        -:  850:         begin
+        -:  851:            return Key (N (Position.Node).Element);
+        -:  852:         end;
+        -:  853:      end Key;
+        -:  854:
+        -:  855:      -------------
+        -:  856:      -- Replace --
+        -:  857:      -------------
+        -:  858:
+        -:  859:      procedure Replace
+        -:  860:        (Container : in out Set;
+        -:  861:         Key       : Key_Type;
+        -:  862:         New_Item  : Element_Type)
+        -:  863:      is
+        -:  864:         Node : constant Count_Type := Key_Keys.Find (Container, Key);
+        -:  865:      begin
+        -:  866:         if not Has_Element (Container, (Node => Node)) then
+        -:  867:            raise Constraint_Error with
+        -:  868:              "attempt to replace key not in set";
+        -:  869:         else
+        -:  870:            Replace_Element (Container, Node, New_Item);
+        -:  871:         end if;
+        -:  872:      end Replace;
+        -:  873:
+        -:  874:   end Generic_Keys;
+        -:  875:
+        -:  876:   -----------------
+        -:  877:   -- Has_Element --
+        -:  878:   -----------------
+        -:  879:
+     5178:  880:   function Has_Element (Container : Set; Position : Cursor) return Boolean is
+        -:  881:   begin
+     5178:  882:      if Position.Node = 0 then
+      130:  883:         return False;
+        -:  884:      else
+     5048:  885:         return Container.Nodes (Position.Node).Has_Element;
+        -:  886:      end if;
+        -:  887:   end Has_Element;
+        -:  888:
+        -:  889:   -------------
+        -:  890:   -- Include --
+        -:  891:   -------------
+        -:  892:
+      382:  893:   procedure Include (Container : in out Set; New_Item : Element_Type) is
+        -:  894:      Position : Cursor;
+        -:  895:      Inserted : Boolean;
+        -:  896:
+        -:  897:   begin
+      382:  898:      Insert (Container, New_Item, Position, Inserted);
+        -:  899:
+      382:  900:      if not Inserted then
+        -:  901:         declare
+        2:  902:            N : Tree_Types.Nodes_Type renames Container.Nodes;
+        -:  903:         begin
+        2:  904:            N (Position.Node).Element := New_Item;
+        -:  905:         end;
+        -:  906:      end if;
+      382:  907:   end Include;
+        -:  908:
+        -:  909:   ------------
+        -:  910:   -- Insert --
+        -:  911:   ------------
+        -:  912:
+      382:  913:   procedure Insert
+        -:  914:     (Container : in out Set;
+        -:  915:      New_Item  : Element_Type;
+        -:  916:      Position  : out Cursor;
+        -:  917:      Inserted  : out Boolean)
+        -:  918:   is
+        -:  919:   begin
+      382:  920:      Insert_Sans_Hint (Container, New_Item, Position.Node, Inserted);
+      382:  921:   end Insert;
+        -:  922:
+    #####:  923:   procedure Insert
+        -:  924:     (Container : in out Set;
+        -:  925:      New_Item  : Element_Type)
+        -:  926:   is
+        -:  927:      Position : Cursor;
+        -:  928:      Inserted : Boolean;
+        -:  929:
+        -:  930:   begin
+    #####:  931:      Insert (Container, New_Item, Position, Inserted);
+        -:  932:
+    #####:  933:      if not Inserted then
+    #####:  934:         raise Constraint_Error with
+        -:  935:           "attempt to insert element already in set";
+        -:  936:      end if;
+    #####:  937:   end Insert;
+        -:  938:
+        -:  939:   ----------------------
+        -:  940:   -- Insert_Sans_Hint --
+        -:  941:   ----------------------
+        -:  942:
+      382:  943:   procedure Insert_Sans_Hint
+        -:  944:     (Container : in out Set;
+        -:  945:      New_Item  : Element_Type;
+        -:  946:      Node      : out Count_Type;
+        -:  947:      Inserted  : out Boolean)
+        -:  948:   is
+        -:  949:      procedure Set_Element (Node : in out Node_Type);
+        -:  950:
+        -:  951:      function New_Node return Count_Type;
+        -:  952:      pragma Inline (New_Node);
+        -:  953:
+        -:  954:      procedure Insert_Post is
+        -:  955:        new Element_Keys.Generic_Insert_Post (New_Node);
+        -:  956:
+        -:  957:      procedure Conditional_Insert_Sans_Hint is
+        -:  958:        new Element_Keys.Generic_Conditional_Insert (Insert_Post);
+        -:  959:
+        -:  960:      procedure Allocate is new Generic_Allocate (Set_Element);
+        -:  961:
+        -:  962:      --------------
+        -:  963:      -- New_Node --
+        -:  964:      --------------
+        -:  965:
+      380:  966:      function New_Node return Count_Type is
+        -:  967:         Result : Count_Type;
+        -:  968:      begin
+      380:  969:         Allocate (Container, Result);
+      380:  970:         return Result;
+        -:  971:      end New_Node;
+        -:  972:
+        -:  973:      -----------------
+        -:  974:      -- Set_Element --
+        -:  975:      -----------------
+        -:  976:
+      380:  977:      procedure Set_Element (Node : in out Node_Type) is
+        -:  978:      begin
+      380:  979:         Node.Element := New_Item;
+      380:  980:      end Set_Element;
+        -:  981:
+        -:  982:   --  Start of processing for Insert_Sans_Hint
+        -:  983:
+        -:  984:   begin
+      382:  985:      Conditional_Insert_Sans_Hint
+        -:  986:        (Container,
+        -:  987:         New_Item,
+        -:  988:         Node,
+        -:  989:         Inserted);
+      382:  990:   end Insert_Sans_Hint;
+        -:  991:
+        -:  992:   ----------------------
+        -:  993:   -- Insert_With_Hint --
+        -:  994:   ----------------------
+        -:  995:
+    #####:  996:   procedure Insert_With_Hint
+        -:  997:     (Dst_Set  : in out Set;
+        -:  998:      Dst_Hint : Count_Type;
+        -:  999:      Src_Node : Node_Type;
+        -: 1000:      Dst_Node : out Count_Type)
+        -: 1001:   is
+        -: 1002:      Success : Boolean;
+        -: 1003:      pragma Unreferenced (Success);
+        -: 1004:
+        -: 1005:      procedure Set_Element (Node : in out Node_Type);
+        -: 1006:
+        -: 1007:      function New_Node return Count_Type;
+        -: 1008:      pragma Inline (New_Node);
+        -: 1009:
+        -: 1010:      procedure Insert_Post is
+        -: 1011:        new Element_Keys.Generic_Insert_Post (New_Node);
+        -: 1012:
+        -: 1013:      procedure Insert_Sans_Hint is
+        -: 1014:        new Element_Keys.Generic_Conditional_Insert (Insert_Post);
+        -: 1015:
+        -: 1016:      procedure Local_Insert_With_Hint is
+        -: 1017:        new Element_Keys.Generic_Conditional_Insert_With_Hint
+        -: 1018:              (Insert_Post, Insert_Sans_Hint);
+        -: 1019:
+        -: 1020:      procedure Allocate is new Generic_Allocate (Set_Element);
+        -: 1021:
+        -: 1022:      --------------
+        -: 1023:      -- New_Node --
+        -: 1024:      --------------
+        -: 1025:
+    #####: 1026:      function New_Node return Count_Type is
+        -: 1027:         Result : Count_Type;
+        -: 1028:      begin
+    #####: 1029:         Allocate (Dst_Set, Result);
+    #####: 1030:         return Result;
+        -: 1031:      end New_Node;
+        -: 1032:
+        -: 1033:      -----------------
+        -: 1034:      -- Set_Element --
+        -: 1035:      -----------------
+        -: 1036:
+    #####: 1037:      procedure Set_Element (Node : in out Node_Type) is
+        -: 1038:      begin
+    #####: 1039:         Node.Element := Src_Node.Element;
+    #####: 1040:      end Set_Element;
+        -: 1041:
+        -: 1042:   --  Start of processing for Insert_With_Hint
+        -: 1043:
+        -: 1044:   begin
+    #####: 1045:      Local_Insert_With_Hint
+        -: 1046:        (Dst_Set,
+        -: 1047:         Dst_Hint,
+        -: 1048:         Src_Node.Element,
+        -: 1049:         Dst_Node,
+        -: 1050:         Success);
+    #####: 1051:   end Insert_With_Hint;
+        -: 1052:
+        -: 1053:   ------------------
+        -: 1054:   -- Intersection --
+        -: 1055:   ------------------
+        -: 1056:
+    #####: 1057:   procedure Intersection (Target : in out Set; Source : Set) is
+        -: 1058:   begin
+    #####: 1059:      Set_Ops.Set_Intersection (Target, Source);
+    #####: 1060:   end Intersection;
+        -: 1061:
+    #####: 1062:   function Intersection (Left, Right : Set) return Set is
+        -: 1063:   begin
+    #####: 1064:      if Left'Address = Right'Address then
+    #####: 1065:         return Left.Copy;
+        -: 1066:      end if;
+        -: 1067:
+    #####: 1068:      return S : Set (Count_Type'Min (Length (Left), Length (Right))) do
+    #####: 1069:            Assign (S, Set_Ops.Set_Intersection (Left, Right));
+        -: 1070:      end return;
+        -: 1071:   end Intersection;
+        -: 1072:
+        -: 1073:   --------------
+        -: 1074:   -- Is_Empty --
+        -: 1075:   --------------
+        -: 1076:
+    #####: 1077:   function Is_Empty (Container : Set) return Boolean is
+        -: 1078:   begin
+    #####: 1079:      return Length (Container) = 0;
+        -: 1080:   end Is_Empty;
+        -: 1081:
+        -: 1082:   -----------------------------
+        -: 1083:   -- Is_Greater_Element_Node --
+        -: 1084:   -----------------------------
+        -: 1085:
+      846: 1086:   function Is_Greater_Element_Node
+        -: 1087:     (Left  : Element_Type;
+        -: 1088:      Right : Node_Type) return Boolean
+        -: 1089:   is
+        -: 1090:   begin
+        -: 1091:      --  Compute e > node same as node < e
+        -: 1092:
+      846: 1093:      return Right.Element < Left;
+        -: 1094:   end Is_Greater_Element_Node;
+        -: 1095:
+        -: 1096:   --------------------------
+        -: 1097:   -- Is_Less_Element_Node --
+        -: 1098:   --------------------------
+        -: 1099:
+      712: 1100:   function Is_Less_Element_Node
+        -: 1101:     (Left  : Element_Type;
+        -: 1102:      Right : Node_Type) return Boolean
+        -: 1103:   is
+        -: 1104:   begin
+      712: 1105:      return Left < Right.Element;
+        -: 1106:   end Is_Less_Element_Node;
+        -: 1107:
+        -: 1108:   -----------------------
+        -: 1109:   -- Is_Less_Node_Node --
+        -: 1110:   -----------------------
+        -: 1111:
+    #####: 1112:   function Is_Less_Node_Node (L, R : Node_Type) return Boolean is
+        -: 1113:   begin
+    #####: 1114:      return L.Element < R.Element;
+        -: 1115:   end Is_Less_Node_Node;
+        -: 1116:
+        -: 1117:   ---------------
+        -: 1118:   -- Is_Subset --
+        -: 1119:   ---------------
+        -: 1120:
+    #####: 1121:   function Is_Subset (Subset : Set; Of_Set : Set) return Boolean is
+        -: 1122:   begin
+    #####: 1123:      return Set_Ops.Set_Subset (Subset, Of_Set => Of_Set);
+        -: 1124:   end Is_Subset;
+        -: 1125:
+        -: 1126:   ----------
+        -: 1127:   -- Last --
+        -: 1128:   ----------
+        -: 1129:
+    #####: 1130:   function Last (Container : Set) return Cursor is
+        -: 1131:   begin
+    #####: 1132:      return (if Length (Container) = 0
+        -: 1133:              then No_Element
+        -: 1134:              else (Node => Container.Last));
+        -: 1135:   end Last;
+        -: 1136:
+        -: 1137:   ------------------
+        -: 1138:   -- Last_Element --
+        -: 1139:   ------------------
+        -: 1140:
+    #####: 1141:   function Last_Element (Container : Set) return Element_Type is
+        -: 1142:   begin
+    #####: 1143:      if Last (Container).Node = 0 then
+    #####: 1144:         raise Constraint_Error with "set is empty";
+        -: 1145:      end if;
+        -: 1146:
+        -: 1147:      declare
+    #####: 1148:         N : Tree_Types.Nodes_Type renames Container.Nodes;
+        -: 1149:      begin
+    #####: 1150:         return N (Last (Container).Node).Element;
+    #####: 1151:      end;
+    #####: 1152:   end Last_Element;
+        -: 1153:
+        -: 1154:   --------------
+        -: 1155:   -- Left_Son --
+        -: 1156:   --------------
+        -: 1157:
+     1812: 1158:   function Left_Son (Node : Node_Type) return Count_Type is
+        -: 1159:   begin
+     1812: 1160:      return Node.Left;
+        -: 1161:   end Left_Son;
+        -: 1162:
+        -: 1163:   ------------
+        -: 1164:   -- Length --
+        -: 1165:   ------------
+        -: 1166:
+      120: 1167:   function Length (Container : Set) return Count_Type is
+        -: 1168:   begin
+      120: 1169:      return Container.Length;
+        -: 1170:   end Length;
+        -: 1171:
+        -: 1172:   ----------
+        -: 1173:   -- Move --
+        -: 1174:   ----------
+        -: 1175:
+    #####: 1176:   procedure Move (Target : in out Set; Source : in out Set) is
+    #####: 1177:      N : Tree_Types.Nodes_Type renames Source.Nodes;
+        -: 1178:      X : Count_Type;
+        -: 1179:
+        -: 1180:   begin
+    #####: 1181:      if Target'Address = Source'Address then
+    #####: 1182:         return;
+        -: 1183:      end if;
+        -: 1184:
+    #####: 1185:      if Target.Capacity < Length (Source) then
+    #####: 1186:         raise Constraint_Error with  -- ???
+        -: 1187:           "Source length exceeds Target capacity";
+        -: 1188:      end if;
+        -: 1189:
+    #####: 1190:      Clear (Target);
+        -: 1191:
+        -: 1192:      loop
+    #####: 1193:         X := Source.First;
+    #####: 1194:         exit when X = 0;
+        -: 1195:
+    #####: 1196:         Insert (Target, N (X).Element);  -- optimize???
+        -: 1197:
+    #####: 1198:         Tree_Operations.Delete_Node_Sans_Free (Source, X);
+    #####: 1199:         Formal_Ordered_Sets.Free (Source, X);
+    #####: 1200:      end loop;
+        -: 1201:   end Move;
+        -: 1202:
+        -: 1203:   ----------
+        -: 1204:   -- Next --
+        -: 1205:   ----------
+        -: 1206:
+     1236: 1207:   function Next (Container : Set; Position : Cursor) return Cursor is
+        -: 1208:   begin
+     1236: 1209:      if Position = No_Element then
+    #####: 1210:         return No_Element;
+        -: 1211:      end if;
+        -: 1212:
+     1236: 1213:      if not Has_Element (Container, Position) then
+    #####: 1214:         raise Constraint_Error;
+        -: 1215:      end if;
+        -: 1216:
+        -: 1217:      pragma Assert (Vet (Container, Position.Node),
+        -: 1218:                     "bad cursor in Next");
+     1236: 1219:      return (Node => Tree_Operations.Next (Container, Position.Node));
+        -: 1220:   end Next;
+        -: 1221:
+    #####: 1222:   procedure Next (Container : Set; Position : in out Cursor) is
+        -: 1223:   begin
+    #####: 1224:      Position := Next (Container, Position);
+    #####: 1225:   end Next;
+        -: 1226:
+        -: 1227:   -------------
+        -: 1228:   -- Overlap --
+        -: 1229:   -------------
+        -: 1230:
+    #####: 1231:   function Overlap (Left, Right : Set) return Boolean is
+        -: 1232:   begin
+    #####: 1233:      return Set_Ops.Set_Overlap (Left, Right);
+        -: 1234:   end Overlap;
+        -: 1235:
+        -: 1236:   ------------
+        -: 1237:   -- Parent --
+        -: 1238:   ------------
+        -: 1239:
+     3680: 1240:   function Parent (Node : Node_Type) return Count_Type is
+        -: 1241:   begin
+     3680: 1242:      return Node.Parent;
+        -: 1243:   end Parent;
+        -: 1244:
+        -: 1245:   --------------
+        -: 1246:   -- Previous --
+        -: 1247:   --------------
+        -: 1248:
+    #####: 1249:   function Previous (Container : Set; Position : Cursor) return Cursor is
+        -: 1250:   begin
+    #####: 1251:      if Position = No_Element then
+    #####: 1252:         return No_Element;
+        -: 1253:      end if;
+        -: 1254:
+    #####: 1255:      if not Has_Element (Container, Position) then
+    #####: 1256:         raise Constraint_Error;
+        -: 1257:      end if;
+        -: 1258:
+        -: 1259:      pragma Assert (Vet (Container, Position.Node),
+        -: 1260:                     "bad cursor in Previous");
+        -: 1261:
+        -: 1262:      declare
+    #####: 1263:         Node : constant Count_Type :=
+    #####: 1264:           Tree_Operations.Previous (Container, Position.Node);
+        -: 1265:      begin
+    #####: 1266:         return (if Node = 0 then No_Element else (Node => Node));
+        -: 1267:      end;
+        -: 1268:   end Previous;
+        -: 1269:
+    #####: 1270:   procedure Previous (Container : Set; Position : in out Cursor) is
+        -: 1271:   begin
+    #####: 1272:      Position := Previous (Container, Position);
+    #####: 1273:   end Previous;
+        -: 1274:
+        -: 1275:   -------------
+        -: 1276:   -- Replace --
+        -: 1277:   -------------
+        -: 1278:
+    #####: 1279:   procedure Replace (Container : in out Set; New_Item : Element_Type) is
+    #####: 1280:      Node : constant Count_Type := Element_Keys.Find (Container, New_Item);
+        -: 1281:
+        -: 1282:   begin
+    #####: 1283:      if Node = 0 then
+    #####: 1284:         raise Constraint_Error with
+        -: 1285:           "attempt to replace element not in set";
+        -: 1286:      end if;
+        -: 1287:
+    #####: 1288:      Container.Nodes (Node).Element := New_Item;
+    #####: 1289:   end Replace;
+        -: 1290:
+        -: 1291:   ---------------------
+        -: 1292:   -- Replace_Element --
+        -: 1293:   ---------------------
+        -: 1294:
+    #####: 1295:   procedure Replace_Element
+        -: 1296:     (Tree : in out Set;
+        -: 1297:      Node : Count_Type;
+        -: 1298:      Item : Element_Type)
+        -: 1299:   is
+        -: 1300:      pragma Assert (Node /= 0);
+        -: 1301:
+        -: 1302:      function New_Node return Count_Type;
+        -: 1303:      pragma Inline (New_Node);
+        -: 1304:
+        -: 1305:      procedure Local_Insert_Post is
+        -: 1306:        new Element_Keys.Generic_Insert_Post (New_Node);
+        -: 1307:
+        -: 1308:      procedure Local_Insert_Sans_Hint is
+        -: 1309:        new Element_Keys.Generic_Conditional_Insert (Local_Insert_Post);
+        -: 1310:
+        -: 1311:      procedure Local_Insert_With_Hint is
+        -: 1312:        new Element_Keys.Generic_Conditional_Insert_With_Hint
+        -: 1313:          (Local_Insert_Post,
+        -: 1314:           Local_Insert_Sans_Hint);
+        -: 1315:
+    #####: 1316:      NN : Tree_Types.Nodes_Type renames Tree.Nodes;
+        -: 1317:
+        -: 1318:      --------------
+        -: 1319:      -- New_Node --
+        -: 1320:      --------------
+        -: 1321:
+    #####: 1322:      function New_Node return Count_Type is
+    #####: 1323:         N  : Node_Type renames NN (Node);
+        -: 1324:      begin
+    #####: 1325:         N.Element := Item;
+    #####: 1326:         N.Color   := Red;
+    #####: 1327:         N.Parent  := 0;
+    #####: 1328:         N.Right   := 0;
+    #####: 1329:         N.Left    := 0;
+    #####: 1330:         return Node;
+        -: 1331:      end New_Node;
+        -: 1332:
+        -: 1333:      Hint      : Count_Type;
+        -: 1334:      Result    : Count_Type;
+        -: 1335:      Inserted  : Boolean;
+        -: 1336:
+        -: 1337:   --  Start of processing for Insert
+        -: 1338:
+        -: 1339:   begin
+    #####: 1340:      if Item < NN (Node).Element
+    #####: 1341:        or else NN (Node).Element < Item
+        -: 1342:      then
+    #####: 1343:         null;
+        -: 1344:
+        -: 1345:      else
+    #####: 1346:         NN (Node).Element := Item;
+    #####: 1347:         return;
+        -: 1348:      end if;
+        -: 1349:
+    #####: 1350:      Hint := Element_Keys.Ceiling (Tree, Item);
+        -: 1351:
+    #####: 1352:      if Hint = 0 then
+    #####: 1353:         null;
+        -: 1354:
+    #####: 1355:      elsif Item < NN (Hint).Element then
+    #####: 1356:         if Hint = Node then
+    #####: 1357:            NN (Node).Element := Item;
+    #####: 1358:            return;
+        -: 1359:         end if;
+        -: 1360:
+        -: 1361:      else
+        -: 1362:         pragma Assert (not (NN (Hint).Element < Item));
+    #####: 1363:         raise Program_Error with "attempt to replace existing element";
+        -: 1364:      end if;
+        -: 1365:
+    #####: 1366:      Tree_Operations.Delete_Node_Sans_Free (Tree, Node);
+        -: 1367:
+    #####: 1368:      Local_Insert_With_Hint
+        -: 1369:        (Tree     => Tree,
+        -: 1370:         Position => Hint,
+        -: 1371:         Key      => Item,
+        -: 1372:         Node     => Result,
+        -: 1373:         Inserted => Inserted);
+        -: 1374:
+        -: 1375:      pragma Assert (Inserted);
+        -: 1376:      pragma Assert (Result = Node);
+        -: 1377:   end Replace_Element;
+        -: 1378:
+    #####: 1379:   procedure Replace_Element
+        -: 1380:     (Container : in out Set;
+        -: 1381:      Position  : Cursor;
+        -: 1382:      New_Item  : Element_Type)
+        -: 1383:   is
+        -: 1384:   begin
+    #####: 1385:      if not Has_Element (Container, Position) then
+    #####: 1386:         raise Constraint_Error with
+        -: 1387:           "Position cursor has no element";
+        -: 1388:      end if;
+        -: 1389:
+        -: 1390:      pragma Assert (Vet (Container, Position.Node),
+        -: 1391:                     "bad cursor in Replace_Element");
+        -: 1392:
+    #####: 1393:      Replace_Element (Container, Position.Node, New_Item);
+    #####: 1394:   end Replace_Element;
+        -: 1395:
+        -: 1396:   ---------------
+        -: 1397:   -- Right_Son --
+        -: 1398:   ---------------
+        -: 1399:
+     3876: 1400:   function Right_Son (Node : Node_Type) return Count_Type is
+        -: 1401:   begin
+     3876: 1402:      return Node.Right;
+        -: 1403:   end Right_Son;
+        -: 1404:
+        -: 1405:   ---------------
+        -: 1406:   -- Set_Color --
+        -: 1407:   ---------------
+        -: 1408:
+     1224: 1409:   procedure Set_Color
+        -: 1410:     (Node  : in out Node_Type;
+        -: 1411:      Color : Red_Black_Trees.Color_Type)
+        -: 1412:   is
+        -: 1413:   begin
+     1224: 1414:      Node.Color := Color;
+     1224: 1415:   end Set_Color;
+        -: 1416:
+        -: 1417:   --------------
+        -: 1418:   -- Set_Left --
+        -: 1419:   --------------
+        -: 1420:
+      482: 1421:   procedure Set_Left (Node : in out Node_Type; Left : Count_Type) is
+        -: 1422:   begin
+      482: 1423:      Node.Left := Left;
+      482: 1424:   end Set_Left;
+        -: 1425:
+        -: 1426:   ----------------
+        -: 1427:   -- Set_Parent --
+        -: 1428:   ----------------
+        -: 1429:
+      938: 1430:   procedure Set_Parent (Node : in out Node_Type; Parent : Count_Type) is
+        -: 1431:   begin
+      938: 1432:      Node.Parent := Parent;
+      938: 1433:   end Set_Parent;
+        -: 1434:
+        -: 1435:   ---------------
+        -: 1436:   -- Set_Right --
+        -: 1437:   ---------------
+        -: 1438:
+      748: 1439:   procedure Set_Right (Node : in out Node_Type; Right : Count_Type) is
+        -: 1440:   begin
+      748: 1441:      Node.Right := Right;
+      748: 1442:   end Set_Right;
+        -: 1443:
+        -: 1444:   ------------------
+        -: 1445:   -- Strict_Equal --
+        -: 1446:   ------------------
+        -: 1447:
+        -: 1448:   function Strict_Equal (Left, Right : Set) return Boolean is
+        -: 1449:      LNode : Count_Type := First (Left).Node;
+        -: 1450:      RNode : Count_Type := First (Right).Node;
+        -: 1451:
+        -: 1452:   begin
+        -: 1453:      if Length (Left) /= Length (Right) then
+        -: 1454:         return False;
+        -: 1455:      end if;
+        -: 1456:
+        -: 1457:      while LNode = RNode loop
+        -: 1458:         if LNode = 0 then
+        -: 1459:            return True;
+        -: 1460:         end if;
+        -: 1461:
+        -: 1462:         if Left.Nodes (LNode).Element /= Right.Nodes (RNode).Element then
+        -: 1463:            exit;
+        -: 1464:         end if;
+        -: 1465:
+        -: 1466:         LNode := Next (Left, LNode);
+        -: 1467:         RNode := Next (Right, RNode);
+        -: 1468:      end loop;
+        -: 1469:
+        -: 1470:      return False;
+        -: 1471:   end Strict_Equal;
+        -: 1472:
+        -: 1473:   --------------------------
+        -: 1474:   -- Symmetric_Difference --
+        -: 1475:   --------------------------
+        -: 1476:
+    #####: 1477:   procedure Symmetric_Difference (Target : in out Set; Source : Set) is
+        -: 1478:   begin
+    #####: 1479:      Set_Ops.Set_Symmetric_Difference (Target, Source);
+    #####: 1480:   end Symmetric_Difference;
+        -: 1481:
+    #####: 1482:   function Symmetric_Difference (Left, Right : Set) return Set is
+        -: 1483:   begin
+    #####: 1484:      if Left'Address = Right'Address then
+    #####: 1485:         return Empty_Set;
+        -: 1486:      end if;
+        -: 1487:
+    #####: 1488:      if Length (Right) = 0 then
+    #####: 1489:         return Left.Copy;
+        -: 1490:      end if;
+        -: 1491:
+    #####: 1492:      if Length (Left) = 0 then
+    #####: 1493:         return Right.Copy;
+        -: 1494:      end if;
+        -: 1495:
+    #####: 1496:      return S : Set (Length (Left) + Length (Right)) do
+    #####: 1497:         Assign (S, Set_Ops.Set_Symmetric_Difference (Left, Right));
+        -: 1498:      end return;
+        -: 1499:   end Symmetric_Difference;
+        -: 1500:
+        -: 1501:   ------------
+        -: 1502:   -- To_Set --
+        -: 1503:   ------------
+        -: 1504:
+    #####: 1505:   function To_Set (New_Item : Element_Type) return Set is
+        -: 1506:      Node     : Count_Type;
+        -: 1507:      Inserted : Boolean;
+        -: 1508:   begin
+    #####: 1509:      return S : Set (Capacity => 1) do
+    #####: 1510:         Insert_Sans_Hint (S, New_Item, Node, Inserted);
+        -: 1511:         pragma Assert (Inserted);
+        -: 1512:      end return;
+        -: 1513:   end To_Set;
+        -: 1514:
+        -: 1515:   -----------
+        -: 1516:   -- Union --
+        -: 1517:   -----------
+        -: 1518:
+    #####: 1519:   procedure Union (Target : in out Set; Source : Set) is
+        -: 1520:   begin
+    #####: 1521:      Set_Ops.Set_Union (Target, Source);
+    #####: 1522:   end Union;
+        -: 1523:
+    #####: 1524:   function Union (Left, Right : Set) return Set is
+        -: 1525:   begin
+    #####: 1526:      if Left'Address = Right'Address then
+    #####: 1527:         return Left.Copy;
+        -: 1528:      end if;
+        -: 1529:
+    #####: 1530:      if Length (Left) = 0 then
+    #####: 1531:         return Right.Copy;
+        -: 1532:      end if;
+        -: 1533:
+    #####: 1534:      if Length (Right) = 0 then
+    #####: 1535:         return Left.Copy;
+        -: 1536:      end if;
+        -: 1537:
+    #####: 1538:      return S : Set (Length (Left) + Length (Right)) do
+    #####: 1539:         Assign (S, Source => Left);
+    #####: 1540:         Union (S, Right);
+        -: 1541:      end return;
+        -: 1542:   end Union;
+        -: 1543:
+        -: 1544:end Ada.Containers.Formal_Ordered_Sets;

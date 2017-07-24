@@ -1,0 +1,390 @@
+        -:    0:Source:E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adainclude/a-cforse.ads
+        -:    0:Programs:5
+        -:    1:------------------------------------------------------------------------------
+        -:    2:--                                                                          --
+        -:    3:--                         GNAT LIBRARY COMPONENTS                          --
+        -:    4:--                                                                          --
+        -:    5:--   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ S E T S    --
+        -:    6:--                                                                          --
+        -:    7:--                                 S p e c                                  --
+        -:    8:--                                                                          --
+        -:    9:--          Copyright (C) 2004-2015, Free Software Foundation, Inc.         --
+        -:   10:--                                                                          --
+        -:   11:-- This specification is derived from the Ada Reference Manual for use with --
+        -:   12:-- GNAT. The copyright notice above, and the license provisions that follow --
+        -:   13:-- apply solely to the  contents of the part following the private keyword. --
+        -:   14:--                                                                          --
+        -:   15:-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+        -:   16:-- terms of the  GNU General Public License as published  by the Free Soft- --
+        -:   17:-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+        -:   18:-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+        -:   19:-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+        -:   20:-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+        -:   21:--                                                                          --
+        -:   22:--                                                                          --
+        -:   23:--                                                                          --
+        -:   24:--                                                                          --
+        -:   25:--                                                                          --
+        -:   26:-- You should have received a copy of the GNU General Public License and    --
+        -:   27:-- a copy of the GCC Runtime Library Exception along with this program;     --
+        -:   28:-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+        -:   29:-- <http://www.gnu.org/licenses/>.                                          --
+        -:   30:------------------------------------------------------------------------------
+        -:   31:
+        -:   32:--  This spec is derived from package Ada.Containers.Bounded_Ordered_Sets in
+        -:   33:--  the Ada 2012 RM. The modifications are meant to facilitate formal proofs by
+        -:   34:--  making it easier to express properties, and by making the specification of
+        -:   35:--  this unit compatible with SPARK 2014. Note that the API of this unit may be
+        -:   36:--  subject to incompatible changes as SPARK 2014 evolves.
+        -:   37:
+        -:   38:--  The modifications are:
+        -:   39:
+        -:   40:--    A parameter for the container is added to every function reading the
+        -:   41:--    content of a container: Key, Element, Next, Query_Element, Previous,
+        -:   42:--    Has_Element, Iterate, Reverse_Iterate. This change is motivated by the
+        -:   43:--    need to have cursors which are valid on different containers (typically
+        -:   44:--    a container C and its previous version C'Old) for expressing properties,
+        -:   45:--    which is not possible if cursors encapsulate an access to the underlying
+        -:   46:--    container. The operators "<" and ">" that could not be modified that way
+        -:   47:--    have been removed.
+        -:   48:
+        -:   49:--    There are three new functions:
+        -:   50:
+        -:   51:--      function Strict_Equal (Left, Right : Set) return Boolean;
+        -:   52:--      function First_To_Previous (Container : Set; Current : Cursor)
+        -:   53:--         return Set;
+        -:   54:--      function Current_To_Last (Container : Set; Current : Cursor)
+        -:   55:--         return Set;
+        -:   56:
+        -:   57:--    See detailed specifications for these subprograms
+        -:   58:
+        -:   59:private with Ada.Containers.Red_Black_Trees;
+        -:   60:
+        -:   61:generic
+        -:   62:   type Element_Type is private;
+        -:   63:
+        -:   64:   with function "<" (Left, Right : Element_Type) return Boolean is <>;
+        -:   65:   with function "=" (Left, Right : Element_Type) return Boolean is <>;
+        -:   66:
+        -:   67:package Ada.Containers.Formal_Ordered_Sets with
+        -:   68:  Pure,
+        -:   69:  SPARK_Mode
+        -:   70:is
+        -:   71:   pragma Annotate (GNATprove, External_Axiomatization);
+        -:   72:   pragma Annotate (CodePeer, Skip_Analysis);
+        -:   73:
+        -:   74:   function Equivalent_Elements (Left, Right : Element_Type) return Boolean
+        -:   75:   with
+        -:   76:     Global => null;
+        -:   77:
+      148:   78:   type Set (Capacity : Count_Type) is private with
+        -:   79:     Iterable => (First       => First,
+        -:   80:                  Next        => Next,
+        -:   81:                  Has_Element => Has_Element,
+        -:   82:                  Element     => Element),
+      148:   83:     Default_Initial_Condition => Is_Empty (Set);
+        -:   84:   pragma Preelaborable_Initialization (Set);
+        -:   85:
+        -:   86:   type Cursor is private;
+        -:   87:   pragma Preelaborable_Initialization (Cursor);
+        -:   88:
+        -:   89:   Empty_Set : constant Set;
+        -:   90:
+        -:   91:   No_Element : constant Cursor;
+        -:   92:
+        -:   93:   function "=" (Left, Right : Set) return Boolean with
+        -:   94:     Global => null;
+        -:   95:
+        -:   96:   function Equivalent_Sets (Left, Right : Set) return Boolean with
+        -:   97:     Global => null;
+        -:   98:
+        -:   99:   function To_Set (New_Item : Element_Type) return Set with
+        -:  100:     Global => null;
+        -:  101:
+        -:  102:   function Length (Container : Set) return Count_Type with
+        -:  103:     Global => null;
+        -:  104:
+        -:  105:   function Is_Empty (Container : Set) return Boolean with
+        -:  106:     Global => null;
+        -:  107:
+        -:  108:   procedure Clear (Container : in out Set) with
+        -:  109:     Global => null;
+        -:  110:
+        -:  111:   procedure Assign (Target : in out Set; Source : Set) with
+        -:  112:     Pre => Target.Capacity >= Length (Source);
+        -:  113:
+        -:  114:   function Copy (Source : Set; Capacity : Count_Type := 0) return Set with
+        -:  115:     Global => null,
+        -:  116:     Pre    => Capacity = 0 or else Capacity >= Source.Capacity;
+        -:  117:
+        -:  118:   function Element
+        -:  119:     (Container : Set;
+        -:  120:      Position  : Cursor) return Element_Type
+        -:  121:   with
+        -:  122:     Global => null,
+        -:  123:     Pre    => Has_Element (Container, Position);
+        -:  124:
+        -:  125:   procedure Replace_Element
+        -:  126:     (Container : in out Set;
+        -:  127:      Position  : Cursor;
+        -:  128:      New_Item  : Element_Type)
+        -:  129:   with
+        -:  130:     Global => null,
+        -:  131:     Pre    => Has_Element (Container, Position);
+        -:  132:
+        -:  133:   procedure Move (Target : in out Set; Source : in out Set) with
+        -:  134:     Global => null,
+        -:  135:     Pre    => Target.Capacity >= Length (Source);
+        -:  136:
+        -:  137:   procedure Insert
+        -:  138:     (Container : in out Set;
+        -:  139:      New_Item  : Element_Type;
+        -:  140:      Position  : out Cursor;
+        -:  141:      Inserted  : out Boolean)
+        -:  142:   with
+        -:  143:     Global => null,
+        -:  144:     Pre    => Length (Container) < Container.Capacity;
+        -:  145:
+        -:  146:   procedure Insert
+        -:  147:     (Container : in out Set;
+        -:  148:      New_Item  : Element_Type)
+        -:  149:   with
+        -:  150:     Global => null,
+        -:  151:     Pre    => Length (Container) < Container.Capacity
+        -:  152:                 and then (not Contains (Container, New_Item));
+        -:  153:
+        -:  154:   procedure Include
+        -:  155:     (Container : in out Set;
+        -:  156:      New_Item  : Element_Type)
+        -:  157:   with
+        -:  158:     Global => null,
+        -:  159:     Pre    => Length (Container) < Container.Capacity;
+        -:  160:
+        -:  161:   procedure Replace
+        -:  162:     (Container : in out Set;
+        -:  163:      New_Item  : Element_Type)
+        -:  164:   with
+        -:  165:     Global => null,
+        -:  166:     Pre    => Contains (Container, New_Item);
+        -:  167:
+        -:  168:   procedure Exclude
+        -:  169:     (Container : in out Set;
+        -:  170:      Item      : Element_Type)
+        -:  171:   with
+        -:  172:     Global => null;
+        -:  173:
+        -:  174:   procedure Delete
+        -:  175:     (Container : in out Set;
+        -:  176:      Item      : Element_Type)
+        -:  177:   with
+        -:  178:     Global => null,
+        -:  179:     Pre    => Contains (Container, Item);
+        -:  180:
+        -:  181:   procedure Delete
+        -:  182:     (Container : in out Set;
+        -:  183:      Position  : in out Cursor)
+        -:  184:   with
+        -:  185:     Global => null,
+        -:  186:     Pre    => Has_Element (Container, Position);
+        -:  187:
+        -:  188:   procedure Delete_First (Container : in out Set) with
+        -:  189:     Global => null;
+        -:  190:
+        -:  191:   procedure Delete_Last (Container : in out Set) with
+        -:  192:     Global => null;
+        -:  193:
+        -:  194:   procedure Union (Target : in out Set; Source : Set) with
+        -:  195:     Global => null,
+        -:  196:     Pre    => Length (Target) + Length (Source) -
+    #####:  197:                 Length (Intersection (Target, Source)) <= Target.Capacity;
+        -:  198:
+        -:  199:   function Union (Left, Right : Set) return Set with
+        -:  200:     Global => null,
+        -:  201:     Pre    => Length (Left) + Length (Right) -
+    #####:  202:                 Length (Intersection (Left, Right)) <= Count_Type'Last;
+        -:  203:
+        -:  204:   function "or" (Left, Right : Set) return Set renames Union;
+        -:  205:
+        -:  206:   procedure Intersection (Target : in out Set; Source : Set) with
+        -:  207:     Global => null;
+        -:  208:
+        -:  209:   function Intersection (Left, Right : Set) return Set with
+        -:  210:     Global => null;
+        -:  211:
+        -:  212:   function "and" (Left, Right : Set) return Set renames Intersection;
+        -:  213:
+        -:  214:   procedure Difference (Target : in out Set; Source : Set) with
+        -:  215:     Global => null;
+        -:  216:
+        -:  217:   function Difference (Left, Right : Set) return Set with
+        -:  218:     Global => null;
+        -:  219:
+        -:  220:   function "-" (Left, Right : Set) return Set renames Difference;
+        -:  221:
+        -:  222:   procedure Symmetric_Difference (Target : in out Set; Source : Set) with
+        -:  223:     Global => null,
+        -:  224:     Pre    => Length (Target) + Length (Source) -
+    #####:  225:                 2 * Length (Intersection (Target, Source)) <= Target.Capacity;
+        -:  226:
+        -:  227:   function Symmetric_Difference (Left, Right : Set) return Set with
+        -:  228:     Global => null,
+        -:  229:     Pre    => Length (Left) + Length (Right) -
+    #####:  230:                 2 * Length (Intersection (Left, Right)) <= Count_Type'Last;
+        -:  231:
+        -:  232:   function "xor" (Left, Right : Set) return Set renames Symmetric_Difference;
+        -:  233:
+        -:  234:   function Overlap (Left, Right : Set) return Boolean with
+        -:  235:     Global => null;
+        -:  236:
+        -:  237:   function Is_Subset (Subset : Set; Of_Set : Set) return Boolean with
+        -:  238:     Global => null;
+        -:  239:
+        -:  240:   function First (Container : Set) return Cursor with
+        -:  241:     Global => null;
+        -:  242:
+        -:  243:   function First_Element (Container : Set) return Element_Type with
+        -:  244:     Global => null,
+        -:  245:     Pre    => not Is_Empty (Container);
+        -:  246:
+        -:  247:   function Last (Container : Set) return Cursor;
+        -:  248:
+        -:  249:   function Last_Element (Container : Set) return Element_Type with
+        -:  250:     Global => null,
+        -:  251:     Pre    => not Is_Empty (Container);
+        -:  252:
+        -:  253:   function Next (Container : Set; Position : Cursor) return Cursor with
+        -:  254:     Global => null,
+        -:  255:     Pre    => Has_Element (Container, Position) or else Position = No_Element;
+        -:  256:
+        -:  257:   procedure Next (Container : Set; Position : in out Cursor) with
+        -:  258:     Global => null,
+        -:  259:     Pre    => Has_Element (Container, Position) or else Position = No_Element;
+        -:  260:
+        -:  261:   function Previous (Container : Set; Position : Cursor) return Cursor with
+        -:  262:     Global => null,
+        -:  263:     Pre    => Has_Element (Container, Position) or else Position = No_Element;
+        -:  264:
+        -:  265:   procedure Previous (Container : Set; Position : in out Cursor) with
+        -:  266:     Global => null,
+        -:  267:     Pre    => Has_Element (Container, Position) or else Position = No_Element;
+        -:  268:
+        -:  269:   function Find (Container : Set; Item : Element_Type) return Cursor with
+        -:  270:     Global => null;
+        -:  271:
+        -:  272:   function Floor (Container : Set; Item : Element_Type) return Cursor with
+        -:  273:     Global => null;
+        -:  274:
+        -:  275:   function Ceiling (Container : Set; Item : Element_Type) return Cursor with
+        -:  276:     Global => null;
+        -:  277:
+        -:  278:   function Contains (Container : Set; Item : Element_Type) return Boolean with
+        -:  279:     Global => null;
+        -:  280:
+        -:  281:   function Has_Element (Container : Set; Position : Cursor) return Boolean
+        -:  282:   with
+        -:  283:     Global => null;
+        -:  284:
+        -:  285:   generic
+        -:  286:      type Key_Type (<>) is private;
+        -:  287:
+        -:  288:      with function Key (Element : Element_Type) return Key_Type;
+        -:  289:
+        -:  290:      with function "<" (Left, Right : Key_Type) return Boolean is <>;
+        -:  291:
+        -:  292:   package Generic_Keys with SPARK_Mode is
+        -:  293:
+        -:  294:      function Equivalent_Keys (Left, Right : Key_Type) return Boolean with
+        -:  295:        Global => null;
+        -:  296:
+        -:  297:      function Key (Container : Set; Position : Cursor) return Key_Type with
+        -:  298:        Global => null;
+        -:  299:
+        -:  300:      function Element (Container : Set; Key : Key_Type) return Element_Type
+        -:  301:      with
+        -:  302:        Global => null;
+        -:  303:
+        -:  304:      procedure Replace
+        -:  305:        (Container : in out Set;
+        -:  306:         Key       : Key_Type;
+        -:  307:         New_Item  : Element_Type)
+        -:  308:      with
+        -:  309:        Global => null;
+        -:  310:
+        -:  311:      procedure Exclude (Container : in out Set; Key : Key_Type) with
+        -:  312:        Global => null;
+        -:  313:
+        -:  314:      procedure Delete (Container : in out Set; Key : Key_Type) with
+        -:  315:        Global => null;
+        -:  316:
+        -:  317:      function Find (Container : Set; Key : Key_Type) return Cursor with
+        -:  318:        Global => null;
+        -:  319:
+        -:  320:      function Floor (Container : Set; Key : Key_Type) return Cursor with
+        -:  321:        Global => null;
+        -:  322:
+        -:  323:      function Ceiling (Container : Set; Key : Key_Type) return Cursor with
+        -:  324:        Global => null;
+        -:  325:
+        -:  326:      function Contains (Container : Set; Key : Key_Type) return Boolean with
+        -:  327:        Global => null;
+        -:  328:
+        -:  329:   end Generic_Keys;
+        -:  330:
+        -:  331:   function Strict_Equal (Left, Right : Set) return Boolean with
+        -:  332:     Ghost,
+        -:  333:     Global => null;
+        -:  334:   --  Strict_Equal returns True if the containers are physically equal, i.e.
+        -:  335:   --  they are structurally equal (function "=" returns True) and that they
+        -:  336:   --  have the same set of cursors.
+        -:  337:
+        -:  338:   function First_To_Previous (Container : Set; Current : Cursor) return Set
+        -:  339:   with
+        -:  340:     Ghost,
+        -:  341:     Global => null,
+        -:  342:     Pre    => Has_Element (Container, Current) or else Current = No_Element;
+        -:  343:
+        -:  344:   function Current_To_Last (Container : Set; Current : Cursor) return Set
+        -:  345:   with
+        -:  346:     Ghost,
+        -:  347:     Global => null,
+        -:  348:     Pre    => Has_Element (Container, Current) or else Current = No_Element;
+        -:  349:   --  First_To_Previous returns a container containing all elements preceding
+        -:  350:   --  Current (excluded) in Container. Current_To_Last returns a container
+        -:  351:   --  containing all elements following Current (included) in Container.
+        -:  352:   --  These two new functions can be used to express invariant properties in
+        -:  353:   --  loops which iterate over containers. First_To_Previous returns the part
+        -:  354:   --  of the container already scanned and Current_To_Last the part not
+        -:  355:   --  scanned yet.
+        -:  356:
+        -:  357:private
+        -:  358:   pragma SPARK_Mode (Off);
+        -:  359:
+        -:  360:   pragma Inline (Next);
+        -:  361:   pragma Inline (Previous);
+        -:  362:
+     1560:  363:   type Node_Type is record
+        -:  364:      Has_Element : Boolean := False;
+        -:  365:      Parent  : Count_Type := 0;
+        -:  366:      Left    : Count_Type := 0;
+        -:  367:      Right   : Count_Type := 0;
+        -:  368:      Color   : Red_Black_Trees.Color_Type;
+        -:  369:      Element : Element_Type;
+        -:  370:   end record;
+        -:  371:
+        -:  372:   package Tree_Types is
+        -:  373:     new Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
+        -:  374:
+      378:  375:   type Set (Capacity : Count_Type) is
+      152:  376:     new Tree_Types.Tree_Type (Capacity) with null record;
+        -:  377:
+        -:  378:   use Red_Black_Trees;
+        -:  379:
+    #####:  380:   type Cursor is record
+        -:  381:      Node : Count_Type;
+        -:  382:   end record;
+        -:  383:
+        -:  384:   No_Element : constant Cursor := (Node => 0);
+        -:  385:
+        4:  386:   Empty_Set : constant Set := (Capacity => 0, others => <>);
+        -:  387:
+        -:  388:end Ada.Containers.Formal_Ordered_Sets;

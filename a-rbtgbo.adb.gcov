@@ -1,0 +1,1129 @@
+        -:    0:Source:E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adainclude/a-rbtgbo.adb
+        -:    0:Programs:5
+        -:    1:------------------------------------------------------------------------------
+        -:    2:--                                                                          --
+        -:    3:--                         GNAT LIBRARY COMPONENTS                          --
+        -:    4:--                                                                          --
+        -:    5:--         ADA.CONTAINERS.RED_BLACK_TREES.GENERIC_BOUNDED_OPERATIONS        --
+        -:    6:--                                                                          --
+        -:    7:--                                 B o d y                                  --
+        -:    8:--                                                                          --
+        -:    9:--          Copyright (C) 2004-2016, Free Software Foundation, Inc.         --
+        -:   10:--                                                                          --
+        -:   11:-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+        -:   12:-- terms of the  GNU General Public License as published  by the Free Soft- --
+        -:   13:-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+        -:   14:-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+        -:   15:-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+        -:   16:-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+        -:   17:--                                                                          --
+        -:   18:--                                                                          --
+        -:   19:--                                                                          --
+        -:   20:--                                                                          --
+        -:   21:--                                                                          --
+        -:   22:-- You should have received a copy of the GNU General Public License and    --
+        -:   23:-- a copy of the GCC Runtime Library Exception along with this program;     --
+        -:   24:-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+        -:   25:-- <http://www.gnu.org/licenses/>.                                          --
+        -:   26:--                                                                          --
+        -:   27:-- This unit was originally developed by Matthew J Heaney.                  --
+        -:   28:------------------------------------------------------------------------------
+        -:   29:
+        -:   30:--  The references in this file to "CLR" refer to the following book, from
+        -:   31:--  which several of the algorithms here were adapted:
+        -:   32:
+        -:   33:--     Introduction to Algorithms
+        -:   34:--     by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest
+        -:   35:--     Publisher: The MIT Press (June 18, 1990)
+        -:   36:--     ISBN: 0262031418
+        -:   37:
+        -:   38:with System; use type System.Address;
+        -:   39:
+        -:   40:package body Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations is
+        -:   41:
+        -:   42:   pragma Warnings (Off, "variable ""Busy*"" is not referenced");
+        -:   43:   pragma Warnings (Off, "variable ""Lock*"" is not referenced");
+        -:   44:   --  See comment in Ada.Containers.Helpers
+        -:   45:
+        -:   46:   -----------------------
+        -:   47:   -- Local Subprograms --
+        -:   48:   -----------------------
+        -:   49:
+        -:   50:   procedure Delete_Fixup (Tree : in out Tree_Type'Class; Node : Count_Type);
+        -:   51:   procedure Delete_Swap (Tree : in out Tree_Type'Class; Z, Y : Count_Type);
+        -:   52:
+        -:   53:   procedure Left_Rotate  (Tree : in out Tree_Type'Class; X : Count_Type);
+        -:   54:   procedure Right_Rotate (Tree : in out Tree_Type'Class; Y : Count_Type);
+        -:   55:
+        -:   56:   ----------------
+        -:   57:   -- Clear_Tree --
+        -:   58:   ----------------
+        -:   59:
+    #####:   60:   procedure Clear_Tree (Tree : in out Tree_Type'Class) is
+        -:   61:   begin
+    #####:   62:      TC_Check (Tree.TC);
+        -:   63:
+    #####:   64:      Tree.First  := 0;
+    #####:   65:      Tree.Last   := 0;
+    #####:   66:      Tree.Root   := 0;
+    #####:   67:      Tree.Length := 0;
+    #####:   68:      Tree.Free   := -1;
+    #####:   69:   end Clear_Tree;
+        -:   70:
+        -:   71:   ------------------
+        -:   72:   -- Delete_Fixup --
+        -:   73:   ------------------
+        -:   74:
+    #####:   75:   procedure Delete_Fixup
+        -:   76:     (Tree : in out Tree_Type'Class;
+        -:   77:      Node : Count_Type)
+        -:   78:   is
+        -:   79:      --  CLR p. 274
+        -:   80:
+        -:   81:      X : Count_Type;
+        -:   82:      W : Count_Type;
+    #####:   83:      N : Nodes_Type renames Tree.Nodes;
+        -:   84:
+        -:   85:   begin
+    #####:   86:      X := Node;
+    #####:   87:      while X /= Tree.Root and then Color (N (X)) = Black loop
+    #####:   88:         if X = Left (N (Parent (N (X)))) then
+    #####:   89:            W := Right (N (Parent (N (X))));
+        -:   90:
+    #####:   91:            if Color (N (W)) = Red then
+    #####:   92:               Set_Color (N (W), Black);
+    #####:   93:               Set_Color (N (Parent (N (X))), Red);
+    #####:   94:               Left_Rotate (Tree, Parent (N (X)));
+    #####:   95:               W := Right (N (Parent (N (X))));
+        -:   96:            end if;
+        -:   97:
+    #####:   98:            if (Left (N (W))  = 0 or else Color (N (Left (N (W)))) = Black)
+        -:   99:                  and then
+    #####:  100:               (Right (N (W)) = 0 or else Color (N (Right (N (W)))) = Black)
+        -:  101:            then
+    #####:  102:               Set_Color (N (W), Red);
+    #####:  103:               X := Parent (N (X));
+        -:  104:
+        -:  105:            else
+    #####:  106:               if Right (N (W)) = 0
+    #####:  107:                 or else Color (N (Right (N (W)))) = Black
+        -:  108:               then
+        -:  109:                  --  As a condition for setting the color of the left child to
+        -:  110:                  --  black, the left child access value must be non-null. A
+        -:  111:                  --  truth table analysis shows that if we arrive here, that
+        -:  112:                  --  condition holds, so there's no need for an explicit test.
+        -:  113:                  --  The assertion is here to document what we know is true.
+        -:  114:
+        -:  115:                  pragma Assert (Left (N (W)) /= 0);
+    #####:  116:                  Set_Color (N (Left (N (W))), Black);
+        -:  117:
+    #####:  118:                  Set_Color (N (W), Red);
+    #####:  119:                  Right_Rotate (Tree, W);
+    #####:  120:                  W := Right (N (Parent (N (X))));
+        -:  121:               end if;
+        -:  122:
+    #####:  123:               Set_Color (N (W), Color (N (Parent (N (X)))));
+    #####:  124:               Set_Color (N (Parent (N (X))), Black);
+    #####:  125:               Set_Color (N (Right (N (W))), Black);
+    #####:  126:               Left_Rotate  (Tree, Parent (N (X)));
+    #####:  127:               X := Tree.Root;
+        -:  128:            end if;
+        -:  129:
+        -:  130:         else
+        -:  131:            pragma Assert (X = Right (N (Parent (N (X)))));
+        -:  132:
+    #####:  133:            W := Left (N (Parent (N (X))));
+        -:  134:
+    #####:  135:            if Color (N (W)) = Red then
+    #####:  136:               Set_Color (N (W), Black);
+    #####:  137:               Set_Color (N (Parent (N (X))), Red);
+    #####:  138:               Right_Rotate (Tree, Parent (N (X)));
+    #####:  139:               W := Left (N (Parent (N (X))));
+        -:  140:            end if;
+        -:  141:
+    #####:  142:            if (Left (N (W))  = 0 or else Color (N (Left (N (W)))) = Black)
+        -:  143:                  and then
+    #####:  144:               (Right (N (W)) = 0 or else Color (N (Right (N (W)))) = Black)
+        -:  145:            then
+    #####:  146:               Set_Color (N (W), Red);
+    #####:  147:               X := Parent (N (X));
+        -:  148:
+        -:  149:            else
+    #####:  150:               if Left (N (W)) = 0
+    #####:  151:                 or else Color (N (Left (N (W)))) = Black
+        -:  152:               then
+        -:  153:                  --  As a condition for setting the color of the right child
+        -:  154:                  --  to black, the right child access value must be non-null.
+        -:  155:                  --  A truth table analysis shows that if we arrive here, that
+        -:  156:                  --  condition holds, so there's no need for an explicit test.
+        -:  157:                  --  The assertion is here to document what we know is true.
+        -:  158:
+        -:  159:                  pragma Assert (Right (N (W)) /= 0);
+    #####:  160:                  Set_Color (N (Right (N (W))), Black);
+        -:  161:
+    #####:  162:                  Set_Color (N (W), Red);
+    #####:  163:                  Left_Rotate (Tree, W);
+    #####:  164:                  W := Left (N (Parent (N (X))));
+        -:  165:               end if;
+        -:  166:
+    #####:  167:               Set_Color (N (W), Color (N (Parent (N (X)))));
+    #####:  168:               Set_Color (N (Parent (N (X))), Black);
+    #####:  169:               Set_Color (N (Left (N (W))), Black);
+    #####:  170:               Right_Rotate (Tree, Parent (N (X)));
+    #####:  171:               X := Tree.Root;
+        -:  172:            end if;
+        -:  173:         end if;
+    #####:  174:      end loop;
+        -:  175:
+    #####:  176:      Set_Color (N (X), Black);
+    #####:  177:   end Delete_Fixup;
+        -:  178:
+        -:  179:   ---------------------------
+        -:  180:   -- Delete_Node_Sans_Free --
+        -:  181:   ---------------------------
+        -:  182:
+    #####:  183:   procedure Delete_Node_Sans_Free
+        -:  184:     (Tree : in out Tree_Type'Class;
+        -:  185:      Node : Count_Type)
+        -:  186:   is
+        -:  187:      --  CLR p. 273
+        -:  188:
+        -:  189:      X, Y : Count_Type;
+        -:  190:
+    #####:  191:      Z : constant Count_Type := Node;
+        -:  192:
+    #####:  193:      N : Nodes_Type renames Tree.Nodes;
+        -:  194:
+        -:  195:   begin
+    #####:  196:      TC_Check (Tree.TC);
+        -:  197:
+        -:  198:      --  If node is not present, return (exception will be raised in caller)
+        -:  199:
+    #####:  200:      if Z = 0 then
+    #####:  201:         return;
+        -:  202:      end if;
+        -:  203:
+        -:  204:      pragma Assert (Tree.Length > 0);
+        -:  205:      pragma Assert (Tree.Root  /= 0);
+        -:  206:      pragma Assert (Tree.First /= 0);
+        -:  207:      pragma Assert (Tree.Last  /= 0);
+        -:  208:      pragma Assert (Parent (N (Tree.Root)) = 0);
+        -:  209:
+        -:  210:      pragma Assert ((Tree.Length > 1)
+        -:  211:                       or else (Tree.First = Tree.Last
+        -:  212:                                 and then Tree.First = Tree.Root));
+        -:  213:
+        -:  214:      pragma Assert ((Left (N (Node)) = 0)
+        -:  215:                        or else (Parent (N (Left (N (Node)))) = Node));
+        -:  216:
+        -:  217:      pragma Assert ((Right (N (Node)) = 0)
+        -:  218:                        or else (Parent (N (Right (N (Node)))) = Node));
+        -:  219:
+        -:  220:      pragma Assert (((Parent (N (Node)) = 0) and then (Tree.Root = Node))
+        -:  221:                        or else ((Parent (N (Node)) /= 0) and then
+        -:  222:                                  ((Left (N (Parent (N (Node)))) = Node)
+        -:  223:                                      or else
+        -:  224:                                   (Right (N (Parent (N (Node)))) = Node))));
+        -:  225:
+    #####:  226:      if Left (N (Z)) = 0 then
+    #####:  227:         if Right (N (Z)) = 0 then
+    #####:  228:            if Z = Tree.First then
+    #####:  229:               Tree.First := Parent (N (Z));
+        -:  230:            end if;
+        -:  231:
+    #####:  232:            if Z = Tree.Last then
+    #####:  233:               Tree.Last := Parent (N (Z));
+        -:  234:            end if;
+        -:  235:
+    #####:  236:            if Color (N (Z)) = Black then
+    #####:  237:               Delete_Fixup (Tree, Z);
+        -:  238:            end if;
+        -:  239:
+        -:  240:            pragma Assert (Left (N (Z)) = 0);
+        -:  241:            pragma Assert (Right (N (Z)) = 0);
+        -:  242:
+    #####:  243:            if Z = Tree.Root then
+        -:  244:               pragma Assert (Tree.Length = 1);
+        -:  245:               pragma Assert (Parent (N (Z)) = 0);
+    #####:  246:               Tree.Root := 0;
+    #####:  247:            elsif Z = Left (N (Parent (N (Z)))) then
+    #####:  248:               Set_Left (N (Parent (N (Z))), 0);
+        -:  249:            else
+        -:  250:               pragma Assert (Z = Right (N (Parent (N (Z)))));
+    #####:  251:               Set_Right (N (Parent (N (Z))), 0);
+        -:  252:            end if;
+        -:  253:
+        -:  254:         else
+        -:  255:            pragma Assert (Z /= Tree.Last);
+        -:  256:
+    #####:  257:            X := Right (N (Z));
+        -:  258:
+    #####:  259:            if Z = Tree.First then
+    #####:  260:               Tree.First := Min (Tree, X);
+        -:  261:            end if;
+        -:  262:
+    #####:  263:            if Z = Tree.Root then
+    #####:  264:               Tree.Root := X;
+    #####:  265:            elsif Z = Left (N (Parent (N (Z)))) then
+    #####:  266:               Set_Left (N (Parent (N (Z))), X);
+        -:  267:            else
+        -:  268:               pragma Assert (Z = Right (N (Parent (N (Z)))));
+    #####:  269:               Set_Right (N (Parent (N (Z))), X);
+        -:  270:            end if;
+        -:  271:
+    #####:  272:            Set_Parent (N (X), Parent (N (Z)));
+        -:  273:
+    #####:  274:            if Color (N (Z)) = Black then
+    #####:  275:               Delete_Fixup (Tree, X);
+        -:  276:            end if;
+        -:  277:         end if;
+        -:  278:
+    #####:  279:      elsif Right (N (Z)) = 0 then
+        -:  280:         pragma Assert (Z /= Tree.First);
+        -:  281:
+    #####:  282:         X := Left (N (Z));
+        -:  283:
+    #####:  284:         if Z = Tree.Last then
+    #####:  285:            Tree.Last := Max (Tree, X);
+        -:  286:         end if;
+        -:  287:
+    #####:  288:         if Z = Tree.Root then
+    #####:  289:            Tree.Root := X;
+    #####:  290:         elsif Z = Left (N (Parent (N (Z)))) then
+    #####:  291:            Set_Left (N (Parent (N (Z))), X);
+        -:  292:         else
+        -:  293:            pragma Assert (Z = Right (N (Parent (N (Z)))));
+    #####:  294:            Set_Right (N (Parent (N (Z))), X);
+        -:  295:         end if;
+        -:  296:
+    #####:  297:         Set_Parent (N (X), Parent (N (Z)));
+        -:  298:
+    #####:  299:         if Color (N (Z)) = Black then
+    #####:  300:            Delete_Fixup (Tree, X);
+        -:  301:         end if;
+        -:  302:
+        -:  303:      else
+        -:  304:         pragma Assert (Z /= Tree.First);
+        -:  305:         pragma Assert (Z /= Tree.Last);
+        -:  306:
+    #####:  307:         Y := Next (Tree, Z);
+        -:  308:         pragma Assert (Left (N (Y)) = 0);
+        -:  309:
+    #####:  310:         X := Right (N (Y));
+        -:  311:
+    #####:  312:         if X = 0 then
+    #####:  313:            if Y = Left (N (Parent (N (Y)))) then
+        -:  314:               pragma Assert (Parent (N (Y)) /= Z);
+    #####:  315:               Delete_Swap (Tree, Z, Y);
+    #####:  316:               Set_Left (N (Parent (N (Z))), Z);
+        -:  317:
+        -:  318:            else
+        -:  319:               pragma Assert (Y = Right (N (Parent (N (Y)))));
+        -:  320:               pragma Assert (Parent (N (Y)) = Z);
+    #####:  321:               Set_Parent (N (Y), Parent (N (Z)));
+        -:  322:
+    #####:  323:               if Z = Tree.Root then
+    #####:  324:                  Tree.Root := Y;
+    #####:  325:               elsif Z = Left (N (Parent (N (Z)))) then
+    #####:  326:                  Set_Left (N (Parent (N (Z))), Y);
+        -:  327:               else
+        -:  328:                  pragma Assert (Z = Right (N (Parent (N (Z)))));
+    #####:  329:                  Set_Right (N (Parent (N (Z))), Y);
+        -:  330:               end if;
+        -:  331:
+    #####:  332:               Set_Left   (N (Y), Left (N (Z)));
+    #####:  333:               Set_Parent (N (Left (N (Y))), Y);
+    #####:  334:               Set_Right  (N (Y), Z);
+        -:  335:
+    #####:  336:               Set_Parent (N (Z), Y);
+    #####:  337:               Set_Left   (N (Z), 0);
+    #####:  338:               Set_Right  (N (Z), 0);
+        -:  339:
+        -:  340:               declare
+    #####:  341:                  Y_Color : constant Color_Type := Color (N (Y));
+        -:  342:               begin
+    #####:  343:                  Set_Color (N (Y), Color (N (Z)));
+    #####:  344:                  Set_Color (N (Z), Y_Color);
+        -:  345:               end;
+        -:  346:            end if;
+        -:  347:
+    #####:  348:            if Color (N (Z)) = Black then
+    #####:  349:               Delete_Fixup (Tree, Z);
+        -:  350:            end if;
+        -:  351:
+        -:  352:            pragma Assert (Left (N (Z)) = 0);
+        -:  353:            pragma Assert (Right (N (Z)) = 0);
+        -:  354:
+    #####:  355:            if Z = Right (N (Parent (N (Z)))) then
+    #####:  356:               Set_Right (N (Parent (N (Z))), 0);
+        -:  357:            else
+        -:  358:               pragma Assert (Z = Left (N (Parent (N (Z)))));
+    #####:  359:               Set_Left (N (Parent (N (Z))), 0);
+        -:  360:            end if;
+        -:  361:
+        -:  362:         else
+    #####:  363:            if Y = Left (N (Parent (N (Y)))) then
+        -:  364:               pragma Assert (Parent (N (Y)) /= Z);
+        -:  365:
+    #####:  366:               Delete_Swap (Tree, Z, Y);
+        -:  367:
+    #####:  368:               Set_Left (N (Parent (N (Z))), X);
+    #####:  369:               Set_Parent (N (X), Parent (N (Z)));
+        -:  370:
+        -:  371:            else
+        -:  372:               pragma Assert (Y = Right (N (Parent (N (Y)))));
+        -:  373:               pragma Assert (Parent (N (Y)) = Z);
+        -:  374:
+    #####:  375:               Set_Parent (N (Y), Parent (N (Z)));
+        -:  376:
+    #####:  377:               if Z = Tree.Root then
+    #####:  378:                  Tree.Root := Y;
+    #####:  379:               elsif Z = Left (N (Parent (N (Z)))) then
+    #####:  380:                  Set_Left (N (Parent (N (Z))), Y);
+        -:  381:               else
+        -:  382:                  pragma Assert (Z = Right (N (Parent (N (Z)))));
+    #####:  383:                  Set_Right (N (Parent (N (Z))), Y);
+        -:  384:               end if;
+        -:  385:
+    #####:  386:               Set_Left (N (Y), Left (N (Z)));
+    #####:  387:               Set_Parent (N (Left (N (Y))), Y);
+        -:  388:
+        -:  389:               declare
+    #####:  390:                  Y_Color : constant Color_Type := Color (N (Y));
+        -:  391:               begin
+    #####:  392:                  Set_Color (N (Y), Color (N (Z)));
+    #####:  393:                  Set_Color (N (Z), Y_Color);
+        -:  394:               end;
+        -:  395:            end if;
+        -:  396:
+    #####:  397:            if Color (N (Z)) = Black then
+    #####:  398:               Delete_Fixup (Tree, X);
+        -:  399:            end if;
+        -:  400:         end if;
+        -:  401:      end if;
+        -:  402:
+    #####:  403:      Tree.Length := Tree.Length - 1;
+        -:  404:   end Delete_Node_Sans_Free;
+        -:  405:
+        -:  406:   -----------------
+        -:  407:   -- Delete_Swap --
+        -:  408:   -----------------
+        -:  409:
+    #####:  410:   procedure Delete_Swap
+        -:  411:     (Tree : in out Tree_Type'Class;
+        -:  412:      Z, Y : Count_Type)
+        -:  413:   is
+    #####:  414:      N : Nodes_Type renames Tree.Nodes;
+        -:  415:
+        -:  416:      pragma Assert (Z /= Y);
+        -:  417:      pragma Assert (Parent (N (Y)) /= Z);
+        -:  418:
+    #####:  419:      Y_Parent : constant Count_Type := Parent (N (Y));
+    #####:  420:      Y_Color  : constant Color_Type := Color (N (Y));
+        -:  421:
+        -:  422:   begin
+    #####:  423:      Set_Parent (N (Y), Parent (N (Z)));
+    #####:  424:      Set_Left   (N (Y), Left   (N (Z)));
+    #####:  425:      Set_Right  (N (Y), Right  (N (Z)));
+    #####:  426:      Set_Color  (N (Y), Color  (N (Z)));
+        -:  427:
+    #####:  428:      if Tree.Root = Z then
+    #####:  429:         Tree.Root := Y;
+    #####:  430:      elsif Right (N (Parent (N (Y)))) = Z then
+    #####:  431:         Set_Right (N (Parent (N (Y))), Y);
+        -:  432:      else
+        -:  433:         pragma Assert (Left (N (Parent (N (Y)))) = Z);
+    #####:  434:         Set_Left (N (Parent (N (Y))), Y);
+        -:  435:      end if;
+        -:  436:
+    #####:  437:      if Right (N (Y)) /= 0 then
+    #####:  438:         Set_Parent (N (Right (N (Y))), Y);
+        -:  439:      end if;
+        -:  440:
+    #####:  441:      if Left (N (Y)) /= 0 then
+    #####:  442:         Set_Parent (N (Left (N (Y))), Y);
+        -:  443:      end if;
+        -:  444:
+    #####:  445:      Set_Parent (N (Z), Y_Parent);
+    #####:  446:      Set_Color  (N (Z), Y_Color);
+    #####:  447:      Set_Left   (N (Z), 0);
+    #####:  448:      Set_Right  (N (Z), 0);
+    #####:  449:   end Delete_Swap;
+        -:  450:
+        -:  451:   ----------
+        -:  452:   -- Free --
+        -:  453:   ----------
+        -:  454:
+    #####:  455:   procedure Free (Tree : in out Tree_Type'Class; X : Count_Type) is
+        -:  456:      pragma Assert (X > 0);
+        -:  457:      pragma Assert (X <= Tree.Capacity);
+        -:  458:
+    #####:  459:      N : Nodes_Type renames Tree.Nodes;
+        -:  460:      --  pragma Assert (N (X).Prev >= 0);  -- node is active
+        -:  461:      --  Find a way to mark a node as active vs. inactive; we could
+        -:  462:      --  use a special value in Color_Type for this.  ???
+        -:  463:
+        -:  464:   begin
+        -:  465:      --  The set container actually contains two data structures: a list for
+        -:  466:      --  the "active" nodes that contain elements that have been inserted
+        -:  467:      --  onto the tree, and another for the "inactive" nodes of the free
+        -:  468:      --  store.
+        -:  469:      --
+        -:  470:      --  We desire that merely declaring an object should have only minimal
+        -:  471:      --  cost; specially, we want to avoid having to initialize the free
+        -:  472:      --  store (to fill in the links), especially if the capacity is large.
+        -:  473:      --
+        -:  474:      --  The head of the free list is indicated by Container.Free. If its
+        -:  475:      --  value is non-negative, then the free store has been initialized
+        -:  476:      --  in the "normal" way: Container.Free points to the head of the list
+        -:  477:      --  of free (inactive) nodes, and the value 0 means the free list is
+        -:  478:      --  empty. Each node on the free list has been initialized to point
+        -:  479:      --  to the next free node (via its Parent component), and the value 0
+        -:  480:      --  means that this is the last free node.
+        -:  481:      --
+        -:  482:      --  If Container.Free is negative, then the links on the free store
+        -:  483:      --  have not been initialized. In this case the link values are
+        -:  484:      --  implied: the free store comprises the components of the node array
+        -:  485:      --  started with the absolute value of Container.Free, and continuing
+        -:  486:      --  until the end of the array (Nodes'Last).
+        -:  487:      --
+        -:  488:      --  ???
+        -:  489:      --  It might be possible to perform an optimization here. Suppose that
+        -:  490:      --  the free store can be represented as having two parts: one
+        -:  491:      --  comprising the non-contiguous inactive nodes linked together
+        -:  492:      --  in the normal way, and the other comprising the contiguous
+        -:  493:      --  inactive nodes (that are not linked together, at the end of the
+        -:  494:      --  nodes array). This would allow us to never have to initialize
+        -:  495:      --  the free store, except in a lazy way as nodes become inactive.
+        -:  496:
+        -:  497:      --  When an element is deleted from the list container, its node
+        -:  498:      --  becomes inactive, and so we set its Prev component to a negative
+        -:  499:      --  value, to indicate that it is now inactive. This provides a useful
+        -:  500:      --  way to detect a dangling cursor reference.
+        -:  501:
+        -:  502:      --  The comment above is incorrect; we need some other way to
+        -:  503:      --  indicate a node is inactive, for example by using a special
+        -:  504:      --  Color_Type value.  ???
+        -:  505:      --  N (X).Prev := -1;  -- Node is deallocated (not on active list)
+        -:  506:
+    #####:  507:      if Tree.Free >= 0 then
+        -:  508:         --  The free store has previously been initialized. All we need to
+        -:  509:         --  do here is link the newly-free'd node onto the free list.
+        -:  510:
+    #####:  511:         Set_Parent (N (X), Tree.Free);
+    #####:  512:         Tree.Free := X;
+        -:  513:
+    #####:  514:      elsif X + 1 = abs Tree.Free then
+        -:  515:         --  The free store has not been initialized, and the node becoming
+        -:  516:         --  inactive immediately precedes the start of the free store. All
+        -:  517:         --  we need to do is move the start of the free store back by one.
+        -:  518:
+    #####:  519:         Tree.Free := Tree.Free + 1;
+        -:  520:
+        -:  521:      else
+        -:  522:         --  The free store has not been initialized, and the node becoming
+        -:  523:         --  inactive does not immediately precede the free store. Here we
+        -:  524:         --  first initialize the free store (meaning the links are given
+        -:  525:         --  values in the traditional way), and then link the newly-free'd
+        -:  526:         --  node onto the head of the free store.
+        -:  527:
+        -:  528:         --  ???
+        -:  529:         --  See the comments above for an optimization opportunity. If the
+        -:  530:         --  next link for a node on the free store is negative, then this
+        -:  531:         --  means the remaining nodes on the free store are physically
+        -:  532:         --  contiguous, starting as the absolute value of that index value.
+        -:  533:
+    #####:  534:         Tree.Free := abs Tree.Free;
+        -:  535:
+    #####:  536:         if Tree.Free > Tree.Capacity then
+    #####:  537:            Tree.Free := 0;
+        -:  538:
+        -:  539:         else
+    #####:  540:            for I in Tree.Free .. Tree.Capacity - 1 loop
+    #####:  541:               Set_Parent (N (I), I + 1);
+    #####:  542:            end loop;
+        -:  543:
+    #####:  544:            Set_Parent (N (Tree.Capacity), 0);
+        -:  545:         end if;
+        -:  546:
+    #####:  547:         Set_Parent (N (X), Tree.Free);
+    #####:  548:         Tree.Free := X;
+        -:  549:      end if;
+    #####:  550:   end Free;
+        -:  551:
+        -:  552:   -----------------------
+        -:  553:   -- Generic_Allocate --
+        -:  554:   -----------------------
+        -:  555:
+      380:  556:   procedure Generic_Allocate
+        -:  557:     (Tree : in out Tree_Type'Class;
+        -:  558:      Node : out Count_Type)
+        -:  559:   is
+      380:  560:      N : Nodes_Type renames Tree.Nodes;
+        -:  561:
+        -:  562:   begin
+      380:  563:      if Tree.Free >= 0 then
+    #####:  564:         Node := Tree.Free;
+        -:  565:
+        -:  566:         --  We always perform the assignment first, before we
+        -:  567:         --  change container state, in order to defend against
+        -:  568:         --  exceptions duration assignment.
+        -:  569:
+    #####:  570:         Set_Element (N (Node));
+    #####:  571:         Tree.Free := Parent (N (Node));
+        -:  572:
+        -:  573:      else
+        -:  574:         --  A negative free store value means that the links of the nodes
+        -:  575:         --  in the free store have not been initialized. In this case, the
+        -:  576:         --  nodes are physically contiguous in the array, starting at the
+        -:  577:         --  index that is the absolute value of the Container.Free, and
+        -:  578:         --  continuing until the end of the array (Nodes'Last).
+        -:  579:
+      380:  580:         Node := abs Tree.Free;
+        -:  581:
+        -:  582:         --  As above, we perform this assignment first, before modifying
+        -:  583:         --  any container state.
+        -:  584:
+      380:  585:         Set_Element (N (Node));
+      380:  586:         Tree.Free := Tree.Free - 1;
+        -:  587:      end if;
+        -:  588:
+        -:  589:      --  When a node is allocated from the free store, its pointer components
+        -:  590:      --  (the links to other nodes in the tree) must also be initialized (to
+        -:  591:      --  0, the equivalent of null). This simplifies the post-allocation
+        -:  592:      --  handling of nodes inserted into terminal positions.
+        -:  593:
+      380:  594:      Set_Parent (N (Node), Parent => 0);
+      380:  595:      Set_Left   (N (Node), Left   => 0);
+      380:  596:      Set_Right  (N (Node), Right  => 0);
+      380:  597:   end Generic_Allocate;
+        -:  598:
+        -:  599:   -------------------
+        -:  600:   -- Generic_Equal --
+        -:  601:   -------------------
+        -:  602:
+    #####:  603:   function Generic_Equal (Left, Right : Tree_Type'Class) return Boolean is
+        -:  604:      --  Per AI05-0022, the container implementation is required to detect
+        -:  605:      --  element tampering by a generic actual subprogram.
+        -:  606:
+    #####:  607:      Lock_Left : With_Lock (Left.TC'Unrestricted_Access);
+    #####:  608:      Lock_Right : With_Lock (Right.TC'Unrestricted_Access);
+        -:  609:
+        -:  610:      L_Node : Count_Type;
+        -:  611:      R_Node : Count_Type;
+        -:  612:
+        -:  613:   begin
+    #####:  614:      if Left'Address = Right'Address then
+    #####:  615:         return True;
+        -:  616:      end if;
+        -:  617:
+    #####:  618:      if Left.Length /= Right.Length then
+    #####:  619:         return False;
+        -:  620:      end if;
+        -:  621:
+        -:  622:      --  If the containers are empty, return a result immediately, so as to
+        -:  623:      --  not manipulate the tamper bits unnecessarily.
+        -:  624:
+    #####:  625:      if Left.Length = 0 then
+    #####:  626:         return True;
+        -:  627:      end if;
+        -:  628:
+    #####:  629:      L_Node := Left.First;
+    #####:  630:      R_Node := Right.First;
+    #####:  631:      while L_Node /= 0 loop
+    #####:  632:         if not Is_Equal (Left.Nodes (L_Node), Right.Nodes (R_Node)) then
+    #####:  633:            return False;
+        -:  634:         end if;
+        -:  635:
+    #####:  636:         L_Node := Next (Left, L_Node);
+    #####:  637:         R_Node := Next (Right, R_Node);
+    #####:  638:      end loop;
+        -:  639:
+    #####:  640:      return True;
+    #####:  641:   end Generic_Equal;
+        -:  642:
+        -:  643:   -----------------------
+        -:  644:   -- Generic_Iteration --
+        -:  645:   -----------------------
+        -:  646:
+    #####:  647:   procedure Generic_Iteration (Tree : Tree_Type'Class) is
+        -:  648:      procedure Iterate (P : Count_Type);
+        -:  649:
+        -:  650:      -------------
+        -:  651:      -- Iterate --
+        -:  652:      -------------
+        -:  653:
+    #####:  654:      procedure Iterate (P : Count_Type) is
+    #####:  655:         X : Count_Type := P;
+        -:  656:      begin
+    #####:  657:         while X /= 0 loop
+    #####:  658:            Iterate (Left (Tree.Nodes (X)));
+    #####:  659:            Process (X);
+    #####:  660:            X := Right (Tree.Nodes (X));
+    #####:  661:         end loop;
+    #####:  662:      end Iterate;
+        -:  663:
+        -:  664:   --  Start of processing for Generic_Iteration
+        -:  665:
+        -:  666:   begin
+    #####:  667:      Iterate (Tree.Root);
+    #####:  668:   end Generic_Iteration;
+        -:  669:
+        -:  670:   ------------------
+        -:  671:   -- Generic_Read --
+        -:  672:   ------------------
+        -:  673:
+        -:  674:   procedure Generic_Read
+        -:  675:     (Stream : not null access Root_Stream_Type'Class;
+        -:  676:      Tree   : in out Tree_Type'Class)
+        -:  677:   is
+        -:  678:      Len : Count_Type'Base;
+        -:  679:
+        -:  680:      Node, Last_Node : Count_Type;
+        -:  681:
+        -:  682:      N : Nodes_Type renames Tree.Nodes;
+        -:  683:
+        -:  684:   begin
+        -:  685:      Clear_Tree (Tree);
+        -:  686:      Count_Type'Base'Read (Stream, Len);
+        -:  687:
+        -:  688:      if Checks and then Len < 0 then
+        -:  689:         raise Program_Error with "bad container length (corrupt stream)";
+        -:  690:      end if;
+        -:  691:
+        -:  692:      if Len = 0 then
+        -:  693:         return;
+        -:  694:      end if;
+        -:  695:
+        -:  696:      if Checks and then Len > Tree.Capacity then
+        -:  697:         raise Constraint_Error with "length exceeds capacity";
+        -:  698:      end if;
+        -:  699:
+        -:  700:      --  Use Unconditional_Insert_With_Hint here instead ???
+        -:  701:
+        -:  702:      Allocate (Tree, Node);
+        -:  703:      pragma Assert (Node /= 0);
+        -:  704:
+        -:  705:      Set_Color (N (Node), Black);
+        -:  706:
+        -:  707:      Tree.Root   := Node;
+        -:  708:      Tree.First  := Node;
+        -:  709:      Tree.Last   := Node;
+        -:  710:      Tree.Length := 1;
+        -:  711:
+        -:  712:      for J in Count_Type range 2 .. Len loop
+        -:  713:         Last_Node := Node;
+        -:  714:         pragma Assert (Last_Node = Tree.Last);
+        -:  715:
+        -:  716:         Allocate (Tree, Node);
+        -:  717:         pragma Assert (Node /= 0);
+        -:  718:
+        -:  719:         Set_Color (N (Node), Red);
+        -:  720:         Set_Right (N (Last_Node), Right => Node);
+        -:  721:         Tree.Last := Node;
+        -:  722:         Set_Parent (N (Node), Parent => Last_Node);
+        -:  723:
+        -:  724:         Rebalance_For_Insert (Tree, Node);
+        -:  725:         Tree.Length := Tree.Length + 1;
+        -:  726:      end loop;
+        -:  727:   end Generic_Read;
+        -:  728:
+        -:  729:   -------------------------------
+        -:  730:   -- Generic_Reverse_Iteration --
+        -:  731:   -------------------------------
+        -:  732:
+        -:  733:   procedure Generic_Reverse_Iteration (Tree : Tree_Type'Class) is
+        -:  734:      procedure Iterate (P : Count_Type);
+        -:  735:
+        -:  736:      -------------
+        -:  737:      -- Iterate --
+        -:  738:      -------------
+        -:  739:
+        -:  740:      procedure Iterate (P : Count_Type) is
+        -:  741:         X : Count_Type := P;
+        -:  742:      begin
+        -:  743:         while X /= 0 loop
+        -:  744:            Iterate (Right (Tree.Nodes (X)));
+        -:  745:            Process (X);
+        -:  746:            X := Left (Tree.Nodes (X));
+        -:  747:         end loop;
+        -:  748:      end Iterate;
+        -:  749:
+        -:  750:   --  Start of processing for Generic_Reverse_Iteration
+        -:  751:
+        -:  752:   begin
+        -:  753:      Iterate (Tree.Root);
+        -:  754:   end Generic_Reverse_Iteration;
+        -:  755:
+        -:  756:   -------------------
+        -:  757:   -- Generic_Write --
+        -:  758:   -------------------
+        -:  759:
+        -:  760:   procedure Generic_Write
+        -:  761:     (Stream : not null access Root_Stream_Type'Class;
+        -:  762:      Tree   : Tree_Type'Class)
+        -:  763:   is
+        -:  764:      procedure Process (Node : Count_Type);
+        -:  765:      pragma Inline (Process);
+        -:  766:
+        -:  767:      procedure Iterate is new Generic_Iteration (Process);
+        -:  768:
+        -:  769:      -------------
+        -:  770:      -- Process --
+        -:  771:      -------------
+        -:  772:
+        -:  773:      procedure Process (Node : Count_Type) is
+        -:  774:      begin
+        -:  775:         Write_Node (Stream, Tree.Nodes (Node));
+        -:  776:      end Process;
+        -:  777:
+        -:  778:   --  Start of processing for Generic_Write
+        -:  779:
+        -:  780:   begin
+        -:  781:      Count_Type'Base'Write (Stream, Tree.Length);
+        -:  782:      Iterate (Tree);
+        -:  783:   end Generic_Write;
+        -:  784:
+        -:  785:   -----------------
+        -:  786:   -- Left_Rotate --
+        -:  787:   -----------------
+        -:  788:
+       88:  789:   procedure Left_Rotate (Tree : in out Tree_Type'Class; X : Count_Type) is
+        -:  790:
+        -:  791:      --  CLR p. 266
+        -:  792:
+       88:  793:      N : Nodes_Type renames Tree.Nodes;
+        -:  794:
+       88:  795:      Y : constant Count_Type := Right (N (X));
+        -:  796:      pragma Assert (Y /= 0);
+        -:  797:
+        -:  798:   begin
+       88:  799:      Set_Right (N (X), Left (N (Y)));
+        -:  800:
+       88:  801:      if Left (N (Y)) /= 0 then
+        2:  802:         Set_Parent (N (Left (N (Y))), X);
+        -:  803:      end if;
+        -:  804:
+       88:  805:      Set_Parent (N (Y), Parent (N (X)));
+        -:  806:
+       88:  807:      if X = Tree.Root then
+       84:  808:         Tree.Root := Y;
+        4:  809:      elsif X = Left (N (Parent (N (X)))) then
+    #####:  810:         Set_Left (N (Parent (N (X))), Y);
+        -:  811:      else
+        -:  812:         pragma Assert (X = Right (N (Parent (N (X)))));
+        4:  813:         Set_Right (N (Parent (N (X))), Y);
+        -:  814:      end if;
+        -:  815:
+       88:  816:      Set_Left   (N (Y), X);
+       88:  817:      Set_Parent (N (X), Y);
+       88:  818:   end Left_Rotate;
+        -:  819:
+        -:  820:   ---------
+        -:  821:   -- Max --
+        -:  822:   ---------
+        -:  823:
+    #####:  824:   function Max
+        -:  825:     (Tree : Tree_Type'Class;
+        -:  826:      Node : Count_Type) return Count_Type
+        -:  827:   is
+        -:  828:      --  CLR p. 248
+        -:  829:
+    #####:  830:      X : Count_Type := Node;
+        -:  831:      Y : Count_Type;
+        -:  832:
+        -:  833:   begin
+        -:  834:      loop
+    #####:  835:         Y := Right (Tree.Nodes (X));
+        -:  836:
+    #####:  837:         if Y = 0 then
+    #####:  838:            return X;
+        -:  839:         end if;
+        -:  840:
+    #####:  841:         X := Y;
+    #####:  842:      end loop;
+        -:  843:   end Max;
+        -:  844:
+        -:  845:   ---------
+        -:  846:   -- Min --
+        -:  847:   ---------
+        -:  848:
+      614:  849:   function Min
+        -:  850:     (Tree : Tree_Type'Class;
+        -:  851:      Node : Count_Type) return Count_Type
+        -:  852:   is
+        -:  853:      --  CLR p. 248
+        -:  854:
+      614:  855:      X : Count_Type := Node;
+        -:  856:      Y : Count_Type;
+        -:  857:
+        -:  858:   begin
+        -:  859:      loop
+      892:  860:         Y := Left (Tree.Nodes (X));
+        -:  861:
+      892:  862:         if Y = 0 then
+     1228:  863:            return X;
+        -:  864:         end if;
+        -:  865:
+      278:  866:         X := Y;
+      278:  867:      end loop;
+        -:  868:   end Min;
+        -:  869:
+        -:  870:   ----------
+        -:  871:   -- Next --
+        -:  872:   ----------
+        -:  873:
+     1236:  874:   function Next
+        -:  875:     (Tree : Tree_Type'Class;
+        -:  876:      Node : Count_Type) return Count_Type
+        -:  877:   is
+        -:  878:   begin
+        -:  879:      --  CLR p. 249
+        -:  880:
+     1236:  881:      if Node = 0 then
+    #####:  882:         return 0;
+        -:  883:      end if;
+        -:  884:
+     1236:  885:      if Right (Tree.Nodes (Node)) /= 0 then
+      614:  886:         return Min (Tree, Right (Tree.Nodes (Node)));
+        -:  887:      end if;
+        -:  888:
+        -:  889:      declare
+      622:  890:         X : Count_Type := Node;
+      622:  891:         Y : Count_Type := Parent (Tree.Nodes (Node));
+        -:  892:
+        -:  893:      begin
+     1264:  894:         while Y /= 0 and then X = Right (Tree.Nodes (Y)) loop
+      642:  895:            X := Y;
+      642:  896:            Y := Parent (Tree.Nodes (Y));
+      642:  897:         end loop;
+        -:  898:
+      622:  899:         return Y;
+        -:  900:      end;
+        -:  901:   end Next;
+        -:  902:
+        -:  903:   --------------
+        -:  904:   -- Previous --
+        -:  905:   --------------
+        -:  906:
+        6:  907:   function Previous
+        -:  908:     (Tree : Tree_Type'Class;
+        -:  909:      Node : Count_Type) return Count_Type
+        -:  910:   is
+        -:  911:   begin
+        6:  912:      if Node = 0 then
+    #####:  913:         return 0;
+        -:  914:      end if;
+        -:  915:
+        6:  916:      if Left (Tree.Nodes (Node)) /= 0 then
+    #####:  917:         return Max (Tree, Left (Tree.Nodes (Node)));
+        -:  918:      end if;
+        -:  919:
+        -:  920:      declare
+        6:  921:         X : Count_Type := Node;
+        6:  922:         Y : Count_Type := Parent (Tree.Nodes (Node));
+        -:  923:
+        -:  924:      begin
+        8:  925:         while Y /= 0 and then X = Left (Tree.Nodes (Y)) loop
+        2:  926:            X := Y;
+        2:  927:            Y := Parent (Tree.Nodes (Y));
+        2:  928:         end loop;
+        -:  929:
+        6:  930:         return Y;
+        -:  931:      end;
+        -:  932:   end Previous;
+        -:  933:
+        -:  934:   --------------------------
+        -:  935:   -- Rebalance_For_Insert --
+        -:  936:   --------------------------
+        -:  937:
+      380:  938:   procedure Rebalance_For_Insert
+        -:  939:     (Tree : in out Tree_Type'Class;
+        -:  940:      Node : Count_Type)
+        -:  941:   is
+        -:  942:      --  CLR p. 268
+        -:  943:
+      380:  944:      N : Nodes_Type renames Tree.Nodes;
+        -:  945:
+      380:  946:      X : Count_Type := Node;
+        -:  947:      pragma Assert (X /= 0);
+        -:  948:      pragma Assert (Color (N (X)) = Red);
+        -:  949:
+        -:  950:      Y : Count_Type;
+        -:  951:
+        -:  952:   begin
+      564:  953:      while X /= Tree.Root and then Color (N (Parent (N (X)))) = Red loop
+      184:  954:         if Parent (N (X)) = Left (N (Parent (N (Parent (N (X)))))) then
+        6:  955:            Y := Right (N (Parent (N (Parent (N (X))))));
+        -:  956:
+        6:  957:            if Y /= 0 and then Color (N (Y)) = Red then
+        6:  958:               Set_Color (N (Parent (N (X))), Black);
+        6:  959:               Set_Color (N (Y), Black);
+        6:  960:               Set_Color (N (Parent (N (Parent (N (X))))), Red);
+        6:  961:               X := Parent (N (Parent (N (X))));
+        -:  962:
+        -:  963:            else
+    #####:  964:               if X = Right (N (Parent (N (X)))) then
+    #####:  965:                  X := Parent (N (X));
+    #####:  966:                  Left_Rotate (Tree, X);
+        -:  967:               end if;
+        -:  968:
+    #####:  969:               Set_Color (N (Parent (N (X))), Black);
+    #####:  970:               Set_Color (N (Parent (N (Parent (N (X))))), Red);
+    #####:  971:               Right_Rotate (Tree, Parent (N (Parent (N (X)))));
+        -:  972:            end if;
+        -:  973:
+        -:  974:         else
+        -:  975:            pragma Assert (Parent (N (X)) =
+        -:  976:                             Right (N (Parent (N (Parent (N (X)))))));
+        -:  977:
+      178:  978:            Y := Left (N (Parent (N (Parent (N (X))))));
+        -:  979:
+      178:  980:            if Y /= 0 and then Color (N (Y)) = Red then
+       90:  981:               Set_Color (N (Parent (N (X))), Black);
+       90:  982:               Set_Color (N (Y), Black);
+       90:  983:               Set_Color (N (Parent (N (Parent (N (X))))), Red);
+       90:  984:               X := Parent (N (Parent (N (X))));
+        -:  985:
+        -:  986:            else
+       88:  987:               if X = Left (N (Parent (N (X)))) then
+    #####:  988:                  X := Parent (N (X));
+    #####:  989:                  Right_Rotate (Tree, X);
+        -:  990:               end if;
+        -:  991:
+       88:  992:               Set_Color (N (Parent (N (X))), Black);
+       88:  993:               Set_Color (N (Parent (N (Parent (N (X))))), Red);
+       88:  994:               Left_Rotate (Tree, Parent (N (Parent (N (X)))));
+        -:  995:            end if;
+        -:  996:         end if;
+      184:  997:      end loop;
+        -:  998:
+      380:  999:      Set_Color (N (Tree.Root), Black);
+      380: 1000:   end Rebalance_For_Insert;
+        -: 1001:
+        -: 1002:   ------------------
+        -: 1003:   -- Right_Rotate --
+        -: 1004:   ------------------
+        -: 1005:
+    #####: 1006:   procedure Right_Rotate (Tree : in out Tree_Type'Class; Y : Count_Type) is
+    #####: 1007:      N : Nodes_Type renames Tree.Nodes;
+        -: 1008:
+    #####: 1009:      X : constant Count_Type := Left (N (Y));
+        -: 1010:      pragma Assert (X /= 0);
+        -: 1011:
+        -: 1012:   begin
+    #####: 1013:      Set_Left (N (Y), Right (N (X)));
+        -: 1014:
+    #####: 1015:      if Right (N (X)) /= 0 then
+    #####: 1016:         Set_Parent (N (Right (N (X))), Y);
+        -: 1017:      end if;
+        -: 1018:
+    #####: 1019:      Set_Parent (N (X), Parent (N (Y)));
+        -: 1020:
+    #####: 1021:      if Y = Tree.Root then
+    #####: 1022:         Tree.Root := X;
+    #####: 1023:      elsif Y = Left (N (Parent (N (Y)))) then
+    #####: 1024:         Set_Left (N (Parent (N (Y))), X);
+        -: 1025:      else
+        -: 1026:         pragma Assert (Y = Right (N (Parent (N (Y)))));
+    #####: 1027:         Set_Right (N (Parent (N (Y))), X);
+        -: 1028:      end if;
+        -: 1029:
+    #####: 1030:      Set_Right  (N (X), Y);
+    #####: 1031:      Set_Parent (N (Y), X);
+    #####: 1032:   end Right_Rotate;
+        -: 1033:
+        -: 1034:   ---------
+        -: 1035:   -- Vet --
+        -: 1036:   ---------
+        -: 1037:
+    #####: 1038:   function Vet (Tree : Tree_Type'Class; Index : Count_Type) return Boolean is
+    #####: 1039:      Nodes : Nodes_Type renames Tree.Nodes;
+    #####: 1040:      Node  : Node_Type renames Nodes (Index);
+        -: 1041:
+        -: 1042:   begin
+    #####: 1043:      if Parent (Node) = Index
+    #####: 1044:        or else Left (Node) = Index
+    #####: 1045:        or else Right (Node) = Index
+        -: 1046:      then
+    #####: 1047:         return False;
+        -: 1048:      end if;
+        -: 1049:
+    #####: 1050:      if Tree.Length = 0
+    #####: 1051:        or else Tree.Root = 0
+    #####: 1052:        or else Tree.First = 0
+    #####: 1053:        or else Tree.Last = 0
+        -: 1054:      then
+    #####: 1055:         return False;
+        -: 1056:      end if;
+        -: 1057:
+    #####: 1058:      if Parent (Nodes (Tree.Root)) /= 0 then
+    #####: 1059:         return False;
+        -: 1060:      end if;
+        -: 1061:
+    #####: 1062:      if Left (Nodes (Tree.First)) /= 0 then
+    #####: 1063:         return False;
+        -: 1064:      end if;
+        -: 1065:
+    #####: 1066:      if Right (Nodes (Tree.Last)) /= 0 then
+    #####: 1067:         return False;
+        -: 1068:      end if;
+        -: 1069:
+    #####: 1070:      if Tree.Length = 1 then
+    #####: 1071:         if Tree.First /= Tree.Last
+    #####: 1072:           or else Tree.First /= Tree.Root
+        -: 1073:         then
+    #####: 1074:            return False;
+        -: 1075:         end if;
+        -: 1076:
+    #####: 1077:         if Index /= Tree.First then
+    #####: 1078:            return False;
+        -: 1079:         end if;
+        -: 1080:
+    #####: 1081:         if Parent (Node) /= 0
+    #####: 1082:           or else Left (Node) /= 0
+    #####: 1083:           or else Right (Node) /= 0
+        -: 1084:         then
+    #####: 1085:            return False;
+        -: 1086:         end if;
+        -: 1087:
+    #####: 1088:         return True;
+        -: 1089:      end if;
+        -: 1090:
+    #####: 1091:      if Tree.First = Tree.Last then
+    #####: 1092:         return False;
+        -: 1093:      end if;
+        -: 1094:
+    #####: 1095:      if Tree.Length = 2 then
+    #####: 1096:         if Tree.First /= Tree.Root and then Tree.Last /= Tree.Root then
+    #####: 1097:            return False;
+        -: 1098:         end if;
+        -: 1099:
+    #####: 1100:         if Tree.First /= Index and then Tree.Last /= Index then
+    #####: 1101:            return False;
+        -: 1102:         end if;
+        -: 1103:      end if;
+        -: 1104:
+    #####: 1105:      if Left (Node) /= 0 and then Parent (Nodes (Left (Node))) /= Index then
+    #####: 1106:         return False;
+        -: 1107:      end if;
+        -: 1108:
+    #####: 1109:      if Right (Node) /= 0 and then Parent (Nodes (Right (Node))) /= Index then
+    #####: 1110:         return False;
+        -: 1111:      end if;
+        -: 1112:
+    #####: 1113:      if Parent (Node) = 0 then
+    #####: 1114:         if Tree.Root /= Index then
+    #####: 1115:            return False;
+        -: 1116:         end if;
+        -: 1117:
+    #####: 1118:      elsif Left (Nodes (Parent (Node))) /= Index
+    #####: 1119:        and then Right (Nodes (Parent (Node))) /= Index
+        -: 1120:      then
+    #####: 1121:         return False;
+        -: 1122:      end if;
+        -: 1123:
+    #####: 1124:      return True;
+        -: 1125:   end Vet;
+        -: 1126:
+        -: 1127:end Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;

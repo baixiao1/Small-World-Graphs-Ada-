@@ -1,0 +1,44 @@
+Summary of SPARK analysis
+=========================
+
+---------------------------------------------------------------------------------------------------------
+SPARK Analysis results        Total        Flow   Interval   CodePeer      Provers   Justified   Unproved
+---------------------------------------------------------------------------------------------------------
+Data Dependencies                 .           .          .          .            .           .          .
+Flow Dependencies                 .           .          .          .            .           .          .
+Initialization                   40          40          .          .            .           .          .
+Non-Aliasing                      .           .          .          .            .           .          .
+Run-time Checks                   4           .          .          .     2 (CVC4)           .          2
+Assertions                        .           .          .          .            .           .          .
+Functional Contracts             46           .          .          .    45 (CVC4)           .          1
+LSP Verification                  .           .          .          .            .           .          .
+---------------------------------------------------------------------------------------------------------
+Total                            90    40 (44%)          .          .     47 (52%)           .     3 (3%)
+
+
+Analyzed 3 units
+in unit graph, 12 subprograms and packages out of 14 analyzed
+  graph at graph.ads:4 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.GraphEdge at graph.ads:25 skipped
+  graph.GraphEdge.Oeq at graph.ads:25 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.GraphEdge.Olt at graph.ads:25 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.GraphNode at graph.ads:21 skipped
+  graph.GraphNode.Oeq at graph.ads:21 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.GraphNode.Olt at graph.ads:21 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.Olt at graph.ads:17 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+  graph.addedge at graph.ads:38 flow analyzed (0 errors and 0 warnings) and proved (4 checks)
+  graph.addnode at graph.ads:33 flow analyzed (0 errors and 0 warnings) and proved (4 checks)
+  graph.diameter at graph.ads:55 flow analyzed (0 errors and 0 warnings) and proved (11 checks)
+  graph.distance at graph.ads:51 flow analyzed (0 errors and 0 warnings) and not proved, 11 checks out of 13 proved
+  graph.findnext at graph.ads:43 flow analyzed (0 errors and 0 warnings) and proved (13 checks)
+  graph.small at graph.ads:58 flow analyzed (0 errors and 0 warnings) and not proved, 4 checks out of 5 proved
+in unit io, 0 subprograms and packages out of 7 analyzed
+  io at io.ads:3 skipped
+  io.myprint at io.ads:4 skipped
+  io.myprintedges at io.ads:7 skipped
+  io.myprintgraph at io.ads:8 skipped
+  io.myprintnodes at io.ads:6 skipped
+  io.printnode at io.ads:9 skipped
+  io.printnumber at io.ads:10 skipped
+in unit main, 0 subprograms and packages out of 1 analyzed
+  main at main.adb:5 skipped

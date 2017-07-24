@@ -1,0 +1,21 @@
+[GENERATED OBJECT FILE]
+b__main.o
+[PROJECT FILES]
+D:\study\Master\2017Trimester 1\SWEN421\Ass2\ass2.gpr
+20170611054556
+[BOUND OBJECT FILES]
+D:\study\Master\2017Trimester 1\SWEN421\Ass2\io.o
+D:\study\Master\2017Trimester 1\SWEN421\Ass2\graph.o
+D:\study\Master\2017Trimester 1\SWEN421\Ass2\main.o
+[GENERATED SOURCE FILES]
+b__main.ads
+b__main.adb
+b__main.ali
+[RESULTING OPTIONS]
+-LD:\study\Master\2017Trimester 1\SWEN421\Ass2\
+-LD:\study\Master\2017Trimester 1\SWEN421\Ass2\
+-LE:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adalib/
+-static
+-static-libgcc
+E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adalib/libgnat.a
+-Wl,--stack=0x2000000

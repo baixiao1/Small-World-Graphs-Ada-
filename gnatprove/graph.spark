@@ -1,0 +1,3683 @@
+{
+  "spark": [
+    {
+      "name": "graph.Olt",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 17
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.GraphNode.Olt",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 21
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.GraphNode.Oeq",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 21
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.GraphNode",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 21
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "graph.GraphEdge.Olt",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 25
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.GraphEdge.Oeq",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 25
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.GraphEdge",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 25
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "graph.addnode",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 33
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.addedge",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 38
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.findnext",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 43
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.distance",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 51
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.diameter",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 55
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph.small",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 58
+        }
+      ],
+      "spark": "all"
+    },
+    {
+      "name": "graph",
+      "sloc": [
+        {
+          "file": "graph.ads",
+          "line": 4
+        }
+      ],
+      "spark": "all"
+    }
+  ],
+  "flow": [
+    {
+      "file": "graph.adb",
+      "line": 22,
+      "col": 38,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "tracefile": "graph__flow__34.trace",
+      "msg_id": 0,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 22,
+      "col": 38,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "tracefile": "graph__flow__34.trace",
+      "msg_id": 1,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 81,
+      "col": 46,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 2,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 82,
+      "col": 37,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 3,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 84,
+      "col": 49,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 4,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 85,
+      "col": 40,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 5,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 85,
+      "col": 57,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 6,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 87,
+      "col": 42,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 7,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 88,
+      "col": 27,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 8,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 88,
+      "col": 20,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 9,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 89,
+      "col": 30,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 10,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 83,
+      "col": 73,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 11,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 92,
+      "col": 40,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 12,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 80,
+      "col": 69,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 13,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 94,
+      "col": 17,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "tracefile": "graph__flow__122.trace",
+      "msg_id": 14,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 27,
+      "col": 7,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 15,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 31,
+      "col": 41,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 16,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 33,
+      "col": 44,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 17,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 33,
+      "col": 91,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 18,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 35,
+      "col": 40,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 19,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 36,
+      "col": 44,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 20,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 36,
+      "col": 91,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 21,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 38,
+      "col": 38,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 22,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 30,
+      "col": 70,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 23,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 41,
+      "col": 14,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "tracefile": "graph__flow__194.trace",
+      "msg_id": 24,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 47,
+      "col": 7,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 25,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 54,
+      "col": 43,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 26,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 57,
+      "col": 48,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 27,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 59,
+      "col": 28,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 28,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 60,
+      "col": 55,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 29,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 61,
+      "col": 45,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 30,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 61,
+      "col": 39,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 31,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 62,
+      "col": 39,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 32,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 63,
+      "col": 39,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 33,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 63,
+      "col": 33,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 34,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 58,
+      "col": 42,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 35,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 58,
+      "col": 35,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 36,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 65,
+      "col": 17,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "tracefile": "graph__flow__438.trace",
+      "msg_id": 37,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 104,
+      "col": 13,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "tracefile": "graph__flow__536.trace",
+      "msg_id": 38,
+      "how_proved": "flow"
+    },
+    {
+      "file": "graph.adb",
+      "line": 104,
+      "col": 30,
+      "rule": "UNINITIALIZED",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "tracefile": "graph__flow__536.trace",
+      "msg_id": 39,
+      "how_proved": "flow"
+    }
+  ],
+  "proof": [
+    {
+      "file": "graph.adb",
+      "line": 53,
+      "col": 16,
+      "rule": "VC_DISCRIMINANT_CHECK",
+      "severity": "medium",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "cntexmp": {
+        "graph.adb": {
+          "50": [
+            {
+              "name": "distance",
+              "value": "0",
+              "kind": "variable"
+            }
+          ]
+        },
+        "graph.ads": {
+          "51": [
+            {
+              "name": "source",
+              "value": "0",
+              "kind": "variable"
+            },
+            {
+              "name": "target",
+              "value": "0",
+              "kind": "variable"
+            }
+          ]
+        }
+      },
+      "msg_id": 40,
+      "how_proved": "prover"
+    },
+    {
+      "file": "graph.adb",
+      "line": 104,
+      "col": 12,
+      "rule": "VC_OVERFLOW_CHECK",
+      "severity": "medium",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "tracefile": "graph.adb_104_12_overflow_check.trace",
+      "msg_id": 41,
+      "how_proved": "prover"
+    },
+    {
+      "file": "graph.adb",
+      "line": 53,
+      "col": 16,
+      "rule": "VC_PRECONDITION",
+      "severity": "medium",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "cntexmp": {
+        "graph.adb": {
+          "50": [
+            {
+              "name": "distance",
+              "value": "0",
+              "kind": "variable"
+            }
+          ]
+        },
+        "graph.ads": {
+          "51": [
+            {
+              "name": "source",
+              "value": "0",
+              "kind": "variable"
+            },
+            {
+              "name": "target",
+              "value": "0",
+              "kind": "variable"
+            }
+          ]
+        }
+      },
+      "msg_id": 42,
+      "how_proved": "prover"
+    },
+    {
+      "file": "graph.adb",
+      "line": 38,
+      "col": 24,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 43,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 92,
+      "col": 26,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 44,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 62,
+      "col": 25,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 45,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 33,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 46,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 61,
+      "col": 30,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 47,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 85,
+      "col": 21,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 48,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 80,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 49,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 2,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 11,
+      "col": 16,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addnode",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 33
+          }
+        ]
+      },
+      "msg_id": 50,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 31,
+      "col": 24,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 51,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 36,
+      "col": 16,
+      "rule": "VC_POSTCONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addnode",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 33
+          }
+        ]
+      },
+      "msg_id": 52,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 33,
+      "col": 74,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 53,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.40000000596046E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 54,
+      "col": 20,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 54,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 36,
+      "col": 74,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 55,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 103,
+      "col": 24,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "msg_id": 56,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 36,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 57,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 87,
+      "col": 27,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 58,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 62,
+      "col": 25,
+      "rule": "VC_DISCRIMINANT_CHECK",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 59,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 74,
+      "col": 39,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 60,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 28,
+      "col": 38,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 61,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 81,
+      "col": 29,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 62,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 59,
+      "col": 36,
+      "rule": "VC_OVERFLOW_CHECK",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 63,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 59,
+      "col": 27,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "msg_id": 64,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 63,
+      "col": 27,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 65,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 56,
+      "col": 25,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 66,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 35,
+      "col": 24,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addnode",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 33
+          }
+        ]
+      },
+      "msg_id": 67,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 102,
+      "col": 38,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "msg_id": 68,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 45,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 69,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 45,
+      "col": 56,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 70,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 52,
+      "col": 27,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 71,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 49,
+      "col": 15,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 72,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 36,
+      "col": 29,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addnode",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 33
+          }
+        ]
+      },
+      "msg_id": 73,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 60,
+      "col": 32,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 74,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 57,
+      "col": 28,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 75,
+      "how_proved": "prover"
+    },
+    {
+      "file": "graph.adb",
+      "line": 83,
+      "col": 25,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 76,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 2,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 41,
+      "col": 15,
+      "rule": "VC_POSTCONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "msg_id": 77,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 56,
+      "col": 76,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 78,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 5.99999986588955E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 59,
+      "col": 78,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.small",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 58
+          }
+        ]
+      },
+      "msg_id": 79,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 41,
+      "col": 28,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "msg_id": 80,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 21,
+      "col": 16,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "msg_id": 81,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 7.99999982118607E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 58,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 82,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 2,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 30,
+      "col": 22,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 83,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 2,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 49,
+      "col": 6,
+      "rule": "VC_POSTCONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 84,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.40000000596046E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 35,
+      "col": 23,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.findnext",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 43
+          }
+        ]
+      },
+      "msg_id": 85,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.40000000596046E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 53,
+      "col": 15,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.distance",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 51
+          }
+        ]
+      },
+      "msg_id": 86,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.29999995231628E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 84,
+      "col": 32,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 87,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.adb",
+      "line": 82,
+      "col": 23,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.diameter",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 55
+          }
+        ]
+      },
+      "msg_id": 88,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 1.09999999403954E-01
+        }
+      }
+    },
+    {
+      "file": "graph.ads",
+      "line": 40,
+      "col": 24,
+      "rule": "VC_PRECONDITION",
+      "severity": "info",
+      "entity": {
+        "name": "graph.addedge",
+        "sloc": [
+          {
+            "file": "graph.ads",
+            "line": 38
+          }
+        ]
+      },
+      "msg_id": 89,
+      "how_proved": "prover",
+      "stats": {
+        "CVC4": {
+          "count": 1,
+          "max_steps": 1,
+          "max_time": 9.00000035762787E-02
+        }
+      }
+    }
+  ],
+  "assumptions": [
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_POST",
+        "arg": {
+          "name": "graph.addedge",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 38
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.addedge",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 38
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.GraphNode.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 21
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.GraphEdge.Oeq",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.GraphNode.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 21
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.GraphEdge.Oeq",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.distance",
+            "sloc": [
+              {
+                "file": "graph.ads",
+                "line": 51
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.distance",
+            "sloc": [
+              {
+                "file": "graph.ads",
+                "line": 51
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.diameter",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 55
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_POST",
+        "arg": {
+          "name": "graph.addnode",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 33
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.addnode",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 33
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Length",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 102
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.addnode",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 33
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 17
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 17
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.GraphNode.Oeq",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 21
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.Olt",
+            "sloc": [
+              {
+                "file": "graph.ads",
+                "line": 17
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_EFFECTS",
+        "arg": {
+          "name": "graph.GraphEdge.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.GraphNode.Oeq",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 21
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.Olt",
+            "sloc": [
+              {
+                "file": "graph.ads",
+                "line": 17
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.Olt",
+            "sloc": [
+              {
+                "file": "graph.ads",
+                "line": 17
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.GraphEdge.Olt",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 25
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Contains",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 278
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Contains",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 278
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_POST",
+        "arg": {
+          "name": "graph.findnext",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 43
+            }
+          ]
+        }
+      }
+    },
+    {
+      "assumptions": [
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Include",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 154
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.First",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 240
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphNode.Contains",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 278
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphNode.Contains",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 278
+              },
+              {
+                "file": "graph.ads",
+                "line": 21
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Is_Empty",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 105
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 118
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Has_Element",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 281
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_EFFECTS",
+          "arg": {
+            "name": "graph.GraphEdge.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        },
+        {
+          "predicate": "CLAIM_AORTE",
+          "arg": {
+            "name": "graph.GraphEdge.Next",
+            "sloc": [
+              {
+                "file": "a-cforse.ads",
+                "line": 253
+              },
+              {
+                "file": "graph.ads",
+                "line": 25
+              }
+            ]
+          }
+        }
+      ],
+      "claim": {
+        "predicate": "CLAIM_AORTE",
+        "arg": {
+          "name": "graph.findnext",
+          "sloc": [
+            {
+              "file": "graph.ads",
+              "line": 43
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

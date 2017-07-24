@@ -1,0 +1,114 @@
+        -:    0:Source:E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adainclude/s-atocou.adb
+        -:    0:Programs:5
+        -:    1:------------------------------------------------------------------------------
+        -:    2:--                                                                          --
+        -:    3:--                         GNAT RUN-TIME COMPONENTS                         --
+        -:    4:--                                                                          --
+        -:    5:--               S Y S T E M . A T O M I C _ C O U N T E R S                --
+        -:    6:--                                                                          --
+        -:    7:--                                 B o d y                                  --
+        -:    8:--                                                                          --
+        -:    9:--          Copyright (C) 2011-2015, Free Software Foundation, Inc.         --
+        -:   10:--                                                                          --
+        -:   11:-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+        -:   12:-- terms of the  GNU General Public License as published  by the Free Soft- --
+        -:   13:-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+        -:   14:-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+        -:   15:-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+        -:   16:-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+        -:   17:--                                                                          --
+        -:   18:--                                                                          --
+        -:   19:--                                                                          --
+        -:   20:--                                                                          --
+        -:   21:--                                                                          --
+        -:   22:-- You should have received a copy of the GNU General Public License and    --
+        -:   23:-- a copy of the GCC Runtime Library Exception along with this program;     --
+        -:   24:-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+        -:   25:-- <http://www.gnu.org/licenses/>.                                          --
+        -:   26:--                                                                          --
+        -:   27:-- GNAT was originally developed  by the GNAT team at  New York University. --
+        -:   28:-- Extensive contributions were provided by Ada Core Technologies Inc.      --
+        -:   29:--                                                                          --
+        -:   30:------------------------------------------------------------------------------
+        -:   31:
+        -:   32:--  This implementation of the package for x86 processor. GCC can't generate
+        -:   33:--  code for atomic builtins for 386 CPU. Only increment/decrement instructions
+        -:   34:--  are supported, thus this implementaton uses machine code insertions to
+        -:   35:--  access the necessary instructions.
+        -:   36:
+        -:   37:with System.Machine_Code;
+        -:   38:
+        -:   39:package body System.Atomic_Counters is
+        -:   40:
+        -:   41:   --  Add comments showing in normal asm language what we generate???
+        -:   42:
+        -:   43:   ---------------
+        -:   44:   -- Decrement --
+        -:   45:   ---------------
+        -:   46:
+        -:   47:   function Decrement (Item : aliased in out Atomic_Unsigned) return Boolean is
+        -:   48:      Aux : Boolean;
+        -:   49:
+        -:   50:   begin
+    #####:   51:      System.Machine_Code.Asm
+        -:   52:        (Template =>
+        -:   53:           "lock%; decl" & ASCII.HT & "%0" & ASCII.LF & ASCII.HT
+        -:   54:             & "sete %1",
+        -:   55:         Outputs  =>
+        -:   56:           (Atomic_Unsigned'Asm_Output ("=m", Item),
+        -:   57:            Boolean'Asm_Output ("=qm", Aux)),
+        -:   58:         Inputs   => Atomic_Unsigned'Asm_Input ("m", Item),
+        -:   59:         Volatile => True);
+        -:   60:
+    #####:   61:      return Aux;
+        -:   62:   end Decrement;
+        -:   63:
+        -:   64:   procedure Decrement (Item : aliased in out Atomic_Unsigned) is
+        -:   65:   begin
+    #####:   66:      if Decrement (Item) then
+    #####:   67:         null;
+        -:   68:      end if;
+        -:   69:   end Decrement;
+        -:   70:
+        -:   71:   function Decrement (Item : in out Atomic_Counter) return Boolean is
+        -:   72:   begin
+        -:   73:      return Decrement (Item.Value);
+        -:   74:   end Decrement;
+        -:   75:
+        -:   76:   ---------------
+        -:   77:   -- Increment --
+        -:   78:   ---------------
+        -:   79:
+        -:   80:   procedure Increment (Item : aliased in out Atomic_Unsigned) is
+        -:   81:   begin
+    #####:   82:      System.Machine_Code.Asm
+        -:   83:        (Template => "lock%; incl" & ASCII.HT & "%0",
+        -:   84:         Outputs  => Atomic_Unsigned'Asm_Output ("=m", Item),
+        -:   85:         Inputs   => Atomic_Unsigned'Asm_Input ("m", Item),
+        -:   86:         Volatile => True);
+        -:   87:   end Increment;
+        -:   88:
+        -:   89:   procedure Increment (Item : in out Atomic_Counter) is
+        -:   90:   begin
+        -:   91:      Increment (Item.Value);
+        -:   92:   end Increment;
+        -:   93:
+        -:   94:   ----------------
+        -:   95:   -- Initialize --
+        -:   96:   ----------------
+        -:   97:
+        -:   98:   procedure Initialize (Item : out Atomic_Counter) is
+        -:   99:   begin
+        -:  100:      Item.Value := 1;
+        -:  101:   end Initialize;
+        -:  102:
+        -:  103:   ------------
+        -:  104:   -- Is_One --
+        -:  105:   ------------
+        -:  106:
+        -:  107:   function Is_One (Item : Atomic_Counter) return Boolean is
+        -:  108:   begin
+        -:  109:      return Item.Value = 1;
+        -:  110:   end Is_One;
+        -:  111:
+        -:  112:end System.Atomic_Counters;

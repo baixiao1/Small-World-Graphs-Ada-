@@ -1,0 +1,66 @@
+        -:    0:Source:D:/study/Master/2017Trimester 1/SWEN421/Ass2/src/graph.ads
+        -:    0:Programs:5
+        -:    1:with Ada.Containers.Formal_Ordered_Sets;
+        -:    2:use Ada.Containers;
+        -:    3:
+        4:    4:package graph is
+        -:    5:   pragma SPARK_Mode;
+        -:    6:
+        -:    7:   type Node is range 0..10;
+    #####:    8:   type Edge is record
+        -:    9:      To : Node;
+        -:   10:      From : Node;
+        -:   11:   end record;
+        -:   12:
+        -:   13:   -- "="  is for elements and "<" is for the key.
+        -:   14:   --function "=" (e: in Edge; f:in Edge) return Boolean is
+        -:   15:    --((e.To = f.To) and (e.From = f.From));
+        -:   16:
+       90:   17:   function "<" (e: in Edge; f:in Edge) return Boolean is
+       90:   18:   ((e.From < f.From) or ((e.From = f.From) and (e.To < f.To)));
+        -:   19:
+        -:   20:
+        -:   21:   package GraphNode is new Formal_Ordered_Sets(Element_Type => Node,
+        -:   22:                                                "<"       => "<",
+        -:   23:                                                "="       => "=");
+        -:   24:
+        -:   25:   package GraphEdge is new Formal_Ordered_Sets(Element_Type => Edge,
+        -:   26:                                                "<"       => "<",
+        -:   27:                                                "="       => "=");
+        2:   28:   type mygraph is record
+        2:   29:      gnode : GraphNode.Set(20);
+        2:   30:      gedge: GraphEdge.Set(20);
+        -:   31:   end record;
+        -:   32:
+        -:   33:   procedure addnode(g: in out mygraph; n:in Node)
+        -:   34:     with Depends => (g => +(n)),
+        -:   35:       Pre => GraphNode.Length(Container => g.gnode)<g.gnode.Capacity,
+        -:   36:       Post => not GraphNode.Is_Empty(g.gnode);
+        -:   37:
+        -:   38:   procedure addedge(g: in out mygraph; from: in Node; to: in Node)
+        -:   39:     with Depends => (g => +(from, to)),
+        -:   40:       Pre => GraphEdge.Length(Container => g.gedge)<g.gedge.Capacity,
+        -:   41:       Post=> not GraphEdge.Is_Empty(Container => g.gedge);
+        -:   42:
+        -:   43:   function findnext(n:in Node; g: in mygraph) return GraphNode.Set
+        -:   44:     with Depends => (findnext'Result => (g,n)),
+        -:   45:     Pre => GraphNode.Contains(g.gnode,n) and GraphEdge.Is_Empty(g.gedge),
+        -:   46:     Post => --(for some a of findnext'Result =>
+        -:   47:                --GraphEdge.Contains(Container => g.gedge,
+        -:   48:                                  -- Item      => ed)and
+        -:   49:     GraphNode.Is_Empty(findnext'Result);
+        -:   50:
+        -:   51:   function distance(source:in Node; target:in Node; g: in mygraph) return Integer
+    #####:   52:     with Pre => GraphNode.Contains(Container => g.gnode, Item  => source) = True and
+        -:   53:     GraphNode.Contains(Container => g.gnode, Item  => target) = True;
+        -:   54:
+        -:   55:   function diameter(g: in mygraph) return Integer
+        -:   56:   with Pre => GraphNode.Is_Empty(Container => g.gnode)=False and GraphEdge.Is_Empty(Container => g.gedge)=False;
+        -:   57:
+        -:   58:   function small(x: in Integer; g: in mygraph) return Boolean
+        -:   59:     with Pre => GraphNode.Is_Empty(Container => g.gnode)=False and GraphEdge.Is_Empty(Container => g.gedge)=False;
+        -:   60:
+        2:   61:end graph;
+        -:   62:
+        -:   63:
+        -:   64:

@@ -1,0 +1,19 @@
+project Ass2 is
+
+   for Source_Dirs use ("src/**", "src");
+   for Main use ("main.adb");
+
+   package Prove is
+      for Switches use ("--report=all", "--level=3");
+   end Prove;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-fprofile-arcs", "-g", "-ftest-coverage");
+   end Compiler;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-fprofile-arcs");
+   end Linker;
+
+end Ass2;
+

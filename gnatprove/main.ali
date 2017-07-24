@@ -1,0 +1,494 @@
+V "GNAT Lib v2016"
+M P W=b
+A -fprofile-arcs
+A -g
+A -ftest-coverage
+A -gnatc
+P GP ZX
+
+RN
+RV NO_IO
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U main%b		main.adb		aa106768 OO SU IL
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W graph%s		graph.adb		graph.ali
+W io%s			io.adb			io.ali
+W system%s		system.ads		system.ali
+
+D ada.ads		20160516092928 3ffc8e18 ada%s
+D a-contai.ads		20160516092926 61e5e089 ada.containers%s
+D a-cforse.ads		20160516092928 e4484e32 ada.containers.formal_ordered_sets%s
+D a-conhel.ads		20160516092928 20298884 ada.containers.helpers%s
+D a-crbltr.ads		20160516092930 c3e90a86 ada.containers.red_black_trees%s
+D a-finali.ads		20160516092930 bf4f806b ada.finalization%s
+D a-ioexce.ads		20160516092926 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20160516092928 119b8fb3 ada.streams%s
+D a-textio.ads		20160516092932 386df5d4 ada.text_io%s
+D graph.ads		20170611055828 39b370f5 graph%s
+D interfac.ads		20160516092928 5ab55268 interfaces%s
+D i-cstrea.ads		20160516092926 e53d8b8e interfaces.c_streams%s
+D io.ads		20170611060456 265e97a8 io%s
+D main.adb		20170611051742 8d9075e1 main%b
+D system.ads		20160516092930 2da59038 system%s
+D s-atocou.ads		20160516092932 b45c2d8d system.atomic_counters%s
+D s-crtl.ads		20160516092926 0ebbdb71 system.crtl%s
+D s-ficobl.ads		20160516092932 078245e4 system.file_control_block%s
+D s-finroo.ads		20160516092930 4ff27390 system.finalization_root%s
+D s-parame.ads		20160516092932 7e2a0d7f system.parameters%s
+D s-wchcon.ads		20160516092930 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 19e8 14|1r6 1r23
+X 9 a-textio.ads
+49K13*Text_IO 471e16 14|1w10 1r27
+263U14*Put_Line 14|10s4
+X 10 graph.ads
+4K9*graph 61e10 14|3w6 3r17
+7I9*Node<short_short_integer> 14|13r32 14r32 15r32 16r32 17r32 18r32 21r35
+. 21r49 22r35 22r49 23r35 23r49 24r35 24r49 25r35 25r49 26r35 26r49 27r35
+. 27r49 28r35 28r49 29r35 29r49 30r35 30r49 31r35 31r49 32r35 32r49 33r35
+. 33r49 40r34 42r34 44r34 46r34 48r34 50r34 55r38 55r56
+28R9*mygraph 31e14 14|7r16
+33U14*addnode 14|13s4 14s4 15s4 16s4 17s4 18s4
+38U14*addedge 14|21s4 22s4 23s4 24s4 25s4 26s4 27s4 28s4 29s4 30s4 31s4 32s4
+. 33s4
+43V13*findnext{3|78R9[21]} 14|40s20 42s20 44s20 46s20 48s20 50s20
+51V13*distance{integer} 14|55s19
+55V13*diameter{integer} 14|59s19
+58V13*small{boolean} 14|63s15
+X 13 io.ads
+3K9*io 11e7 14|2w6 2r14 12r4 36r4 39r4 40r4 41r4 42r4 43r4 44r4 45r4 46r4
+. 47r4 48r4 49r4 50r4 54r4 55r4 58r4 59r4 62r4 63r4
+4U14*myprint 14|12s7 39s7 41s7 43s7 45s7 47s7 49s7 54s7 58s7 62s7 63s7
+6U14*myprintnodes 14|40s7 42s7 44s7 46s7 48s7 50s7
+8U14*myprintgraph 14|36s7
+10U14*printnumber 14|55s7 59s7
+X 14 main.adb
+5U11*main 5b11 64l5 64t9
+7r4 testgraph{10|28R9} 13m17 13r17 14m17 14r17 15m17 15r17 16m17 16r17 17m17
+. 17r17 18m17 18r17 21m17 21r17 22m17 22r17 23m17 23r17 24m17 24r17 25m17
+. 25r17 26m17 26r17 27m17 27r17 28m17 28r17 29m17 29r17 30m17 30r17 31m17
+. 31r17 32m17 32r17 33m17 33r17 36r25 40r47 42r47 44r47 46r47 48r47 50r47
+. 55r69 59r28 63r33
+FD 1 ada.ads
+FS .1 16K9 ada
+FD 2 a-contai.ads
+FS .1 16K13 ada__containers
+FD 3 a-cforse.ads
+FD 4 a-conhel.ads
+FS .1 31K24 ada__containers__helpers
+FD 5 a-crbltr.ads
+FS .1 34K24 ada__containers__red_black_trees
+FD 6 a-finali.ads
+FS .1 40K13 ada__finalization
+FS .2 46U14 ada__finalization__initialize
+FS .3 47U14 ada__finalization__adjust
+FS .4 48U14 ada__finalization__finalize
+FS .5 53U14 ada__finalization__initialize__2
+FS .6 54U14 ada__finalization__finalize__2
+FD 7 a-ioexce.ads
+FS .1 18K13 ada__io_exceptions
+FD 8 a-stream.ads
+FS .1 36K13 ada__streams
+FS .2 76U14 ada__streams__read_sea
+FS .3 80U14 ada__streams__write_sea
+FS .4 84U4 ada__streams__stream_element_arraySR
+FS .5 85U4 ada__streams__stream_element_arraySW
+FS .6 84U4 ada__streams__stream_element_arraySR -> 8.4
+FS .7 85U4 ada__streams__stream_element_arraySW -> 8.5
+FD 9 a-textio.ads
+FS .1 49K13 ada__text_io
+FS .2 86U14 ada__text_io__create
+FS .3 92U14 ada__text_io__open
+FS .4 98U14 ada__text_io__close
+FS .5 99U14 ada__text_io__delete
+FS .6 100U14 ada__text_io__reset
+FS .7 101U14 ada__text_io__reset__2
+FS .8 103V13 ada__text_io__mode
+FS .9 104V13 ada__text_io__name
+FS .10 105V13 ada__text_io__form
+FS .11 107V13 ada__text_io__is_open
+FS .12 113U14 ada__text_io__set_input
+FS .13 114U14 ada__text_io__set_output
+FS .14 115U14 ada__text_io__set_error
+FS .15 117V13 ada__text_io__standard_input
+FS .16 118V13 ada__text_io__standard_output
+FS .17 119V13 ada__text_io__standard_error
+FS .18 121V13 ada__text_io__current_input
+FS .19 122V13 ada__text_io__current_output
+FS .20 123V13 ada__text_io__current_error
+FS .21 127V13 ada__text_io__standard_input__2
+FS .22 128V13 ada__text_io__standard_output__2
+FS .23 129V13 ada__text_io__standard_error__2
+FS .24 131V13 ada__text_io__current_input__2
+FS .25 132V13 ada__text_io__current_output__2
+FS .26 133V13 ada__text_io__current_error__2
+FS .27 142U14 ada__text_io__flush
+FS .28 143U14 ada__text_io__flush__2
+FS .29 149U14 ada__text_io__set_line_length
+FS .30 150U14 ada__text_io__set_line_length__2
+FS .31 152U14 ada__text_io__set_page_length
+FS .32 153U14 ada__text_io__set_page_length__2
+FS .33 155V13 ada__text_io__line_length
+FS .34 156V13 ada__text_io__line_length__2
+FS .35 158V13 ada__text_io__page_length
+FS .36 159V13 ada__text_io__page_length__2
+FS .37 165U14 ada__text_io__new_line
+FS .38 166U14 ada__text_io__new_line__2
+FS .39 168U14 ada__text_io__skip_line
+FS .40 169U14 ada__text_io__skip_line__2
+FS .41 171V13 ada__text_io__end_of_line
+FS .42 172V13 ada__text_io__end_of_line__2
+FS .43 174U14 ada__text_io__new_page
+FS .44 175U14 ada__text_io__new_page__2
+FS .45 177U14 ada__text_io__skip_page
+FS .46 178U14 ada__text_io__skip_page__2
+FS .47 180V13 ada__text_io__end_of_page
+FS .48 181V13 ada__text_io__end_of_page__2
+FS .49 183V13 ada__text_io__end_of_file
+FS .50 184V13 ada__text_io__end_of_file__2
+FS .51 186U14 ada__text_io__set_col
+FS .52 187U14 ada__text_io__set_col__2
+FS .53 189U14 ada__text_io__set_line
+FS .54 190U14 ada__text_io__set_line__2
+FS .55 192V13 ada__text_io__col
+FS .56 193V13 ada__text_io__col__2
+FS .57 195V13 ada__text_io__line
+FS .58 196V13 ada__text_io__line__2
+FS .59 198V13 ada__text_io__page
+FS .60 199V13 ada__text_io__page__2
+FS .61 205U14 ada__text_io__get
+FS .62 206U14 ada__text_io__get__2
+FS .63 207U14 ada__text_io__put
+FS .64 208U14 ada__text_io__put__2
+FS .65 210U14 ada__text_io__look_ahead
+FS .66 215U14 ada__text_io__look_ahead__2
+FS .67 219U14 ada__text_io__get_immediate
+FS .68 223U14 ada__text_io__get_immediate__2
+FS .69 226U14 ada__text_io__get_immediate__3
+FS .70 231U14 ada__text_io__get_immediate__4
+FS .71 239U14 ada__text_io__get__3
+FS .72 240U14 ada__text_io__get__4
+FS .73 241U14 ada__text_io__put__3
+FS .74 242U14 ada__text_io__put__4
+FS .75 244U14 ada__text_io__get_line
+FS .76 249U14 ada__text_io__get_line__2
+FS .77 253V13 ada__text_io__get_line__3
+FS .78 256V13 ada__text_io__get_line__4
+FS .79 259U14 ada__text_io__put_line
+FS .80 263U14 ada__text_io__put_line__2
+FS .81 426V13 ada__text_io__afcb_allocate__2
+FS .82 428U14 ada__text_io__afcb_close__2
+FS .83 429U14 ada__text_io__afcb_free__2
+FS .84 431U14 ada__text_io__read__2
+FS .85 437U14 ada__text_io__write__2
+FS .86 460V13 ada__text_io__eof_char
+FS .87 466U14 ada__text_io__initialize_standard_files
+FD 10 graph.ads
+FS .1 4K9 graph
+FS .2 17V13 graph__Olt
+FS .3 21K12 graph__graphnode
+FS .4 21V12 graph__graphnode__Olt
+FS .5 21V12 graph__graphnode__Olt -> 10.4
+FS .6 21V12 graph__graphnode__Oeq
+FS .7 21V12 graph__graphnode__Oeq -> 10.6
+FS .8 74V13 graph__graphnode__equivalent_elements
+FS .9 78U9 graph__graphnode__setDefault_Init_Cond
+FS .10 93V13 graph__graphnode__Oeq__2
+FS .11 96V13 graph__graphnode__equivalent_sets
+FS .12 99V13 graph__graphnode__to_set
+FS .13 102V13 graph__graphnode__length
+FS .14 105V13 graph__graphnode__is_empty
+FS .15 108U14 graph__graphnode__clear
+FS .16 111U14 graph__graphnode__assign
+FS .17 114V13 graph__graphnode__copy
+FS .18 118V13 graph__graphnode__element
+FS .19 125U14 graph__graphnode__replace_element
+FS .20 133U14 graph__graphnode__move
+FS .21 137U14 graph__graphnode__insert
+FS .22 146U14 graph__graphnode__insert__2
+FS .23 154U14 graph__graphnode__include
+FS .24 161U14 graph__graphnode__replace
+FS .25 168U14 graph__graphnode__exclude
+FS .26 174U14 graph__graphnode__delete
+FS .27 181U14 graph__graphnode__delete__2
+FS .28 188U14 graph__graphnode__delete_first
+FS .29 191U14 graph__graphnode__delete_last
+FS .30 194U14 graph__graphnode__union
+FS .31 199V13 graph__graphnode__union__2
+FS .32 206U14 graph__graphnode__intersection
+FS .33 209V13 graph__graphnode__intersection__2
+FS .34 214U14 graph__graphnode__difference
+FS .35 217V13 graph__graphnode__difference__2
+FS .36 222U14 graph__graphnode__symmetric_difference
+FS .37 227V13 graph__graphnode__symmetric_difference__2
+FS .38 234V13 graph__graphnode__overlap
+FS .39 237V13 graph__graphnode__is_subset
+FS .40 240V13 graph__graphnode__first
+FS .41 243V13 graph__graphnode__first_element
+FS .42 247V13 graph__graphnode__last
+FS .43 249V13 graph__graphnode__last_element
+FS .44 253V13 graph__graphnode__next
+FS .45 257U14 graph__graphnode__next__2
+FS .46 261V13 graph__graphnode__previous
+FS .47 265U14 graph__graphnode__previous__2
+FS .48 269V13 graph__graphnode__find
+FS .49 272V13 graph__graphnode__floor
+FS .50 275V13 graph__graphnode__ceiling
+FS .51 278V13 graph__graphnode__contains
+FS .52 281V13 graph__graphnode__has_element
+FS .53 331V13 graph__graphnode__strict_equal
+FS .54 338V13 graph__graphnode__first_to_previous
+FS .55 344V13 graph__graphnode__current_to_last
+FS .56 372K12 graph__graphnode__tree_types
+FS .57 77K15 graph__graphnode__tree_types__implementation
+FS .58 90U28 graph__graphnode__tree_types__implementation__adjust
+FS .59 93U28 graph__graphnode__tree_types__implementation__finalize
+FS .60 96U17 graph__graphnode__tree_types__implementation__zero_counts
+FS .61 100U17 graph__graphnode__tree_types__implementation__busy
+FS .62 104U17 graph__graphnode__tree_types__implementation__unbusy
+FS .63 108U17 graph__graphnode__tree_types__implementation__lock
+FS .64 112U17 graph__graphnode__tree_types__implementation__unlock
+FS .65 116U17 graph__graphnode__tree_types__implementation__tc_check
+FS .66 120U17 graph__graphnode__tree_types__implementation__te_check
+FS .67 139U28 graph__graphnode__tree_types__implementation__initialize__2
+FS .68 140U28 graph__graphnode__tree_types__implementation__finalize__2
+FS .69 145U28 graph__graphnode__tree_types__implementation__initialize__3
+FS .70 146U28 graph__graphnode__tree_types__implementation__finalize__3
+FS .71 78U9 graph__graphnode__setDefault_Init_Cond -> 10.9
+FS .72 25K12 graph__graphedge
+FS .73 25V12 graph__graphedge__Olt
+FS .74 25V12 graph__graphedge__Olt -> 10.73
+FS .75 25V12 graph__graphedge__Oeq
+FS .76 25V12 graph__graphedge__Oeq -> 10.75
+FS .77 74V13 graph__graphedge__equivalent_elements
+FS .78 78U9 graph__graphedge__setDefault_Init_Cond
+FS .79 93V13 graph__graphedge__Oeq__2
+FS .80 96V13 graph__graphedge__equivalent_sets
+FS .81 99V13 graph__graphedge__to_set
+FS .82 102V13 graph__graphedge__length
+FS .83 105V13 graph__graphedge__is_empty
+FS .84 108U14 graph__graphedge__clear
+FS .85 111U14 graph__graphedge__assign
+FS .86 114V13 graph__graphedge__copy
+FS .87 118V13 graph__graphedge__element
+FS .88 125U14 graph__graphedge__replace_element
+FS .89 133U14 graph__graphedge__move
+FS .90 137U14 graph__graphedge__insert
+FS .91 146U14 graph__graphedge__insert__2
+FS .92 154U14 graph__graphedge__include
+FS .93 161U14 graph__graphedge__replace
+FS .94 168U14 graph__graphedge__exclude
+FS .95 174U14 graph__graphedge__delete
+FS .96 181U14 graph__graphedge__delete__2
+FS .97 188U14 graph__graphedge__delete_first
+FS .98 191U14 graph__graphedge__delete_last
+FS .99 194U14 graph__graphedge__union
+FS .100 199V13 graph__graphedge__union__2
+FS .101 206U14 graph__graphedge__intersection
+FS .102 209V13 graph__graphedge__intersection__2
+FS .103 214U14 graph__graphedge__difference
+FS .104 217V13 graph__graphedge__difference__2
+FS .105 222U14 graph__graphedge__symmetric_difference
+FS .106 227V13 graph__graphedge__symmetric_difference__2
+FS .107 234V13 graph__graphedge__overlap
+FS .108 237V13 graph__graphedge__is_subset
+FS .109 240V13 graph__graphedge__first
+FS .110 243V13 graph__graphedge__first_element
+FS .111 247V13 graph__graphedge__last
+FS .112 249V13 graph__graphedge__last_element
+FS .113 253V13 graph__graphedge__next
+FS .114 257U14 graph__graphedge__next__2
+FS .115 261V13 graph__graphedge__previous
+FS .116 265U14 graph__graphedge__previous__2
+FS .117 269V13 graph__graphedge__find
+FS .118 272V13 graph__graphedge__floor
+FS .119 275V13 graph__graphedge__ceiling
+FS .120 278V13 graph__graphedge__contains
+FS .121 281V13 graph__graphedge__has_element
+FS .122 331V13 graph__graphedge__strict_equal
+FS .123 338V13 graph__graphedge__first_to_previous
+FS .124 344V13 graph__graphedge__current_to_last
+FS .125 372K12 graph__graphedge__tree_types
+FS .126 77K15 graph__graphedge__tree_types__implementation
+FS .127 90U28 graph__graphedge__tree_types__implementation__adjust
+FS .128 93U28 graph__graphedge__tree_types__implementation__finalize
+FS .129 96U17 graph__graphedge__tree_types__implementation__zero_counts
+FS .130 100U17 graph__graphedge__tree_types__implementation__busy
+FS .131 104U17 graph__graphedge__tree_types__implementation__unbusy
+FS .132 108U17 graph__graphedge__tree_types__implementation__lock
+FS .133 112U17 graph__graphedge__tree_types__implementation__unlock
+FS .134 116U17 graph__graphedge__tree_types__implementation__tc_check
+FS .135 120U17 graph__graphedge__tree_types__implementation__te_check
+FS .136 139U28 graph__graphedge__tree_types__implementation__initialize__2
+FS .137 140U28 graph__graphedge__tree_types__implementation__finalize__2
+FS .138 145U28 graph__graphedge__tree_types__implementation__initialize__3
+FS .139 146U28 graph__graphedge__tree_types__implementation__finalize__3
+FS .140 78U9 graph__graphedge__setDefault_Init_Cond -> 10.78
+FS .141 33U14 graph__addnode
+FS .142 38U14 graph__addedge
+FS .143 43V13 graph__findnext
+FS .144 51V13 graph__distance
+FS .145 55V13 graph__diameter
+FS .146 58V13 graph__small
+FS .147 17V13 graph__Olt -> 10.2
+FD 11 interfac.ads
+FS .1 38K9 interfaces
+FS .2 81V13 interfaces__shift_left
+FS .3 85V13 interfaces__shift_right
+FS .4 89V13 interfaces__shift_right_arithmetic
+FS .5 93V13 interfaces__rotate_left
+FS .6 97V13 interfaces__rotate_right
+FS .7 101V13 interfaces__shift_left__2
+FS .8 105V13 interfaces__shift_right__2
+FS .9 109V13 interfaces__shift_right_arithmetic__2
+FS .10 113V13 interfaces__rotate_left__2
+FS .11 117V13 interfaces__rotate_right__2
+FS .12 121V13 interfaces__shift_left__3
+FS .13 125V13 interfaces__shift_right__3
+FS .14 129V13 interfaces__shift_right_arithmetic__3
+FS .15 133V13 interfaces__rotate_left__3
+FS .16 137V13 interfaces__rotate_right__3
+FS .17 141V13 interfaces__shift_left__4
+FS .18 145V13 interfaces__shift_right__4
+FS .19 149V13 interfaces__shift_right_arithmetic__4
+FS .20 153V13 interfaces__rotate_left__4
+FS .21 157V13 interfaces__rotate_right__4
+FD 12 i-cstrea.ads
+FS .1 37K20 interfaces__c_streams
+FS .2 72V13 interfaces__c_streams__stdin
+FS .3 73V13 interfaces__c_streams__stdout
+FS .4 74V13 interfaces__c_streams__stderr
+FS .5 95V13 interfaces__c_streams__feof
+FS .6 97V13 interfaces__c_streams__ferror
+FS .7 106V13 interfaces__c_streams__fileno
+FS .8 128V13 interfaces__c_streams__fread
+FS .9 134V13 interfaces__c_streams__fread__2
+FS .10 171V13 interfaces__c_streams__fwrite
+FS .11 184V13 interfaces__c_streams__setvbuf
+FS .12 212V13 interfaces__c_streams__file_exists
+FS .13 215V13 interfaces__c_streams__is_regular_file
+FS .14 223U14 interfaces__c_streams__set_binary_mode
+FS .15 224U14 interfaces__c_streams__set_text_mode
+FS .16 254U14 interfaces__c_streams__set_mode
+FS .17 262U14 interfaces__c_streams__full_name
+FD 13 io.ads
+FS .1 3K9 io
+FS .2 4U14 io__myprint
+FS .3 6U14 io__myprintnodes
+FS .4 7U14 io__myprintedges
+FS .5 8U14 io__myprintgraph
+FS .6 9U14 io__printnode
+FS .7 10U14 io__printnumber
+FD 14 main.adb
+FS .1 5U11 main
+FD 15 system.ads
+FS .1 37K9 system
+FS .2 77V13 system__Olt
+FS .3 78V13 system__Ole
+FS .4 79V13 system__Ogt
+FS .5 80V13 system__Oge
+FS .6 81V13 system__Oeq
+FD 16 s-atocou.ads
+FS .1 40K16 system__atomic_counters
+FS .2 57U14 system__atomic_counters__increment
+FS .3 61V13 system__atomic_counters__decrement
+FS .4 65V13 system__atomic_counters__is_one
+FS .5 69U14 system__atomic_counters__initialize
+FS .6 80U14 system__atomic_counters__increment__2
+FS .7 84V13 system__atomic_counters__decrement__2
+FS .8 87U14 system__atomic_counters__decrement__3
+FD 17 s-crtl.ads
+FS .1 38K16 system__crtl
+FS .2 85V13 system__crtl__strlen
+FS .3 88U14 system__crtl__strncpy
+FS .4 95V13 system__crtl__atoi
+FS .5 98U14 system__crtl__clearerr
+FS .6 101V13 system__crtl__dup
+FS .7 104V13 system__crtl__dup2
+FS .8 107V13 system__crtl__fclose
+FS .9 110V13 system__crtl__fdopen
+FS .10 113V13 system__crtl__fflush
+FS .11 116V13 system__crtl__fgetc
+FS .12 119V13 system__crtl__fgets
+FS .13 122V13 system__crtl__fopen
+FS .14 128V13 system__crtl__fputc
+FS .15 131V13 system__crtl__fputwc
+FS .16 134V13 system__crtl__fputs
+FS .17 137U14 system__crtl__free
+FS .18 140V13 system__crtl__freopen
+FS .19 147V13 system__crtl__fseek
+FS .20 153V13 system__crtl__fseek64
+FS .21 159V13 system__crtl__ftell
+FS .22 162V13 system__crtl__ftell64
+FS .23 165V13 system__crtl__getenv
+FS .24 168V13 system__crtl__isatty
+FS .25 171V13 system__crtl__lseek
+FS .26 174V13 system__crtl__malloc
+FS .27 177U14 system__crtl__memcpy
+FS .28 180U14 system__crtl__memmove
+FS .29 183U14 system__crtl__mktemp
+FS .30 186V13 system__crtl__pclose
+FS .31 189V13 system__crtl__popen
+FS .32 192V13 system__crtl__realloc
+FS .33 196U14 system__crtl__rewind
+FS .34 199V13 system__crtl__rmdir
+FS .35 202V13 system__crtl__chdir
+FS .36 205V13 system__crtl__mkdir
+FS .37 210V13 system__crtl__setvbuf
+FS .38 217U14 system__crtl__tmpnam
+FS .39 220V13 system__crtl__tmpfile
+FS .40 223V13 system__crtl__ungetc
+FS .41 226V13 system__crtl__unlink
+FS .42 229V13 system__crtl__open
+FS .43 232V13 system__crtl__close
+FS .44 235V13 system__crtl__read
+FS .45 238V13 system__crtl__write
+FD 18 s-ficobl.ads
+FS .1 42K16 system__file_control_block
+FD 19 s-finroo.ads
+FS .1 34K16 system__finalization_root
+FS .2 42U14 system__finalization_root__adjust
+FS .3 43U14 system__finalization_root__finalize
+FS .4 44U14 system__finalization_root__initialize
+FD 20 s-parame.ads
+FS .1 51K16 system__parameters
+FS .2 81V13 system__parameters__default_stack_size
+FS .3 84V13 system__parameters__minimum_stack_size
+FS .4 87V13 system__parameters__adjust_storage_size
+FD 21 s-wchcon.ads
+FS .1 41K16 system__wch_con
+FS .2 203V13 system__wch_con__get_wc_encoding_method
+FS .3 207V13 system__wch_con__get_wc_encoding_method__2
+FS .4 212V13 system__wch_con__is_start_of_encoding
+FX 9 a-textio.ads .1 ada__text_io
+F 263*14 ada__text_io__put_line__2 14|.1:10s4
+FX 10 graph.ads .1 graph
+F 33*14 graph__addnode 14|.1:13s4 14s4 15s4 16s4 17s4 18s4
+F 38*14 graph__addedge 14|.1:21s4 22s4 23s4 24s4 25s4 26s4 27s4 28s4 29s4
+. 30s4 31s4 32s4 33s4
+F 43*13 graph__findnext 14|.1:40s20 42s20 44s20 46s20 48s20 50s20
+F 51*13 graph__distance 14|.1:55s19
+F 55*13 graph__diameter 14|.1:59s19
+F 58*13 graph__small 14|.1:63s15
+FX 13 io.ads .1 io
+F 4*14 io__myprint 14|.1:12s7 39s7 41s7 43s7 45s7 47s7 49s7 54s7 58s7 62s7
+. 63s7
+F 6*14 io__myprintnodes 14|.1:40s7 42s7 44s7 46s7 48s7 50s7
+F 8*14 io__myprintgraph 14|.1:36s7
+F 10*14 io__printnumber 14|.1:55s7 59s7
+FX 14 main.adb .1 main
+F 7*4 main__testgraph 13m17 13r17 14m17 14r17 15m17 15r17 16m17 16r17 17m17
+. 17r17 18m17 18r17 21m17 21r17 22m17 22r17 23m17 23r17 24m17 24r17 25m17
+. 25r17 26m17 26r17 27m17 27r17 28m17 28r17 29m17 29r17 30m17 30r17 31m17
+. 31r17 32m17 32r17 33m17 33r17 36r25 40r47 42r47 44r47 46r47 48r47 50r47
+. 55r69 59r28 63r33
+
+GG EK_REMOTE_STATES
+GG EK_GLOBALS main KIND_SUBPROGRAM ORIGIN_FRONTEND c:calls_conditional [ graph__findnext ada__text_io__put_line__2 io__myprint graph__addnode graph__addedge io__myprintgraph io__myprintnodes graph__distance io__printnumber graph__diameter graph__small ]
+GG EK_VOLATILES
+GG EK_TASKING_NONBLOCKING [ graph__Olt graph__graphnode__Olt graph__graphnode__Oeq graph__graphedge__Olt graph__graphedge__Oeq ]
+GG EK_END_MARKER

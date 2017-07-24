@@ -1,0 +1,65 @@
+        -:    0:Source:D:/study/Master/2017Trimester 1/SWEN421/Ass2/src/io.adb
+        -:    0:Programs:5
+        -:    1:with Ada.Text_IO; use Ada.Text_IO;
+        -:    2:with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+        -:    3:with graph; use graph;
+        -:    4:with Ada.Containers; use Ada.Containers;
+        -:    5:
+        -:    6:package body io with SPARK_Mode is
+       22:    7:   procedure myprint(s: in String) is
+        -:    8:   begin
+       22:    9:      if s = "" then
+    #####:   10:         New_Line;
+        -:   11:      else
+       22:   12:         Put_Line(s);
+        -:   13:      end if;
+       22:   14:   end myprint;
+        -:   15:
+       14:   16:   procedure myprintnodes(ns: in GraphNode.Set) is
+        -:   17:      n: Node;
+       14:   18:      c: GraphNode.Cursor := GraphNode.First(ns);
+        -:   19:   begin
+       14:   20:      Put("Nodes");
+       74:   21:      while (GraphNode.Has_Element(Container => ns,
+        -:   22:                                   Position  => c)) loop
+       60:   23:         n := GraphNode.Element(ns,c);
+       60:   24:         Put(n'Image & " ");
+       60:   25:         c := GraphNode.Next(ns,c);
+       60:   26:      end loop;
+       14:   27:      Put_Line(" *");
+       14:   28:   end myprintnodes;
+        -:   29:
+        2:   30:   procedure myprintedges(es: in GraphEdge.Set) is
+        -:   31:      e: Edge;
+        2:   32:      c: GraphEdge.Cursor := GraphEdge.First(es);
+        -:   33:   begin
+        2:   34:      Put("Edges");
+       26:   35:      while (GraphEdge.Has_Element(Container => es,
+        -:   36:                                   Position  => c)) loop
+       24:   37:         e := GraphEdge.Element(es,c);
+       24:   38:         Put("from:" & e.From'Image & " to:" & e.To'Image & " ");
+       24:   39:         c := GraphEdge.Next(es,c);
+       24:   40:      end loop;
+        2:   41:      Put_Line(" *");
+        2:   42:   end myprintedges;
+        -:   43:
+        2:   44:   procedure myprintgraph(g : in mygraph) is
+        -:   45:   begin
+        2:   46:      myprintnodes(g.gnode);
+        2:   47:      myprintedges(g.gedge);
+        2:   48:   end myprintgraph;
+        -:   49:
+    #####:   50:   procedure printnode(n: in Node) is
+        -:   51:   begin
+    #####:   52:      Put(n'Image);
+    #####:   53:   end printnode;
+        -:   54:
+        4:   55:   procedure printnumber(i:in Integer) is
+        -:   56:   begin
+        4:   57:      Put(i);
+        4:   58:      Put_Line("");
+        4:   59:   end printnumber;
+        -:   60:
+        -:   61:
+        -:   62:
+        -:   63:end IO;

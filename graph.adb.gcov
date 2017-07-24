@@ -1,0 +1,118 @@
+        -:    0:Source:D:/study/Master/2017Trimester 1/SWEN421/Ass2/src/graph.adb
+        -:    0:Programs:5
+        -:    1:with io;
+        -:    2:with Ada.Containers.Formal_Ordered_Sets; use Ada.Containers;
+        -:    3:
+        -:    4:package body graph with SPARK_Mode is
+        -:    5:
+        -:    6:   --mynodeset : GraphNode.Set(10);-- := GraphNode.Empty_Set;
+        -:    7:   --myedgeset : GraphEdge.Set(10);-- := GraphEdge.Empty_Set;
+        -:    8:
+       12:    9:   procedure addnode(g: in out mygraph; n:in Node) is
+        -:   10:   begin
+       12:   11:      GraphNode.Include(Container =>g.gnode,
+        -:   12:                        New_Item  => n);
+       12:   13:   end addnode;
+        -:   14:
+       26:   15:   procedure addedge(g: in out mygraph; from: in Node; to: in Node) is
+        -:   16:      e: Edge;
+        -:   17:
+        -:   18:   begin
+       26:   19:      e.From:= from;
+       26:   20:      e.To:= to;
+       26:   21:      GraphEdge.Include(Container =>g.gedge,
+        -:   22:                        New_Item  => e);
+       26:   23:   end addedge;
+        -:   24:
+       86:   25:   function findnext(n:in Node; g: in mygraph) return GraphNode.Set is
+        -:   26:      --an empty node set for the next nodes
+       86:   27:      working : GraphNode.Set(10);
+       86:   28:      c:GraphEdge.Cursor := GraphEdge.First(Container => g.gedge);
+        -:   29:   begin
+     1118:   30:      while GraphEdge.Has_Element(Container => g.gedge, Position  => c) loop
+     1032:   31:         if  (GraphEdge.Element(g.gedge,c).From=n) then
+        -:   32:            --io.printnode(GraphEdge.Element(g.gedge,c).To);
+      172:   33:            GraphNode.Include(Container => working,New_Item  => GraphEdge.Element(g.gedge,c).To);
+        -:   34:         end if;
+     1032:   35:         if (GraphEdge.Element(g.gedge,c).To =n) then
+      172:   36:            GraphNode.Include(Container => working,New_Item  => GraphEdge.Element(g.gedge,c).From);
+        -:   37:         end if;
+     1032:   38:         c := GraphEdge.Next(g.gedge,c);
+     1032:   39:      end loop;
+        -:   40:      --io.myprint("the next node is:");
+      172:   41:      return working;
+       86:   42:   end findnext;
+        -:   43:
+      124:   44:   function distance(source:in Node; target:in Node; g: in mygraph) return Integer is
+        -:   45:      Next     : Node;
+        -:   46:      --findnext nodeset
+       62:   47:      reach: GraphNode.Set(10);
+        -:   48:      --cursor in the findnext nodeset
+        -:   49:      c1: GraphNode.Cursor;
+       62:   50:      distance: Integer:=0;
+       62:   51:      ex : Exception;
+        -:   52:   begin
+       62:   53:      if GraphNode.Contains(g.gnode,source)=False or GraphNode.Contains(g.gnode,target)=False then
+    #####:   54:         io.myprint("No this node in the graph.");
+    #####:   55:         raise ex;
+        -:   56:      else
+        -:   57:      --io.myprint("The distance between node" & source'Image & " and node" & target'Image & " is: ");
+       62:   58:      reach := findnext(source,g);
+       62:   59:      if (GraphNode.Contains(Container => reach, Item => target)) then
+       50:   60:         return 1;
+        -:   61:      else
+       12:   62:            c1 := GraphNode.First(Container => reach);
+       24:   63:      while GraphNode.Has_Element(reach, c1) loop
+       24:   64:               distance := distance+1;
+       24:   65:            exit when GraphNode.Contains(Container => reach, Item => target);
+       12:   66:            Next := GraphNode.Element(reach,c1);
+       24:   67:               reach := findnext(n => Next, g => g);
+       12:   68:            c1:= GraphNode.Next(reach,c1);
+       12:   69:         end loop;
+       12:   70:         return distance;
+        -:   71:         end if;
+        -:   72:      end if;
+       62:   73:   end distance;
+        -:   74:
+        4:   75:   function diameter(g: in mygraph) return Integer is
+        -:   76:      source: Node;
+        -:   77:      target: Node;
+        -:   78:      --cursor in the graph
+        4:   79:      c: GraphNode.Cursor := GraphNode.First(Container => g.gnode);
+        -:   80:      --cursor in the findnext nodeset
+        -:   81:      c1: GraphNode.Cursor;
+        4:   82:      diameter: Integer:=0;
+        -:   83:      value: Integer;
+        -:   84:   begin
+       28:   85:      while GraphNode.Has_Element(Container => g.gnode,Position  => c) loop
+       24:   86:         source := GraphNode.Element(g.gnode,c);
+       24:   87:         c1:=GraphNode.Next(g.gnode,c);
+       84:   88:         while GraphNode.Has_Element(Container => g.gnode, Position  => c1) loop
+       60:   89:            target := GraphNode.Element(g.gnode,c1);
+       60:   90:            value:= distance(source => source,target => target,g => g);
+        -:   91:            --io.printnumber(value);
+       60:   92:            c1:= GraphNode.Next(g.gnode, c1);
+       60:   93:               if (value>=diameter) then
+       20:   94:                  diameter:= value;
+        -:   95:               end if;
+       60:   96:         end loop;
+       24:   97:            c:= GraphNode.Next(g.gnode,c);
+       24:   98:         end loop;
+        8:   99:         return diameter;
+        4:  100:   end diameter;
+        -:  101:
+        2:  102:   function small(x: in Integer; g: in mygraph) return Boolean is
+        -:  103:      diametervalue: Integer;
+        -:  104:      nodenumber : Integer;
+        -:  105:   begin
+        -:  106:      --io.myprint("X value is: "& x'Image);
+        2:  107:      nodenumber := Integer(GraphNode.Length(Container => g.gnode));
+        2:  108:      diametervalue := diameter(g);
+        2:  109:      if( x*diametervalue >= nodenumber) then
+    #####:  110:         return True;
+        -:  111:      else
+        2:  112:         return False;
+        -:  113:      end if;
+        -:  114:   end small;
+        -:  115:
+        -:  116:end graph;

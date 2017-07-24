@@ -1,0 +1,6 @@
+20170611060536
+-fprofile-arcs
+-g
+-ftest-coverage
+-gnatc
+-gnates=D:\study\Master\2017Trimester 1\SWEN421\Ass2\gnatprove\544f480e.tmp

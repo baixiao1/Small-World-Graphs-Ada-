@@ -1,0 +1,66 @@
+        -:    0:Source:D:/study/Master/2017Trimester 1/SWEN421/Ass2/src/main.adb
+        -:    0:Programs:5
+        -:    1:with Ada.Text_IO; use Ada.Text_IO;
+        -:    2:with IO; use IO;
+        -:    3:with graph; use graph;
+        -:    4:
+        2:    5:procedure main is
+        -:    6:
+        1:    7:   testgraph : mygraph;
+        -:    8:
+        -:    9:begin
+        1:   10:   Put_Line("Start");
+        -:   11:   --adding nodes into nodeset.
+        1:   12:   io.myprint("adding nodes and edges:");
+        1:   13:   addnode(g => testgraph,n => Node(0));
+        1:   14:   addnode(g => testgraph,n => Node(1));
+        1:   15:   addnode(g => testgraph,n => Node(2));
+        1:   16:   addnode(g => testgraph,n => Node(3));
+        1:   17:   addnode(g => testgraph,n => Node(4));
+        1:   18:   addnode(g => testgraph,n => Node(5));
+        -:   19:
+        -:   20:   --adding edges into edgeset and connect the edges to its source and target nodes.
+        1:   21:   addedge(g => testgraph,from => Node(0), to=> Node(1));
+        1:   22:   addedge(g => testgraph,from => Node(1), to=> Node(2));
+        1:   23:   addedge(g => testgraph,from => Node(2), to=> Node(3));
+        1:   24:   addedge(g => testgraph,from => Node(3), to=> Node(4));
+        1:   25:   addedge(g => testgraph,from => Node(4), to=> Node(5));
+        1:   26:   addedge(g => testgraph,from => Node(1), to=> Node(3));
+        1:   27:   addedge(g => testgraph,from => Node(3), to=> Node(5));
+        1:   28:   addedge(g => testgraph,from => Node(3), to=> Node(5));
+        1:   29:   addedge(g => testgraph,from => Node(5), to=> Node(1));
+        1:   30:   addedge(g => testgraph,from => Node(0), to=> Node(2));
+        1:   31:   addedge(g => testgraph,from => Node(2), to=> Node(4));
+        1:   32:   addedge(g => testgraph,from => Node(4), to=> Node(0));
+        1:   33:   addedge(g => testgraph,from => Node(5), to=> Node(0));
+        -:   34:
+        -:   35:   --print the graph
+        1:   36:   io.myprintgraph(g => testgraph);
+        -:   37:
+        -:   38:   --find a next node of a node.
+        1:   39:   io.myprint("The adjacent nodes of node 0 is: ");
+        1:   40:   io.myprintnodes(findnext(n => Node(0),g => testgraph));
+        1:   41:   io.myprint("The adjacent nodes of node 1 is: ");
+        1:   42:   io.myprintnodes(findnext(n => Node(1),g => testgraph));
+        1:   43:   io.myprint("The adjacent nodes of node 2 is: ");
+        1:   44:   io.myprintnodes(findnext(n => Node(2),g => testgraph));
+        1:   45:   io.myprint("The adjacent nodes of node 3 is: ");
+        1:   46:   io.myprintnodes(findnext(n => Node(3),g => testgraph));
+        1:   47:   io.myprint("The adjacent nodes of node 4 is: ");
+        1:   48:   io.myprintnodes(findnext(n => Node(4),g => testgraph));
+        1:   49:   io.myprint("The adjacent nodes of node 5 is: ");
+        1:   50:   io.myprintnodes(findnext(n => Node(5),g => testgraph));
+        -:   51:
+        -:   52:
+        -:   53:   --distance bwtween two nodes (the shortest path)
+        1:   54:   io.myprint("The distance between the nodes are:");
+        1:   55:   io.printnumber(distance(source => Node(0),target => Node(4),g => testgraph));
+        -:   56:
+        -:   57:   --diameter of a graph
+        1:   58:   io.myprint("The diameter of the graph is: ");
+        1:   59:   io.printnumber(diameter(testgraph));
+        -:   60:
+        -:   61:   --whether the graph is small
+        1:   62:   io.myprint("The graph is small :");
+        1:   63:   io.myprint(small(x => 2,g => testgraph)'Image);
+        1:   64:end main;

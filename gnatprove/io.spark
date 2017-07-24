@@ -1,0 +1,80 @@
+{
+  "spark": [
+    {
+      "name": "io.myprint",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 4
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io.myprintnodes",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 6
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io.myprintedges",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 7
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io.myprintgraph",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 8
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io.printnode",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 9
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io.printnumber",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 10
+        }
+      ],
+      "spark": "spec"
+    },
+    {
+      "name": "io",
+      "sloc": [
+        {
+          "file": "io.ads",
+          "line": 3
+        }
+      ],
+      "spark": "spec"
+    }
+  ],
+  "flow": [
+  ],
+  "proof": [
+  ],
+  "assumptions": [
+  ]
+}

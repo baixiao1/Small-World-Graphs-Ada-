@@ -1,0 +1,205 @@
+V "GNAT Lib v2016"
+A -gnatA
+A -fprofile-arcs
+A -g
+A -ftest-coverage
+A -mtune=generic
+A -march=pentium4
+P SS ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_IMPLICIT_HEAP_ALLOCATIONS
+RV NO_SECONDARY_STACK
+RV NO_STANDARD_STORAGE_POOLS
+RV NO_DEFAULT_INITIALIZATION
+RV NO_IMPLEMENTATION_ASPECT_SPECIFICATIONS
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+
+U graph%b		graph.adb		f2c76c43 NE OO PK IL
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+W ada.containers.formal_ordered_sets%s
+W ada.tags%s		a-tags.adb		a-tags.ali
+W io%s			io.adb			io.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U graph%s		graph.ads		ddfb3ec7 EE OO PF PK IL
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+W ada.containers.formal_ordered_sets%s
+Z ada.containers.red_black_trees%s  a-crbltr.ads  a-crbltr.ali
+Z ada.containers.red_black_trees.generic_bounded_keys%s
+Z ada.containers.red_black_trees.generic_bounded_operations%s
+Z ada.containers.red_black_trees.generic_bounded_set_operations%s
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.adb		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+W system.storage_pools.subpools%s  s-stposu.adb	s-stposu.ali
+W system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+
+D ada.ads		20160516092928 3ffc8e18 ada%s
+D a-contai.ads		20160516092926 61e5e089 ada.containers%s
+D a-cforse.ads		20170611031458 e4484e32 ada.containers.formal_ordered_sets%s
+D a-cforse.adb		20160516092926 e2c6d679 ada.containers.formal_ordered_sets%b
+D a-conhel.ads		20160516092928 20298884 ada.containers.helpers%s
+D a-conhel.adb		20160516092930 9cc5095b ada.containers.helpers%b
+D a-crbltr.ads		20160516092930 c3e90a86 ada.containers.red_black_trees%s
+D a-rbtgbk.ads		20160516092932 360e50a8 ada.containers.red_black_trees.generic_bounded_keys%s
+D a-rbtgbk.adb		20160516092930 103369a3 ada.containers.red_black_trees.generic_bounded_keys%b
+D a-rbtgbo.ads		20160516092930 a2816f8a ada.containers.red_black_trees.generic_bounded_operations%s
+D a-rbtgbo.adb		20160516092926 65411810 ada.containers.red_black_trees.generic_bounded_operations%b
+D a-btgbso.ads		20160516092932 d81493ca ada.containers.red_black_trees.generic_bounded_set_operations%s
+D a-btgbso.adb		20160516092930 0090afee ada.containers.red_black_trees.generic_bounded_set_operations%b
+D a-except.ads		20160516092928 291912d5 ada.exceptions%s
+D a-finali.ads		20160516092930 bf4f806b ada.finalization%s
+D a-stream.ads		20160516092928 119b8fb3 ada.streams%s
+D a-tags.ads		20160516092932 01f5e3ef ada.tags%s
+D a-unccon.ads		20160516092930 f9eb8f06 ada.unchecked_conversion%s
+D graph.ads		20170611055828 39b370f5 graph%s
+D graph.adb		20170611055932 90679d53 graph%b
+D io.ads		20170611060544 bf5bcfd7 io%s
+D system.ads		20160516092930 2da59038 system%s
+D s-atocou.ads		20160516092932 b45c2d8d system.atomic_counters%s
+D s-atocou.adb		20160516092932 a9c6d721 system.atomic_counters%b
+D s-exctab.ads		20160516092930 54135002 system.exception_table%s
+D s-finmas.ads		20160516092930 7811a767 system.finalization_masters%s
+D s-finroo.ads		20160516092930 4ff27390 system.finalization_root%s
+D s-maccod.ads		20160516092930 0fbb7bce system.machine_code%s
+D s-memory.ads		20160516092930 597d6634 system.memory%s
+D s-parame.ads		20160516092932 7e2a0d7f system.parameters%s
+D s-secsta.ads		20160516092930 86a2856d system.secondary_stack%s
+D s-soflin.ads		20160516092928 14e1eb6c system.soft_links%s
+D s-stache.ads		20160516092932 a37c21ec system.stack_checking%s
+D s-stalib.ads		20160516092930 09bd3940 system.standard_library%s
+D s-stalib.adb		20160516092926 f2fe2716 system.standard_library%b
+D s-stoele.ads		20160516092932 2dc34a04 system.storage_elements%s
+D s-stoele.adb		20160516092930 ed88f8fb system.storage_elements%b
+D s-stopoo.ads		20160516092928 b16154c2 system.storage_pools%s
+D s-stposu.ads		20160516092926 97a6219c system.storage_pools.subpools%s
+D s-stratt.ads		20160516092926 aedef97e system.stream_attributes%s
+D s-traent.ads		20160516092928 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20160516092930 34867c83 system.unsigned_types%s
+X 1 ada.ads
+16K9*Ada 19e8 19|1r6 2r5 20|2r6 2r46
+X 2 a-contai.ads
+16K13*Containers 24e19 19|1r10 2r9 20|2r10 2r50
+20I9*Count_Type<integer>
+X 3 a-cforse.ads
+62+9 Element_Type 19|21r49 25r49
+64V19 "<"{boolean} 19|22r50 26r50
+65V19 "="{boolean} 19|23r50 27r50
+67k24*Formal_Ordered_Sets 388e39 19|1w21 21r29 25r29 20|2w21
+78R9*Set<7|67R12[372[19|21]]> 19|29r25[21] 30r24[25] 43r65[21] 20|25r65[19|21]
+. 27r27[19|21] 47r24[19|21]
+78i14 Capacity{2|20I9} 19|35r62[21] 40r62[25]
+86R9*Cursor 20|28r19[19|25] 49r21[19|21] 74r20[19|21] 76r21[19|21]
+102V13*Length{2|20I9} 19|35s25[21] 40s25[25] 20|102s39[19|21]
+102r21 Container{78R9[19|21]} 19|35r32[21] 40r32[25] 20|102r46[19|21]
+105V13*Is_Empty{boolean} 19|36s30[21] 41s29[25] 45s57[25] 49s16[21] 56s26[21]
+. 56s77[25] 59s28[21] 59s79[25]
+105r23 Container{78R9[19|25]} 19|41r38[25] 56r35[21] 56r86[25] 59r37[21]
+. 59r88[25]
+118V13*Element{19|8R9} 20|31s25[19|25] 33s75[19|25] 35s24[19|25] 36s75[19|25]
+. 61s31[19|21] 81s30[19|21] 84s33[19|21]
+154U14*Include 20|11s17[19|21] 21s17[19|25] 33s23[19|21] 36s23[19|21]
+155r7 Container{78R9[19|21]} 20|11r25[19|21] 21r25[19|25] 33r31[19|21] 36r31[19|21]
+156i7 New_Item{19|7I9} 20|12r25[19|21] 22r25[19|25] 33r52[19|21] 36r52[19|21]
+240V13*First{86R9[19|25]} 20|28s39[19|25] 57s29[19|21] 74s40[19|21]
+240r20 Container{78R9[19|25]} 20|28r45[19|25] 57r35[19|21] 74r46[19|21]
+253V13*Next{86R9[19|25]} 20|38s25[19|25] 63s28[19|21] 82s24[19|21] 87s28[19|21]
+. 92s27[19|21]
+278V13*Contains{boolean} 19|45s23[21] 52s28[21] 53s16[21] 20|54s21[19|21]
+. 60s33[19|21]
+278r23 Container{78R9[19|21]} 19|52r37[21] 53r25[21] 20|54r30[19|21] 60r42[19|21]
+278i40 Item{19|7I9} 19|52r59[21] 53r47[21] 20|54r50[19|21] 60r62[19|21]
+281V13*Has_Element{boolean} 20|30s23[19|25] 58s23[19|21] 80s23[19|21] 83s26[19|21]
+281r26 Container{78R9[19|25]} 20|30r35[19|25] 80r35[19|21] 83r38[19|21]
+281r43 Position{86R9[19|25]} 20|30r57[19|25] 80r56[19|21] 83r60[19|21]
+X 4 a-cforse.adb
+52V13 Color{7|37E9} 10|57i19[19|25]
+58V13 Parent{2|20I9} 10|39i19[19|25]
+64U14 Set_Color 10|59i19
+69U14 Set_Left 10|47i19[19|25]
+72U14 Set_Right 10|53i19[19|21]
+75U14 Set_Parent 10|41i19[19|25]
+X 7 a-crbltr.ads
+67R12*Tree_Type
+X 19 graph.ads
+4K9*graph 61l5 61e10 20|4b14 111l5 111t10
+7I9*Node<short_short_integer> 9r12 10r14 21r65 33r46 38r50 38r63 43r27 51r32
+. 51r48 20|9r46 15r50 15r63 25r27 44r32 44r48 45r18 71r15 72r15
+8R9*Edge 11e14 17r24 17r35 25r65 20|16r10
+9i7*To{7I9} 18r52 18r59 20|20m9 33r94 35r43
+10i7*From{7I9} 18r8 18r17 18r30 18r39 20|19m9 31r44 36r94
+17V14*"<"{boolean} 17>18 17>30 26r63
+17r18 e{8R9} 18r6 18r28 18r50
+17r30 f{8R9} 18r15 18r37 18r57
+21K12*GraphNode[3|67] 29r15 35r15 36r20 43r55 45r13 49r6 52r18 53r6 56r16
+. 59r18 20|11r7 25r55 27r17 33r13 36r13 47r14 49r11 54r11 57r19 58r13 60r23
+. 61r21 63r18 74r10 74r30 76r11 80r13 81r20 82r14 83r16 84r23 87r18 92r17
+. 102r29
+25K12*GraphEdge[3|67] 30r14 40r15 41r19 45r47 56r67 59r69 20|21r7 28r9 28r29
+. 30r13 31r15 33r65 35r14 36r65 38r15
+28R9*mygraph 31e14 33r32 38r32 43r39 51r60 55r28 58r40 20|9r32 15r32 25r39
+. 44r60 70r28 97r40
+29r7*gnode{3|78R9[21]} 35r47 35r56 36r41 45r34 52r52 53r40 56r50 59r52 20|11m39
+. 74r61 80r50 81r40 82r31 83r53 84r43 87r35 92r34 102r61
+30r7*gedge{3|78R9[25]} 40r47 40r56 41r53 45r68 56r101 59r103 20|21m39 28r60
+. 30r50 31r35 33r85 35r34 36r85 38r32
+33U14*addnode 33=22 33>41 20|9b14 13l8 13t15
+33r22 g{28R9} 34r23 35r45 35r54 36r39 20|9b22 11m37 11r37
+33i41 n{7I9} 34r30 20|9b41 12r38
+38U14*addedge 38=22 38>41 38>56 20|15b14 23l8 23t15
+38r22 g{28R9} 39r23 40r45 40r54 41r51 20|15b22 21m37 21r37
+38i41 from{7I9} 39r30 20|15b41 19r16
+38i56 to{7I9} 39r36 20|15b56 20r14
+43V13*findnext{3|78R9[21]} 43>22 43>33 44r23 49r25 20|25b13 42l8 42t16 53s16
+. 62s25
+43i22 n{7I9} 44r45 45r40 20|25b22 31r49 35r47 62r34
+43r33 g{28R9} 44r43 45r32 45r66 20|25b33 28r58 30r48 31r33 33r83 35r32 36r83
+. 38r30 62r45
+51V13*distance{integer} 51>22 51>38 51>54 20|44b13 68l8 68t16 85s21
+51i22 source{7I9} 52r68 20|44b22 53r25 85r30
+51i38 target{7I9} 53r56 20|44b38 54r58 60r70 85r47
+51r54 g{28R9} 52r50 53r38 20|44b54 53r32 62r50 85r64
+55V13*diameter{integer} 55>22 20|70b13 95l8 95t16 103s24
+55r22 g{28R9} 56r48 56r99 20|70b22 74r59 80r48 81r38 82r29 83r51 84r41 85r69
+. 87r33 92r32
+58V13*small{boolean} 58>19 58>34 20|97b13 109l8 109t13
+58i19 x{integer} 20|97b19 104r11
+58r34 g{28R9} 59r50 59r101 20|97b34 102r59 103r33
+X 20 graph.adb
+16r7 e{19|8R9} 19m7 20m7 22r38
+27r7 working{3|78R9[19|21]} 33m44 33r44 36m44 36r44 41r14
+28r7 c{3|86R9[19|25]} 30r70 31r41 33r91 35r40 36r91 38m10 38r38
+45i7 Next{19|7I9} 61m13 62r39
+47r7 reach{3|78R9[19|21]} 53m7 54r43 57r48 58r35 60r55 61r39 62m16 63r33
+49r7 c1{3|86R9[19|21]} 57m13 58r42 61r45 63m13 63r39
+50i7 distance{integer} 59m16 59r28 65r17
+71i7 source{19|7I9} 81m10 85r40
+72i7 target{19|7I9} 84m13 85r57
+74r7 c{3|86R9[19|21]} 80r69 81r46 82r37 92m13 92r40
+76r7 c1{3|86R9[19|21]} 82m10 83r73 84r49 87m13 87r42
+77i7 diameter{integer} 88r27 89m19 94r17
+78i7 value{integer} 85m13 88r20 89r30
+98i7 diametervalue{integer} 103m7 104r13
+99i7 nodenumber{integer} 102m7 104r30
+X 21 io.ads
+3K9*io 20|1w6 21|10e7
+X 22 system.ads
+67M9*Address
+X 29 s-memory.ads
+53V13*Alloc{22|67M9} 103i<c,__gnat_malloc>22
+68U14*Free 104i<c,__gnat_free>22
+76V13*Realloc{22|67M9} 105i<c,__gnat_realloc>22
+X 35 s-stalib.adb
+93U14 Break_Start 94i<c,__gnat_break_start>22
+

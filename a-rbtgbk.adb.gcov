@@ -1,0 +1,629 @@
+        -:    0:Source:E:/gnat/2016/lib/gcc/i686-pc-mingw32/4.9.4/adainclude/a-rbtgbk.adb
+        -:    0:Programs:5
+        -:    1:------------------------------------------------------------------------------
+        -:    2:--                                                                          --
+        -:    3:--                         GNAT LIBRARY COMPONENTS                          --
+        -:    4:--                                                                          --
+        -:    5:--            ADA.CONTAINERS.RED_BLACK_TREES.GENERIC_BOUNDED_KEYS           --
+        -:    6:--                                                                          --
+        -:    7:--                                 B o d y                                  --
+        -:    8:--                                                                          --
+        -:    9:--          Copyright (C) 2004-2015, Free Software Foundation, Inc.         --
+        -:   10:--                                                                          --
+        -:   11:-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+        -:   12:-- terms of the  GNU General Public License as published  by the Free Soft- --
+        -:   13:-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+        -:   14:-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+        -:   15:-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+        -:   16:-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+        -:   17:--                                                                          --
+        -:   18:--                                                                          --
+        -:   19:--                                                                          --
+        -:   20:--                                                                          --
+        -:   21:--                                                                          --
+        -:   22:-- You should have received a copy of the GNU General Public License and    --
+        -:   23:-- a copy of the GCC Runtime Library Exception along with this program;     --
+        -:   24:-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+        -:   25:-- <http://www.gnu.org/licenses/>.                                          --
+        -:   26:--                                                                          --
+        -:   27:-- This unit was originally developed by Matthew J Heaney.                  --
+        -:   28:------------------------------------------------------------------------------
+        -:   29:
+        -:   30:package body Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys is
+        -:   31:
+        -:   32:   package Ops renames Tree_Operations;
+        -:   33:
+        -:   34:   -------------
+        -:   35:   -- Ceiling --
+        -:   36:   -------------
+        -:   37:
+        -:   38:   --  AKA Lower_Bound
+        -:   39:
+    #####:   40:   function Ceiling
+        -:   41:     (Tree : Tree_Type'Class;
+        -:   42:      Key  : Key_Type) return Count_Type
+        -:   43:   is
+        -:   44:      Y : Count_Type;
+        -:   45:      X : Count_Type;
+    #####:   46:      N : Nodes_Type renames Tree.Nodes;
+        -:   47:
+        -:   48:   begin
+    #####:   49:      Y := 0;
+        -:   50:
+    #####:   51:      X := Tree.Root;
+    #####:   52:      while X /= 0 loop
+    #####:   53:         if Is_Greater_Key_Node (Key, N (X)) then
+    #####:   54:            X := Ops.Right (N (X));
+        -:   55:         else
+    #####:   56:            Y := X;
+    #####:   57:            X := Ops.Left (N (X));
+        -:   58:         end if;
+    #####:   59:      end loop;
+        -:   60:
+    #####:   61:      return Y;
+        -:   62:   end Ceiling;
+        -:   63:
+        -:   64:   ----------
+        -:   65:   -- Find --
+        -:   66:   ----------
+        -:   67:
+      210:   68:   function Find
+        -:   69:     (Tree : Tree_Type'Class;
+        -:   70:      Key  : Key_Type) return Count_Type
+        -:   71:   is
+        -:   72:      Y : Count_Type;
+        -:   73:      X : Count_Type;
+      210:   74:      N : Nodes_Type renames Tree.Nodes;
+        -:   75:
+        -:   76:   begin
+      210:   77:      Y := 0;
+        -:   78:
+      210:   79:      X := Tree.Root;
+      772:   80:      while X /= 0 loop
+      562:   81:         if Is_Greater_Key_Node (Key, N (X)) then
+      314:   82:            X := Ops.Right (N (X));
+        -:   83:         else
+      248:   84:            Y := X;
+      248:   85:            X := Ops.Left (N (X));
+        -:   86:         end if;
+      562:   87:      end loop;
+        -:   88:
+      210:   89:      if Y = 0 then
+        8:   90:         return 0;
+        -:   91:      end if;
+        -:   92:
+      202:   93:      if Is_Less_Key_Node (Key, N (Y)) then
+       16:   94:         return 0;
+        -:   95:      end if;
+        -:   96:
+      186:   97:      return Y;
+        -:   98:   end Find;
+        -:   99:
+        -:  100:   -----------
+        -:  101:   -- Floor --
+        -:  102:   -----------
+        -:  103:
+    #####:  104:   function Floor
+        -:  105:     (Tree : Tree_Type'Class;
+        -:  106:      Key  : Key_Type) return Count_Type
+        -:  107:   is
+        -:  108:      Y : Count_Type;
+        -:  109:      X : Count_Type;
+    #####:  110:      N : Nodes_Type renames Tree.Nodes;
+        -:  111:
+        -:  112:   begin
+    #####:  113:      Y := 0;
+        -:  114:
+    #####:  115:      X := Tree.Root;
+    #####:  116:      while X /= 0 loop
+    #####:  117:         if Is_Less_Key_Node (Key, N (X)) then
+    #####:  118:            X := Ops.Left (N (X));
+        -:  119:         else
+    #####:  120:            Y := X;
+    #####:  121:            X := Ops.Right (N (X));
+        -:  122:         end if;
+    #####:  123:      end loop;
+        -:  124:
+    #####:  125:      return Y;
+        -:  126:   end Floor;
+        -:  127:
+        -:  128:   --------------------------------
+        -:  129:   -- Generic_Conditional_Insert --
+        -:  130:   --------------------------------
+        -:  131:
+      382:  132:   procedure Generic_Conditional_Insert
+        -:  133:     (Tree     : in out Tree_Type'Class;
+        -:  134:      Key      : Key_Type;
+        -:  135:      Node     : out Count_Type;
+        -:  136:      Inserted : out Boolean)
+        -:  137:   is
+        -:  138:      Y : Count_Type;
+        -:  139:      X : Count_Type;
+      382:  140:      N : Nodes_Type renames Tree.Nodes;
+        -:  141:
+        -:  142:   begin
+        -:  143:      --  This is a "conditional" insertion, meaning that the insertion request
+        -:  144:      --  can "fail" in the sense that no new node is created. If the Key is
+        -:  145:      --  equivalent to an existing node, then we return the existing node and
+        -:  146:      --  Inserted is set to False. Otherwise, we allocate a new node (via
+        -:  147:      --  Insert_Post) and Inserted is set to True.
+        -:  148:
+        -:  149:      --  Note that we are testing for equivalence here, not equality. Key must
+        -:  150:      --  be strictly less than its next neighbor, and strictly greater than
+        -:  151:      --  its previous neighbor, in order for the conditional insertion to
+        -:  152:      --  succeed.
+        -:  153:
+        -:  154:      --  We search the tree to find the nearest neighbor of Key, which is
+        -:  155:      --  either the smallest node greater than Key (Inserted is True), or the
+        -:  156:      --  largest node less or equivalent to Key (Inserted is False).
+        -:  157:
+      382:  158:      Y := 0;
+      382:  159:      X := Tree.Root;
+      382:  160:      Inserted := True;
+      892:  161:      while X /= 0 loop
+      510:  162:         Y := X;
+      510:  163:         Inserted := Is_Less_Key_Node (Key, N (X));
+      510:  164:         X := (if Inserted then Ops.Left (N (X)) else Ops.Right (N (X)));
+      510:  165:      end loop;
+        -:  166:
+      382:  167:      if Inserted then
+        -:  168:
+        -:  169:         --  Either Tree is empty, or Key is less than Y. If Y is the first
+        -:  170:         --  node in the tree, then there are no other nodes that we need to
+        -:  171:         --  search for, and we insert a new node into the tree.
+        -:  172:
+      104:  173:         if Y = Tree.First then
+       98:  174:            Insert_Post (Tree, Y, True, Node);
+       98:  175:            return;
+        -:  176:         end if;
+        -:  177:
+        -:  178:         --  Y is the next nearest-neighbor of Key. We know that Key is not
+        -:  179:         --  equivalent to Y (because Key is strictly less than Y), so we move
+        -:  180:         --  to the previous node, the nearest-neighbor just smaller or
+        -:  181:         --  equivalent to Key.
+        -:  182:
+        6:  183:         Node := Ops.Previous (Tree, Y);
+        -:  184:
+        -:  185:      else
+        -:  186:         --  Y is the previous nearest-neighbor of Key. We know that Key is not
+        -:  187:         --  less than Y, which means either that Key is equivalent to Y, or
+        -:  188:         --  greater than Y.
+        -:  189:
+      278:  190:         Node := Y;
+        -:  191:      end if;
+        -:  192:
+        -:  193:      --  Key is equivalent to or greater than Node. We must resolve which is
+        -:  194:      --  the case, to determine whether the conditional insertion succeeds.
+        -:  195:
+      284:  196:      if Is_Greater_Key_Node (Key, N (Node)) then
+        -:  197:
+        -:  198:         --  Key is strictly greater than Node, which means that Key is not
+        -:  199:         --  equivalent to Node. In this case, the insertion succeeds, and we
+        -:  200:         --  insert a new node into the tree.
+        -:  201:
+      282:  202:         Insert_Post (Tree, Y, Inserted, Node);
+      282:  203:         Inserted := True;
+      282:  204:         return;
+        -:  205:      end if;
+        -:  206:
+        -:  207:      --  Key is equivalent to Node. This is a conditional insertion, so we do
+        -:  208:      --  not insert a new node in this case. We return the existing node and
+        -:  209:      --  report that no insertion has occurred.
+        -:  210:
+        2:  211:      Inserted := False;
+      382:  212:   end Generic_Conditional_Insert;
+        -:  213:
+        -:  214:   ------------------------------------------
+        -:  215:   -- Generic_Conditional_Insert_With_Hint --
+        -:  216:   ------------------------------------------
+        -:  217:
+    #####:  218:   procedure Generic_Conditional_Insert_With_Hint
+        -:  219:     (Tree      : in out Tree_Type'Class;
+        -:  220:      Position  : Count_Type;
+        -:  221:      Key       : Key_Type;
+        -:  222:      Node      : out Count_Type;
+        -:  223:      Inserted  : out Boolean)
+        -:  224:   is
+    #####:  225:      N : Nodes_Type renames Tree.Nodes;
+        -:  226:
+        -:  227:   begin
+        -:  228:      --  The purpose of a hint is to avoid a search from the root of
+        -:  229:      --  tree. If we have it hint it means we only need to traverse the
+        -:  230:      --  subtree rooted at the hint to find the nearest neighbor. Note
+        -:  231:      --  that finding the neighbor means merely walking the tree; this
+        -:  232:      --  is not a search and the only comparisons that occur are with
+        -:  233:      --  the hint and its neighbor.
+        -:  234:
+        -:  235:      --  If Position is 0, this is interpreted to mean that Key is
+        -:  236:      --  large relative to the nodes in the tree. If the tree is empty,
+        -:  237:      --  or Key is greater than the last node in the tree, then we're
+        -:  238:      --  done; otherwise the hint was "wrong" and we must search.
+        -:  239:
+    #####:  240:      if Position = 0 then  -- largest
+    #####:  241:         if Tree.Last = 0
+    #####:  242:           or else Is_Greater_Key_Node (Key, N (Tree.Last))
+        -:  243:         then
+    #####:  244:            Insert_Post (Tree, Tree.Last, False, Node);
+    #####:  245:            Inserted := True;
+        -:  246:         else
+    #####:  247:            Conditional_Insert_Sans_Hint (Tree, Key, Node, Inserted);
+        -:  248:         end if;
+        -:  249:
+    #####:  250:         return;
+        -:  251:      end if;
+        -:  252:
+        -:  253:      pragma Assert (Tree.Length > 0);
+        -:  254:
+        -:  255:      --  A hint can either name the node that immediately follows Key,
+        -:  256:      --  or immediately precedes Key. We first test whether Key is
+        -:  257:      --  less than the hint, and if so we compare Key to the node that
+        -:  258:      --  precedes the hint. If Key is both less than the hint and
+        -:  259:      --  greater than the hint's preceding neighbor, then we're done;
+        -:  260:      --  otherwise we must search.
+        -:  261:
+        -:  262:      --  Note also that a hint can either be an anterior node or a leaf
+        -:  263:      --  node. A new node is always inserted at the bottom of the tree
+        -:  264:      --  (at least prior to rebalancing), becoming the new left or
+        -:  265:      --  right child of leaf node (which prior to the insertion must
+        -:  266:      --  necessarily be null, since this is a leaf). If the hint names
+        -:  267:      --  an anterior node then its neighbor must be a leaf, and so
+        -:  268:      --  (here) we insert after the neighbor. If the hint names a leaf
+        -:  269:      --  then its neighbor must be anterior and so we insert before the
+        -:  270:      --  hint.
+        -:  271:
+    #####:  272:      if Is_Less_Key_Node (Key, N (Position)) then
+        -:  273:         declare
+    #####:  274:            Before : constant Count_Type := Ops.Previous (Tree, Position);
+        -:  275:
+        -:  276:         begin
+    #####:  277:            if Before = 0 then
+    #####:  278:               Insert_Post (Tree, Tree.First, True, Node);
+    #####:  279:               Inserted := True;
+        -:  280:
+    #####:  281:            elsif Is_Greater_Key_Node (Key, N (Before)) then
+    #####:  282:               if Ops.Right (N (Before)) = 0 then
+    #####:  283:                  Insert_Post (Tree, Before, False, Node);
+        -:  284:               else
+    #####:  285:                  Insert_Post (Tree, Position, True, Node);
+        -:  286:               end if;
+        -:  287:
+    #####:  288:               Inserted := True;
+        -:  289:
+        -:  290:            else
+    #####:  291:               Conditional_Insert_Sans_Hint (Tree, Key, Node, Inserted);
+        -:  292:            end if;
+        -:  293:         end;
+        -:  294:
+    #####:  295:         return;
+        -:  296:      end if;
+        -:  297:
+        -:  298:      --  We know that Key isn't less than the hint so we try again,
+        -:  299:      --  this time to see if it's greater than the hint. If so we
+        -:  300:      --  compare Key to the node that follows the hint. If Key is both
+        -:  301:      --  greater than the hint and less than the hint's next neighbor,
+        -:  302:      --  then we're done; otherwise we must search.
+        -:  303:
+    #####:  304:      if Is_Greater_Key_Node (Key, N (Position)) then
+        -:  305:         declare
+    #####:  306:            After : constant Count_Type := Ops.Next (Tree, Position);
+        -:  307:
+        -:  308:         begin
+    #####:  309:            if After = 0 then
+    #####:  310:               Insert_Post (Tree, Tree.Last, False, Node);
+    #####:  311:               Inserted := True;
+        -:  312:
+    #####:  313:            elsif Is_Less_Key_Node (Key, N (After)) then
+    #####:  314:               if Ops.Right (N (Position)) = 0 then
+    #####:  315:                  Insert_Post (Tree, Position, False, Node);
+        -:  316:               else
+    #####:  317:                  Insert_Post (Tree, After, True, Node);
+        -:  318:               end if;
+        -:  319:
+    #####:  320:               Inserted := True;
+        -:  321:
+        -:  322:            else
+    #####:  323:               Conditional_Insert_Sans_Hint (Tree, Key, Node, Inserted);
+        -:  324:            end if;
+        -:  325:         end;
+        -:  326:
+    #####:  327:         return;
+        -:  328:      end if;
+        -:  329:
+        -:  330:      --  We know that Key is neither less than the hint nor greater
+        -:  331:      --  than the hint, and that's the definition of equivalence.
+        -:  332:      --  There's nothing else we need to do, since a search would just
+        -:  333:      --  reach the same conclusion.
+        -:  334:
+    #####:  335:      Node := Position;
+    #####:  336:      Inserted := False;
+    #####:  337:   end Generic_Conditional_Insert_With_Hint;
+        -:  338:
+        -:  339:   -------------------------
+        -:  340:   -- Generic_Insert_Post --
+        -:  341:   -------------------------
+        -:  342:
+      380:  343:   procedure Generic_Insert_Post
+        -:  344:     (Tree   : in out Tree_Type'Class;
+        -:  345:      Y      : Count_Type;
+        -:  346:      Before : Boolean;
+        -:  347:      Z      : out Count_Type)
+        -:  348:   is
+      380:  349:      N : Nodes_Type renames Tree.Nodes;
+        -:  350:
+        -:  351:   begin
+      380:  352:      TC_Check (Tree.TC);
+        -:  353:
+      380:  354:      if Checks and then Tree.Length >= Tree.Capacity then
+    #####:  355:         raise Capacity_Error with "not enough capacity to insert new item";
+        -:  356:      end if;
+        -:  357:
+      380:  358:      Z := New_Node;
+        -:  359:      pragma Assert (Z /= 0);
+        -:  360:
+      380:  361:      if Y = 0 then
+        -:  362:         pragma Assert (Tree.Length = 0);
+        -:  363:         pragma Assert (Tree.Root = 0);
+        -:  364:         pragma Assert (Tree.First = 0);
+        -:  365:         pragma Assert (Tree.Last = 0);
+        -:  366:
+       90:  367:         Tree.Root := Z;
+       90:  368:         Tree.First := Z;
+       90:  369:         Tree.Last := Z;
+        -:  370:
+      290:  371:      elsif Before then
+        -:  372:         pragma Assert (Ops.Left (N (Y)) = 0);
+        -:  373:
+       14:  374:         Ops.Set_Left (N (Y), Z);
+        -:  375:
+       14:  376:         if Y = Tree.First then
+        8:  377:            Tree.First := Z;
+        -:  378:         end if;
+        -:  379:
+        -:  380:      else
+        -:  381:         pragma Assert (Ops.Right (N (Y)) = 0);
+        -:  382:
+      276:  383:         Ops.Set_Right (N (Y), Z);
+        -:  384:
+      276:  385:         if Y = Tree.Last then
+      268:  386:            Tree.Last := Z;
+        -:  387:         end if;
+        -:  388:      end if;
+        -:  389:
+      380:  390:      Ops.Set_Color (N (Z), Red);
+      380:  391:      Ops.Set_Parent (N (Z), Y);
+      380:  392:      Ops.Rebalance_For_Insert (Tree, Z);
+      380:  393:      Tree.Length := Tree.Length + 1;
+      380:  394:   end Generic_Insert_Post;
+        -:  395:
+        -:  396:   -----------------------
+        -:  397:   -- Generic_Iteration --
+        -:  398:   -----------------------
+        -:  399:
+        -:  400:   procedure Generic_Iteration
+        -:  401:     (Tree : Tree_Type'Class;
+        -:  402:      Key  : Key_Type)
+        -:  403:   is
+        -:  404:      procedure Iterate (Index : Count_Type);
+        -:  405:
+        -:  406:      -------------
+        -:  407:      -- Iterate --
+        -:  408:      -------------
+        -:  409:
+        -:  410:      procedure Iterate (Index : Count_Type) is
+        -:  411:         J : Count_Type;
+        -:  412:         N : Nodes_Type renames Tree.Nodes;
+        -:  413:
+        -:  414:      begin
+        -:  415:         J := Index;
+        -:  416:         while J /= 0 loop
+        -:  417:            if Is_Less_Key_Node (Key, N (J)) then
+        -:  418:               J := Ops.Left (N (J));
+        -:  419:            elsif Is_Greater_Key_Node (Key, N (J)) then
+        -:  420:               J := Ops.Right (N (J));
+        -:  421:            else
+        -:  422:               Iterate (Ops.Left (N (J)));
+        -:  423:               Process (J);
+        -:  424:               J := Ops.Right (N (J));
+        -:  425:            end if;
+        -:  426:         end loop;
+        -:  427:      end Iterate;
+        -:  428:
+        -:  429:   --  Start of processing for Generic_Iteration
+        -:  430:
+        -:  431:   begin
+        -:  432:      Iterate (Tree.Root);
+        -:  433:   end Generic_Iteration;
+        -:  434:
+        -:  435:   -------------------------------
+        -:  436:   -- Generic_Reverse_Iteration --
+        -:  437:   -------------------------------
+        -:  438:
+        -:  439:   procedure Generic_Reverse_Iteration
+        -:  440:     (Tree : Tree_Type'Class;
+        -:  441:      Key  : Key_Type)
+        -:  442:   is
+        -:  443:      procedure Iterate (Index : Count_Type);
+        -:  444:
+        -:  445:      -------------
+        -:  446:      -- Iterate --
+        -:  447:      -------------
+        -:  448:
+        -:  449:      procedure Iterate (Index : Count_Type) is
+        -:  450:         J : Count_Type;
+        -:  451:         N : Nodes_Type renames Tree.Nodes;
+        -:  452:
+        -:  453:      begin
+        -:  454:         J := Index;
+        -:  455:         while J /= 0 loop
+        -:  456:            if Is_Less_Key_Node (Key, N (J)) then
+        -:  457:               J := Ops.Left (N (J));
+        -:  458:            elsif Is_Greater_Key_Node (Key, N (J)) then
+        -:  459:               J := Ops.Right (N (J));
+        -:  460:            else
+        -:  461:               Iterate (Ops.Right (N (J)));
+        -:  462:               Process (J);
+        -:  463:               J := Ops.Left (N (J));
+        -:  464:            end if;
+        -:  465:         end loop;
+        -:  466:      end Iterate;
+        -:  467:
+        -:  468:   --  Start of processing for Generic_Reverse_Iteration
+        -:  469:
+        -:  470:   begin
+        -:  471:      Iterate (Tree.Root);
+        -:  472:   end Generic_Reverse_Iteration;
+        -:  473:
+        -:  474:   ----------------------------------
+        -:  475:   -- Generic_Unconditional_Insert --
+        -:  476:   ----------------------------------
+        -:  477:
+    #####:  478:   procedure Generic_Unconditional_Insert
+        -:  479:     (Tree : in out Tree_Type'Class;
+        -:  480:      Key  : Key_Type;
+        -:  481:      Node : out Count_Type)
+        -:  482:   is
+        -:  483:      Y : Count_Type;
+        -:  484:      X : Count_Type;
+    #####:  485:      N : Nodes_Type renames Tree.Nodes;
+        -:  486:
+        -:  487:      Before : Boolean;
+        -:  488:
+        -:  489:   begin
+    #####:  490:      Y := 0;
+    #####:  491:      Before := False;
+        -:  492:
+    #####:  493:      X := Tree.Root;
+    #####:  494:      while X /= 0 loop
+    #####:  495:         Y := X;
+    #####:  496:         Before := Is_Less_Key_Node (Key, N (X));
+    #####:  497:         X := (if Before then Ops.Left (N (X)) else Ops.Right (N (X)));
+    #####:  498:      end loop;
+        -:  499:
+    #####:  500:      Insert_Post (Tree, Y, Before, Node);
+    #####:  501:   end Generic_Unconditional_Insert;
+        -:  502:
+        -:  503:   --------------------------------------------
+        -:  504:   -- Generic_Unconditional_Insert_With_Hint --
+        -:  505:   --------------------------------------------
+        -:  506:
+    #####:  507:   procedure Generic_Unconditional_Insert_With_Hint
+        -:  508:     (Tree : in out Tree_Type'Class;
+        -:  509:      Hint : Count_Type;
+        -:  510:      Key  : Key_Type;
+        -:  511:      Node : out Count_Type)
+        -:  512:   is
+    #####:  513:      N : Nodes_Type renames Tree.Nodes;
+        -:  514:
+        -:  515:   begin
+        -:  516:      --  There are fewer constraints for an unconditional insertion
+        -:  517:      --  than for a conditional insertion, since we allow duplicate
+        -:  518:      --  keys. So instead of having to check (say) whether Key is
+        -:  519:      --  (strictly) greater than the hint's previous neighbor, here we
+        -:  520:      --  allow Key to be equal to or greater than the previous node.
+        -:  521:
+        -:  522:      --  There is the issue of what to do if Key is equivalent to the
+        -:  523:      --  hint. Does the new node get inserted before or after the hint?
+        -:  524:      --  We decide that it gets inserted after the hint, reasoning that
+        -:  525:      --  this is consistent with behavior for non-hint insertion, which
+        -:  526:      --  inserts a new node after existing nodes with equivalent keys.
+        -:  527:
+        -:  528:      --  First we check whether the hint is null, which is interpreted
+        -:  529:      --  to mean that Key is large relative to existing nodes.
+        -:  530:      --  Following our rule above, if Key is equal to or greater than
+        -:  531:      --  the last node, then we insert the new node immediately after
+        -:  532:      --  last. (We don't have an operation for testing whether a key is
+        -:  533:      --  "equal to or greater than" a node, so we must say instead "not
+        -:  534:      --  less than", which is equivalent.)
+        -:  535:
+    #####:  536:      if Hint = 0 then  -- largest
+    #####:  537:         if Tree.Last = 0 then
+    #####:  538:            Insert_Post (Tree, 0, False, Node);
+    #####:  539:         elsif Is_Less_Key_Node (Key, N (Tree.Last)) then
+    #####:  540:            Unconditional_Insert_Sans_Hint (Tree, Key, Node);
+        -:  541:         else
+    #####:  542:            Insert_Post (Tree, Tree.Last, False, Node);
+        -:  543:         end if;
+        -:  544:
+    #####:  545:         return;
+        -:  546:      end if;
+        -:  547:
+        -:  548:      pragma Assert (Tree.Length > 0);
+        -:  549:
+        -:  550:      --  We decide here whether to insert the new node prior to the
+        -:  551:      --  hint. Key could be equivalent to the hint, so in theory we
+        -:  552:      --  could write the following test as "not greater than" (same as
+        -:  553:      --  "less than or equal to"). If Key were equivalent to the hint,
+        -:  554:      --  that would mean that the new node gets inserted before an
+        -:  555:      --  equivalent node. That wouldn't break any container invariants,
+        -:  556:      --  but our rule above says that new nodes always get inserted
+        -:  557:      --  after equivalent nodes. So here we test whether Key is both
+        -:  558:      --  less than the hint and equal to or greater than the hint's
+        -:  559:      --  previous neighbor, and if so insert it before the hint.
+        -:  560:
+    #####:  561:      if Is_Less_Key_Node (Key, N (Hint)) then
+        -:  562:         declare
+    #####:  563:            Before : constant Count_Type := Ops.Previous (Tree, Hint);
+        -:  564:         begin
+    #####:  565:            if Before = 0 then
+    #####:  566:               Insert_Post (Tree, Hint, True, Node);
+    #####:  567:            elsif Is_Less_Key_Node (Key, N (Before)) then
+    #####:  568:               Unconditional_Insert_Sans_Hint (Tree, Key, Node);
+    #####:  569:            elsif Ops.Right (N (Before)) = 0 then
+    #####:  570:               Insert_Post (Tree, Before, False, Node);
+        -:  571:            else
+    #####:  572:               Insert_Post (Tree, Hint, True, Node);
+        -:  573:            end if;
+        -:  574:         end;
+        -:  575:
+    #####:  576:         return;
+        -:  577:      end if;
+        -:  578:
+        -:  579:      --  We know that Key isn't less than the hint, so it must be equal
+        -:  580:      --  or greater. So we just test whether Key is less than or equal
+        -:  581:      --  to (same as "not greater than") the hint's next neighbor, and
+        -:  582:      --  if so insert it after the hint.
+        -:  583:
+        -:  584:      declare
+    #####:  585:         After : constant Count_Type := Ops.Next (Tree, Hint);
+        -:  586:      begin
+    #####:  587:         if After = 0 then
+    #####:  588:            Insert_Post (Tree, Hint, False, Node);
+    #####:  589:         elsif Is_Greater_Key_Node (Key, N (After)) then
+    #####:  590:            Unconditional_Insert_Sans_Hint (Tree, Key, Node);
+    #####:  591:         elsif Ops.Right (N (Hint)) = 0 then
+    #####:  592:            Insert_Post (Tree, Hint, False, Node);
+        -:  593:         else
+    #####:  594:            Insert_Post (Tree, After, True, Node);
+        -:  595:         end if;
+        -:  596:      end;
+    #####:  597:   end Generic_Unconditional_Insert_With_Hint;
+        -:  598:
+        -:  599:   -----------------
+        -:  600:   -- Upper_Bound --
+        -:  601:   -----------------
+        -:  602:
+    #####:  603:   function Upper_Bound
+        -:  604:     (Tree : Tree_Type'Class;
+        -:  605:      Key  : Key_Type) return Count_Type
+        -:  606:   is
+        -:  607:      Y : Count_Type;
+        -:  608:      X : Count_Type;
+    #####:  609:      N : Nodes_Type renames Tree.Nodes;
+        -:  610:
+        -:  611:   begin
+    #####:  612:      Y := 0;
+        -:  613:
+    #####:  614:      X := Tree.Root;
+    #####:  615:      while X /= 0 loop
+    #####:  616:         if Is_Less_Key_Node (Key, N (X)) then
+    #####:  617:            Y := X;
+    #####:  618:            X := Ops.Left (N (X));
+        -:  619:         else
+    #####:  620:            X := Ops.Right (N (X));
+        -:  621:         end if;
+    #####:  622:      end loop;
+        -:  623:
+    #####:  624:      return Y;
+        -:  625:   end Upper_Bound;
+        -:  626:
+        -:  627:end Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
